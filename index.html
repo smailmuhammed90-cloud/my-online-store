@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <title>Әйелдер киімі дүкені</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Әйелдерге арналған сәнді көйлектер, орамалдар және басқа киімдердің онлайн дүкені. 2025 жылдың жаңа коллекциясы." />
+  <meta name="keywords" content="әйелдер киімі, көйлектер, орамалдар, онлайн дүкен, Қазақстан" />
+  <meta property="og:title" content="Әйелдер киімі дүкені" />
+  <meta property="og:description" content="Сәнді және қолжетімді әйелдер киімдерінің онлайн дүкені." />
+  <meta property="og:image" content="https://example.com/hero-image.jpg" /> <!-- Replace with actual -->
+  <meta property="og:url" content="https://your-site.com" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
+  <style>
+    :root { --accent: #7b2cbf; --text-color: #111; --background: #fafafa; --card-bg: #fff; --border-color: #eee; --muted: #666; }
+    body { font-family: Arial, Helvetica, sans-serif; margin: 0; background: var(--background); color: var(--text-color); line-height: 1.5; }
+    .site-top { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .left, .center, .right { display: flex; align-items: center; gap: 12px; }
+    .center { flex: 1; justify-content: center; }
+    .center h1 { margin: 0; font-size: 18px; font-weight: 600; }
+    button.icon { background: none; border: none; cursor: pointer; font-size: 18px; transition: color 0.2s; }
+    button.icon:hover { color: var(--accent); }
+    #cart-icon { cursor: pointer; position: relative; font-size: 20px; }
+    #cart-count { background: red; color: white; font-size: 12px; border-radius: 50%; padding: 2px 6px; position: absolute; top: -8px; right: -10px; }
+    #sidebar { position: fixed; left: -220px; top: 0; width: 200px; height: 100%; background: var(--card-bg); border-right: 1px solid var(--border-color); padding: 20px; transition: left 0.3s ease; z-index: 40; box-shadow: 2px 0 8px rgba(0,0,0,0.1); }
+    #sidebar.active { left: 0; }
+    #sidebar ul { list-style: none; padding: 0; margin: 0; }
+    #sidebar ul li { margin: 12px 0; }
+    #sidebar a { text-decoration: none; color: var(--text-color); font-size: 16px; display: block; padding: 8px; border-radius: 4px; transition: background 0.2s, color 0.2s; }
+    #sidebar a:hover { background: var(--accent); color: #fff; }
+    .hero { background: linear-gradient(to bottom, #f5f5f5, #e0e0e0); text-align: center; padding: 60px 20px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://via.placeholder.com/1920x400?text=2025+New+Collection') center/cover no-repeat; opacity: 0.8; z-index: -1; }
+    .hero h2 { font-size: 32px; margin-bottom: 12px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+    .hero p.small { font-size: 16px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+    .hero a { display: inline-block; margin-top: 16px; padding: 12px 20px; background: var(--accent); color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s, transform 0.2s; }
+    .hero a:hover { background: #5a189a; transform: translateY(-2px); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 30px; max-width: 1200px; margin: 0 auto; }
+    .product-card { background: var(--card-bg); border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .product-card img { width: 100%; height: 220px; object-fit: cover; display: block; loading: lazy; }
+    .product-card h4 { margin: 12px 0 6px; font-size: 18px; font-weight: 600; }
+    .product-card p { color: var(--muted); margin: 0 12px 8px; font-size: 14px; }
+    .price { font-weight: 700; margin: 8px 0; color: #222; font-size: 16px; }
+    footer { padding: 30px; text-align: center; color: var(--muted); border-top: 1px solid var(--border-color); background: var(--card-bg); }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 10px; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+    .small { font-size: 13px; color: var(--muted); }
+    input.search-small { padding: 8px 12px; border-radius: 20px; border: 1px solid var(--border-color); width: 150px; transition: width 0.3s, border-color 0.3s; }
+    input.search-small:focus { width: 200px; border-color: var(--accent); outline: none; }
+    #loading { text-align: center; padding: 20px; color: var(--muted); }
+    @media (max-width: 700px) { .center h1 { font-size: 16px; } .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .hero { padding: 40px 20px; } .hero h2 { font-size: 24px; } }
+    @media (min-width: 1200px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+  </style>
+</head>
+<body>
+  <!-- TOP BAR -->
+  <header class="site-top">
+    <div class="left"><button id="menuBtn" class="icon" aria-label="Menu">☰</button></div>
+
+    <div class="center"><h1 id="site-title">Әйелдер киімі дүкені</h1></div>
+
+    <div class="right">
+      <input id="search" class="search-small" placeholder="Іздеу / Поиск" aria-label="Search" />
+      <button id="loginBtn" class="icon">Кіру</button>
+      <button id="signupBtn" class="icon">Тіркелу</button>
+      <a id="profileIcon" href="profile.html" title="Профиль" style="display:none;font-size:20px;text-decoration:none;margin-left:6px">👤</a>
+      <button id="logoutBtn" style="display:none">Шығу</button>
+      <a id="adminLink" href="admin.html" style="display:none">Админ</a>
+      <div id="cart-icon" aria-label="Cart">🛒 <span id="cart-count">0</span></div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar" aria-hidden="true">
+    <ul>
+      <li><a href="dresses.html">👗 Көйлектер</a></li>
+      <li><a href="hijabs.html">🧕 Орамалдар</a></li>
+      <li><a href="shoes.html">👟 Аяқ киім</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>2025 Жаңа Коллекция</h2>
+    <p class="small">Әйелдерге арналған сәнді көйлектер мен орамалдар</p>
+    <a id="seeDresses" href="dresses.html">Көйлектерді көру</a>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section>
+    <h3 style="text-align:center;margin-top:22px">Таңдаулы тауарлар</h3>
+    <div id="productList" class="products-grid"></div>
+    <div id="loading" style="display:none;">Жүктелуде...</div>
+  </section>
+
+  <footer>
+    © 2025 Әйелдер киімі дүкені | <a href="privacy.html">Құпиялылық саясаты</a> | <a href="terms.html">Пайдалану шарттары</a> | <a href="contact.html">Байланыс</a>
+  </footer>
+
+  <!-- --- Firebase (compat) --- -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
+  <script>
+    (function(){
+      try {
+        if (typeof firebase === 'undefined') {
+          console.error('Firebase SDK failed to load (no internet?).');
+          return;
+        }
+        if (!window._FIREBASE_INIT_DONE) {
+          const firebaseConfig = {
+            apiKey: "AIzaSyBjIlddTv_tWkzDAKKlK_1TuK8TTYHbGJ0",
+            authDomain: "soul-store-a1075.firebaseapp.com",
+            databaseURL: "https://soul-store-a1075-default-rtdb.firebaseio.com",
+            projectId: "soul-store-a1075",
+            storageBucket: "soul-store-a1075.appspot.com",
+            messagingSenderId: "849267908668",
+            appId: "1:849267908668:web:6c85f9fcfe7b8580e72339",
+            measurementId: "G-TEC7DVNR3S"
+          };
+          try { firebase.initializeApp(firebaseConfig); } catch(e){ /* already inited */ }
+          window.auth = firebase.auth();
+          window.ADMIN_EMAILS = window.ADMIN_EMAILS || ["ggbrochilguy@gmail.com"];
+          window._FIREBASE_INIT_DONE = true;
+          console.log('Firebase initialized (index).');
+        }
+      } catch(e) {
+        console.error('Firebase init error', e);
+      }
+    })();
+  </script>
+
+  <!-- --- Supabase + App logic (module) --- -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    // Your Supabase credentials (you provided the anon key earlier)
+    const SUPABASE_URL = "https://mcqrqmhsosihxzpeppuu.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jcXJxbWhzb3NpaHh6cGVwcHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3MjEzNjQsImV4cCI6MjA3MjI5NzM2NH0.noFkES6WfwZKpJuPiwOaHA-qa-5ckgk2zDy3PGb9wwI";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    window.supabase = supabase; // debug if needed
+
+    // Simple helpers
+    const $ = (id) => document.getElementById(id);
+    const log = (...a) => console.log(...a);
+
+    // App state
+    let allProducts = [];
+
+    // Render products
+    function renderProducts(list){
+      const container = $('productList');
+      container.innerHTML = '';
+      if(!list || list.length === 0){
+        container.innerHTML = '<p style="text-align:center;color:#666;padding:18px">Тауарлар жоқ</p>';
+        return;
+      }
+      list.forEach(p => {
+        const name = p.name || p.name_kk || p.name_ru || p.title || '—';
+        const img = p.image_url || p.img || '';
+        const price = p.price ?? '';
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.onclick = () => location.href = `product.html?id=${p.id}`;
+        card.innerHTML = `
+          <img src="${img}" alt="${escapeHtml(name)}" onerror="this.src='https://via.placeholder.com/220x220?text=No+Image'" loading="lazy"/>
+          <h4>${escapeHtml(name)}</h4>
+          <p>${escapeHtml(p.description || '')}</p>
+          <div class="price">${price ? price + ' ₸' : ''}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function escapeHtml(s){ if(!s && s !== 0) return ''; return String(s).replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    // Load products from Supabase
+    async function loadProducts(){
+      $('loading').style.display = 'block';
+      try {
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false }).limit(500);
+        if(error){
+          console.error('Supabase load error', error);
+          renderProducts([]);
+          return;
+        }
+        allProducts = data || [];
+        renderProducts(allProducts);
+      } catch(e){
+        console.error('Unexpected error loading products', e);
+        renderProducts([]);
+      } finally {
+        $('loading').style.display = 'none';
+      }
+    }
+
+    // initial load
+    await loadProducts();
+
+    // Search logic (works repeatedly)
+    $('search').addEventListener('input', (ev)=> {
+      const q = ev.target.value.trim().toLowerCase();
+      if(!q) return renderProducts(allProducts);
+      const filtered = allProducts.filter(p => {
+        const name = (p.name || p.name_kk || p.name_ru || p.title || '').toString().toLowerCase();
+        const desc = (p.description || '').toString().toLowerCase();
+        const cat = (p.category || '').toString().toLowerCase();
+        return name.includes(q) || desc.includes(q) || cat.includes(q);
+      });
+      renderProducts(filtered);
+    });
+
+    // cart count
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      $('cart-count').textContent = cart.length || 0;
+    }
+    updateCartCount();
+
+    // UI event wiring for header buttons
+    // Menu toggle
+    const menuBtn = $('menuBtn'), sidebar = $('sidebar');
+    if(menuBtn) {
+      menuBtn.addEventListener('click', ()=> sidebar.classList.toggle('active'));
+      document.addEventListener('click', (e)=>{
+        if(!sidebar.contains(e.target) && !menuBtn.contains(e.target)) sidebar.classList.remove('active');
+      });
+    }
+
+    // Cart icon
+    $('cart-icon').addEventListener('click', ()=> location.href = 'cart.html');
+
+    // Login / signup / logout
+    $('loginBtn').addEventListener('click', async ()=>{
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await firebase.auth().signInWithPopup(provider);
+        // popup returns and onAuthStateChanged will run
+      } catch(err) {
+        console.error('Google sign-in error', err);
+        alert('Google sign-in failed: ' + (err.message || err.code));
+      }
+    });
+    $('signupBtn').addEventListener('click', () => location.href = 'signup.html');
+
+    $('logoutBtn').addEventListener('click', () => {
+      firebase.auth().signOut().then(() => {
+        // reload to refresh UI
+        location.reload();
+      });
+    });
+
+    // Auth UI: show/hide admin link, profile, login buttons
+    // Wait until firebase auth exists
+    (function waitAuth(){
+      if(typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
+        // try again
+        setTimeout(waitAuth, 200);
+        return;
+      }
+      firebase.auth().onAuthStateChanged(user => {
+        const loginBtn = $('loginBtn'), signupBtn = $('signupBtn'), logoutBtn = $('logoutBtn'), profileIcon = $('profileIcon'), adminLink = $('adminLink');
+        if(user){
+          if(loginBtn) loginBtn.style.display = 'none';
+          if(signupBtn) signupBtn.style.display = 'none';
+          if(profileIcon) profileIcon.style.display = 'inline-block';
+          if(logoutBtn) logoutBtn.style.display = 'inline-block';
+          // admin link only for the exact admin email(s)
+          const email = (user.email || '').toLowerCase().trim();
+          const admins = (window.ADMIN_EMAILS || []).map(x => String(x).toLowerCase().trim());
+          if(adminLink) adminLink.style.display = admins.includes(email) ? 'inline-block' : 'none';
+        } else {
+          if(loginBtn) loginBtn.style.display = 'inline-block';
+          if(signupBtn) signupBtn.style.display = 'inline-block';
+          if(profileIcon) profileIcon.style.display = 'none';
+          if(logoutBtn) logoutBtn.style.display = 'none';
+          if(adminLink) adminLink.style.display = 'none';
+        }
+      });
+    })();
+
+    // Expose reload function for dev
+    window.reloadProducts = loadProducts;
+  </script>
+
+  <!-- Minimal fallback cart count update if module didn't run -->
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const c = document.getElementById('cart-count');
+      if(c) c.textContent = cart.length || 0;
+    });
+  </script>
+</body>
+</html>
