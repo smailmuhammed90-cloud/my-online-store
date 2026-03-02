@@ -1,8 +1,7 @@
 {
-  "name": "my-online-store",
-  "version": "1.0.0",
-  "description": "",
-  "main": "admin.js",
+  "name": "soul-store",
+  "version": "2.0.0",
+  "description": "Soul Store — online women's clothing store",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.56.1",
-    "firebase": "^12.2.1"
+    "@supabase/supabase-js": "^2.56.1"
   }
 }

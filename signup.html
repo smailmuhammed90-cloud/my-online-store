@@ -2,41 +2,79 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Тіркелу</title>
+  <title>Тіркелу — Soul Store</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .card { background: var(--card); padding: 40px 36px; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); max-width: 420px; width: 100%; border: 1px solid var(--border); }
+    .logo { text-align: center; margin-bottom: 8px; font-size: 32px; }
+    h1 { margin: 0 0 6px; font-size: 26px; text-align: center; font-weight: 800; }
+    .subtitle { text-align: center; color: var(--text-muted); font-size: 14px; margin: 0 0 28px; }
+    input { width: 100%; padding: 12px 16px; margin-bottom: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; transition: var(--transition); }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+    button { width: 100%; padding: 13px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: var(--transition); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    p { text-align: center; font-size: 14px; color: var(--text-muted); margin: 16px 0 0; }
+    a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+    .msg { padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
+    .msg.error { background: #ffebee; color: #c62828; display: block; }
+    .msg.success { background: #e8f5e9; color: #2e7d32; display: block; }
+  </style>
 </head>
 <body>
-  <h1>Жаңа аккаунт тіркеу</h1>
+  <div class="card">
+    <div class="logo">&#128087;</div>
+    <h1>Тіркелу</h1>
+    <p class="subtitle">Жаңа аккаунт құру</p>
+    <div id="msg" class="msg"></div>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Құпия сөз (кемінде 6 таңба)" />
+    <input type="password" id="confirmPassword" placeholder="Құпия сөзді қайталаңыз" />
+    <button id="signupBtn" class="btn-primary">Тіркелу / Зарегистрироваться</button>
+    <p>Аккаунтыңыз бар ма? <a href='/login'>Кіру</a></p>
+    <p style="margin-top:8px"><a href='/'>&larr; Басты бетке</a></p>
+  </div>
 
-  <input type="email" id="email" placeholder="Email" />
-  <input type="password" id="password" placeholder="Құпия сөз" />
-  <input type="password" id="confirmPassword" placeholder="Құпия сөзді қайталаңыз" />
-  <button id="signupBtn">Тіркелу</button>
-
-  <p>Аккаунтыңыз бар ма? <a href="login.html">Кіру</a></p>
-
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
-
   <script>
-    document.getElementById("signupBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
+    var msgEl = document.getElementById('msg');
 
-      if (password !== confirmPassword) {
-        alert("❌ Құпия сөздер сәйкес емес!");
-        return;
-      }
+    function showMsg(text, type) {
+      msgEl.textContent = text;
+      msgEl.className = 'msg ' + type;
+    }
+
+    document.getElementById('signupBtn').addEventListener('click', async function() {
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
+      var confirm = document.getElementById('confirmPassword').value;
+
+      if (!email || !password) { showMsg('Email мен құпия сөзді толтырыңыз', 'error'); return; }
+      if (password.length < 6) { showMsg('Құпия сөз кемінде 6 таңба болуы керек', 'error'); return; }
+      if (password !== confirm) { showMsg('Құпия сөздер сәйкес емес', 'error'); return; }
 
       try {
         await auth.createUserWithEmailAndPassword(email, password);
-        alert("✅ Аккаунт сәтті құрылды!");
-        window.location.href = "index.html"; // Back to main
+        showMsg('Аккаунт сәтті құрылды! Бағыттау...', 'success');
+        setTimeout(function(){ window.location.href = 'index.html'; }, 1000);
       } catch (err) {
-        alert("❌ " + err.message);
+        showMsg(err.message || 'Тіркелу қатесі', 'error');
       }
+    });
+
+    document.getElementById('confirmPassword').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('signupBtn').click();
     });
   </script>
 </body>
