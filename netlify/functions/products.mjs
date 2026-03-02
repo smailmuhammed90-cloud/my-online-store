@@ -21,11 +21,11 @@ export default async (req) => {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
 
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
   if (!connectionString) {
     console.error('DATABASE_URL is not set');
     return json({
-      error: 'DATABASE_URL environment variable is not set. Add it in Netlify site settings (Site configuration > Environment variables).'
+      error: 'Database configuration missing. Set DATABASE_URL in Netlify site settings (Site configuration > Environment variables).'
     }, 500);
   }
 
