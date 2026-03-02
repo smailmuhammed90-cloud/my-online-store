@@ -18,7 +18,9 @@
       margin: 0;
       background: var(--background);
       color: var(--text-color);
+      overflow-x: hidden;
     }
+    *, *::before, *::after { box-sizing: border-box; }
     .topbar {
       display: flex;
       align-items: center;
@@ -167,7 +169,22 @@
     @media (max-width: 768px) {
       .product-container {
         grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
       }
+      .topbar { padding: 10px 12px; }
+      .back-btn { min-height: 44px; font-size: 14px; }
+      .product-name { font-size: 22px; }
+      .product-price { font-size: 20px; }
+      .product-description { font-size: 14px; }
+      .language-btn { min-height: 44px; font-size: 14px; padding: 10px 16px; }
+      .size-btn { min-height: 44px; min-width: 44px; font-size: 14px; }
+      .add-to-cart { min-height: 44px; width: 100%; font-size: 16px; }
+      .size-chart { font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; }
+      .modal-content { margin: 20px; padding: 16px; max-width: calc(100vw - 40px); }
+      .modal-content h2 { font-size: 18px; }
+      th, td { padding: 6px 4px; font-size: 13px; }
+      .size-options { flex-wrap: wrap; }
     }
   </style>
 </head>

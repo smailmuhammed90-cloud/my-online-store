@@ -3,16 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <title>Тіркелу</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
+  <style>
+    :root { --accent: #7b2cbf; --text-color: #111; --background: #fafafa; --card-bg: #fff; --border-color: #eee; --muted: #666; }
+    body { font-family: Arial, Helvetica, sans-serif; margin: 0; background: var(--background); color: var(--text-color); line-height: 1.5; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+    .signup-card { background: var(--card-bg); padding: 32px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.08); max-width: 400px; width: 100%; }
+    .signup-card h1 { margin: 0 0 20px; font-size: 24px; text-align: center; }
+    .signup-card input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; min-height: 44px; }
+    .signup-card button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; min-height: 44px; background: var(--accent); color: #fff; transition: background 0.2s; }
+    .signup-card button:hover { background: #5a189a; }
+    .signup-card p { text-align: center; font-size: 14px; color: var(--muted); margin-top: 16px; }
+    .signup-card a { color: var(--accent); text-decoration: none; }
+    .signup-card a:hover { text-decoration: underline; }
+    .back-link { display: block; text-align: center; margin-top: 12px; font-size: 14px; }
+  </style>
 </head>
 <body>
-  <h1>Жаңа аккаунт тіркеу</h1>
-
-  <input type="email" id="email" placeholder="Email" />
-  <input type="password" id="password" placeholder="Құпия сөз" />
-  <input type="password" id="confirmPassword" placeholder="Құпия сөзді қайталаңыз" />
-  <button id="signupBtn">Тіркелу</button>
-
-  <p>Аккаунтыңыз бар ма? <a href="login.html">Кіру</a></p>
+  <div class="signup-card">
+    <h1>Тіркелу / Sign Up</h1>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Құпия сөз / Password" />
+    <input type="password" id="confirmPassword" placeholder="Құпия сөзді қайталаңыз / Confirm password" />
+    <button id="signupBtn">Тіркелу / Sign Up</button>
+    <p>Аккаунтыңыз бар ма? <a href="login.html">Кіру / Login</a></p>
+    <a href="index.html" class="back-link">← Басты бетке / Home</a>
+  </div>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
@@ -33,7 +49,7 @@
       try {
         await auth.createUserWithEmailAndPassword(email, password);
         alert("✅ Аккаунт сәтті құрылды!");
-        window.location.href = "index.html"; // Back to main
+        window.location.href = "index.html";
       } catch (err) {
         alert("❌ " + err.message);
       }
