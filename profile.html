@@ -2,139 +2,127 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Менің профилім</title>
+  <title>Профиль — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#fafafa;color:#111;margin:0;padding:0}
-    .wrap{max-width:720px;margin:30px auto;padding:18px}
-    .card{background:#fff;padding:18px;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,0.06)}
-    h1{margin:0 0 12px}
-    .muted{color:#666;font-size:14px}
-    .row{display:flex;align-items:center;gap:12px;margin-top:12px}
-    .admin-badge{background:#111;color:#fff;padding:6px 10px;border-radius:999px;font-weight:700}
-    .btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
-    .btn-primary{background:#7b2cbf;color:white}
-    .btn-outline{background:transparent;border:1px solid #ddd}
-    .small{font-size:13px;color:#666;margin-top:8px}
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding: 0; }
+    .wrap { max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    .card { background: var(--card); padding: 32px; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); border: 1px solid var(--border); }
+    .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+    .card-header h1 { margin: 0; font-size: 24px; font-weight: 800; }
+    .card-header p { margin: 4px 0 0; color: var(--text-muted); font-size: 14px; }
+    .info-row { padding: 14px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .info-row:last-of-type { border-bottom: none; }
+    .info-label { font-weight: 600; font-size: 14px; color: var(--text-muted); }
+    .info-value { font-weight: 600; }
+    .admin-badge { background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .actions { display: flex; gap: 12px; margin-top: 24px; }
+    .btn { padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; transition: var(--transition); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-outline { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-home { background: var(--card); border: 1px solid var(--border); color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 14px; transition: var(--transition); }
+    .btn-home:hover { border-color: var(--accent); color: var(--accent); }
+    #status { color: var(--text-muted); font-size: 15px; }
   </style>
 </head>
 <body>
   <div class="wrap">
+    <div style="margin-bottom:16px">
+      <a class='btn-home' href='/'>&larr; Басты бетке / На главную</a>
+    </div>
     <div class="card">
-      <h1>Менің профилім</h1>
-      <div id="status" class="muted">Жүктелуде…</div>
+      <div id="status">Жүктелуде...</div>
 
       <div id="profileArea" style="display:none;">
-        <p><strong>Email:</strong> <span id="userEmail"></span></p>
-        <p id="extraInfo" class="small"></p>
-
-        <div id="adminControls" style="display:none; margin-top:12px;">
-          <span class="admin-badge">ADMIN</span>
-          <div style="margin-top:10px;">
-            <button id="goAdmin" class="btn btn-primary">Админ панеліне өту</button>
+        <div class="card-header">
+          <div class="avatar">&#128100;</div>
+          <div>
+            <h1 id="userName">Профиль</h1>
+            <p id="userEmail"></p>
           </div>
         </div>
 
-        <div class="row" style="margin-top:18px;">
-          <button id="logoutBtn" class="btn btn-outline">Шығу</button>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value" id="emailValue"></span>
+        </div>
+        <div class="info-row" id="nameRow" style="display:none">
+          <span class="info-label">Аты / Имя</span>
+          <span class="info-value" id="nameValue"></span>
+        </div>
+        <div class="info-row" id="adminRow" style="display:none">
+          <span class="info-label">Рөлі / Роль</span>
+          <span class="admin-badge">ADMIN</span>
+        </div>
+
+        <div class="actions">
+          <button id="goAdmin" class="btn btn-primary" style="display:none">Админ панелі</button>
+          <button id="logoutBtn" class="btn btn-outline">Шығу / Выйти</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Firebase (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-
-  <!-- your firebase.js (must initialize firebase and set window.auth and window.ADMIN_EMAILS) -->
   <script src="firebase.js"></script>
-
   <script>
-    (function(){
-      // safety: ensure DOM ready
-      document.addEventListener('DOMContentLoaded', () => {
-        const statusEl = document.getElementById('status');
-        const profileArea = document.getElementById('profileArea');
-        const userEmailEl = document.getElementById('userEmail');
-        const extraInfo = document.getElementById('extraInfo');
-        const adminControls = document.getElementById('adminControls');
-        const goAdmin = document.getElementById('goAdmin');
-        const logoutBtn = document.getElementById('logoutBtn');
+    document.addEventListener('DOMContentLoaded', function() {
+      var statusEl = document.getElementById('status');
+      var profileArea = document.getElementById('profileArea');
 
-        // auth must be defined by firebase.js
-        if (typeof auth === 'undefined') {
-          statusEl.textContent = 'Firebase auth жоқ — firebase.js қосылғанын тексеріңіз.';
-          statusEl.style.color = 'crimson';
+      if (typeof auth === 'undefined') {
+        statusEl.textContent = 'Firebase auth жоқ';
+        statusEl.style.color = '#c62828';
+        return;
+      }
+
+      auth.onAuthStateChanged(function(user) {
+        if (!user) {
+          statusEl.textContent = 'Кіру қажет...';
+          setTimeout(function(){ location.href = 'login.html'; }, 800);
           return;
         }
 
-        // helper normalize
-        const normalize = s => (s || '').toString().toLowerCase().trim();
+        profileArea.style.display = '';
+        statusEl.style.display = 'none';
 
-        auth.onAuthStateChanged(user => {
-          if (!user) {
-            // not logged in -> send to login (or show message)
-            statusEl.textContent = 'Кіру қажет. Сізді кіру бетінен бағыттаймыз...';
-            setTimeout(()=> location.href = 'login.html', 900);
-            return;
-          }
+        var email = user.email || '';
+        document.getElementById('userEmail').textContent = email;
+        document.getElementById('emailValue').textContent = email;
 
-          // user is logged in -> show profile
-          profileArea.style.display = '';
-          statusEl.style.display = 'none';
+        if (user.displayName) {
+          document.getElementById('userName').textContent = user.displayName;
+          document.getElementById('nameRow').style.display = 'flex';
+          document.getElementById('nameValue').textContent = user.displayName;
+        }
 
-          const email = user.email || '';
-          userEmailEl.textContent = email;
-
-          // optionally show displayName / phoneNumber
-          let extras = [];
-          if (user.displayName) extras.push('Аты: ' + user.displayName);
-          if (user.phoneNumber) extras.push('Телефон: ' + user.phoneNumber);
-          extraInfo.textContent = extras.join(' • ');
-
-          // admin check using window.ADMIN_EMAILS (defined in firebase.js)
-          const adminEmails = Array.isArray(window.ADMIN_EMAILS) ? window.ADMIN_EMAILS.map(normalize) : [];
-          const isAdmin = adminEmails.includes(normalize(email));
-
-          if (isAdmin) {
-            adminControls.style.display = 'block';
-          } else {
-            adminControls.style.display = 'none';
-          }
-        });
-
-        // logout
-        logoutBtn.addEventListener('click', () => {
-          auth.signOut().then(()=> {
-            location.href = 'index.html';
-          });
-        });
-
-        // go to admin panel only when clicked (admin.html should re-verify on load)
-        goAdmin.addEventListener('click', () => {
-          // extra safety: check current user and admin flag before redirect
-          const user = auth.currentUser;
-          const adminEmails = Array.isArray(window.ADMIN_EMAILS) ? window.ADMIN_EMAILS.map(s => s.toLowerCase().trim()) : [];
-          const isAdmin = user && adminEmails.includes((user.email || '').toLowerCase().trim());
-          if (!isAdmin) {
-            alert('Сіз әкімші емессіз.');
-            return;
-          }
-          location.href = 'admin.html';
-        });
+        var admins = Array.isArray(window.ADMIN_EMAILS) ? window.ADMIN_EMAILS.map(function(s){ return s.toLowerCase().trim(); }) : [];
+        var isAdmin = admins.includes(email.toLowerCase().trim());
+        if (isAdmin) {
+          document.getElementById('adminRow').style.display = 'flex';
+          document.getElementById('goAdmin').style.display = 'inline-block';
+        }
       });
-    })();
+
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+        auth.signOut().then(function(){ location.href = 'index.html'; });
+      });
+
+      document.getElementById('goAdmin').addEventListener('click', function() {
+        location.href = 'admin.html';
+      });
+    });
   </script>
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-
-<!-- then your file -->
-<script src="firebase.js"></script>
-
-<!-- then your page logic that uses `auth` -->
-<script src="cart.js"></script>
-<script src="your-page-script.js"></script>
-<script type="module" src="supabase-init.js"></script>
-<script type="module" src="app.js"></script>

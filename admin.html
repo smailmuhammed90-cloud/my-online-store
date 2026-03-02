@@ -2,480 +2,457 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Admin — Өнімдерді басқару</title>
+  <title>Admin — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:18px;background:#f7f7f7;color:#111}
-    .wrap{max-width:1100px;margin:0 auto}
-    h1{margin-bottom:8px}
-    .card{background:#fff;padding:14px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:12px}
-    input,select,textarea{padding:8px;border-radius:6px;border:1px solid #ddd;width:100%}
-    .small{font-size:13px;color:#666}
-    .btn{padding:8px 12px;border:none;border-radius:6px;cursor:pointer}
-    .btn-primary{background:#7b2cbf;color:#fff}
-    .btn-danger{background:#e53935;color:#fff;}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .product-list{max-height:60vh;overflow:auto}
-    .product-item{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #eee}
-    img.thumb{width:96px;height:96px;object-fit:cover;border-radius:6px}
-    label.block{display:block;margin-bottom:6px;font-weight:600}
-    .muted{color:#666;font-size:13px}
-    .row{display:flex;gap:8px;align-items:center}
-    pre.console{background:#0b1020;color:#d6f8ff;padding:10px;border-radius:6px;height:160px;overflow:auto}
-    .actions { display:flex; flex-direction:column; gap:8px; }
-    .note { background:#fff3e0; padding:8px; border-radius:6px; color:#8a6d00; }
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding: 20px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-block; }
+    .back-btn:hover { background: var(--accent-dark); }
+    h1 { margin: 0; font-size: 24px; font-weight: 800; }
+
+    #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+
+    .admin-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+    .card { background: var(--card); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+
+    /* Form */
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: var(--transition); font-family: inherit; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: var(--transition); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-danger { background: #e53935; color: #fff; }
+    .btn-danger:hover { background: #c62828; }
+    .btn-outline { background: var(--card); border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+
+    #addStatus { font-size: 13px; margin-top: 8px; min-height: 20px; }
+
+    /* Product list */
+    .product-list { max-height: 65vh; overflow-y: auto; }
+    .product-item { display: flex; gap: 14px; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: var(--transition); }
+    .product-item:hover { background: var(--bg); }
+    .product-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background: var(--bg); }
+    .product-item .info { flex: 1; }
+    .product-item .info .name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .product-item .info .meta { font-size: 12px; color: var(--text-muted); }
+    .product-item .info .price-tag { color: var(--accent); font-weight: 700; font-size: 15px; }
+    .product-item .actions { display: flex; flex-direction: column; gap: 6px; }
+    .product-item .actions .btn { font-size: 12px; padding: 6px 12px; }
+
+    /* Uploadcare preview */
+    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; transition: var(--transition); margin-bottom: 14px; }
+    .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
+    .upload-area img { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px; }
+    .upload-area .placeholder { color: var(--text-muted); font-size: 14px; }
+
+    /* Preview panel */
+    .preview-panel { text-align: center; }
+    .preview-panel img { max-width: 100%; max-height: 250px; border-radius: var(--radius); object-fit: cover; }
+    .preview-panel h4 { margin: 12px 0 4px; }
+    .preview-panel .price { color: var(--accent); }
+
+    .note { background: #fff8e1; padding: 12px; border-radius: 8px; color: #795548; font-size: 13px; margin-top: 12px; border: 1px solid #ffe0b2; }
+
+    @media (max-width: 900px) {
+      .admin-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a href="index.html" style="text-decoration:none"><button class="btn">⬅ Дүкенге қайту</button></a>
-    <h1>Admin панелі — Өнімдерді басқару</h1>
+    <div class="topbar">
+      <a class='back-btn' href='/'>&larr; Дүкенге қайту</a>
+      <h1>Admin панелі</h1>
+    </div>
 
-    <div id="authStatus" class="card small muted">Тексеру — кіру күйі...</div>
+    <div id="authStatus">Тексеру — кіру күйі...</div>
 
-    <div class="card grid">
-      <!-- left: product form + list -->
+    <div class="admin-grid">
       <div>
-        <section style="margin-bottom:12px">
-          <h3>Жаңа өнім қосу</h3>
-          <div style="display:grid;gap:8px">
-            <label class="block">Атауы<input id="p_name" placeholder="Атауы (бір тіл)"></label>
-            <label class="block">Сипаттама (Қазақша)<textarea id="p_desc_kk" rows="3" placeholder="Сипаттама (kk)"></textarea></label>
-            <label class="block">Описание (Русский)<textarea id="p_desc_ru" rows="3" placeholder="Описание (ru)"></textarea></label>
-            <div style="display:flex;gap:8px">
-              <input id="p_price" type="number" placeholder="Баға (теңге)"/>
-              <input id="p_category" placeholder="Категория (dresses/hijabs)" list="category-options"/>
-              <datalist id="category-options">
-                <option value="dresses">
-                <option value="hijabs">
-              </datalist>
-            </div>
-            <label class="block">Өлшемдер (Размеры)<input id="p_sizes" placeholder="XS,S,M,L,XL" /></label>
-            <label class="block">Сурет (файл) <input id="p_image" type="file" accept="image/*"></label>
-            <div style="display:flex;gap:8px">
-              <button id="addProductBtn" class="btn btn-primary">Қосу</button>
-              <button id="clearFormBtn" class="btn">Тазалау</button>
-            </div>
-            <div id="addStatus" class="small muted"></div>
+        <!-- Add product form -->
+        <div class="card" style="margin-bottom:20px">
+          <h3 style="margin:0 0 18px;font-size:18px;font-weight:700">Жаңа өнім қосу</h3>
+          <div class="form-group">
+            <label>Атауы / Название</label>
+            <input id="p_name" placeholder="Өнім атауы" />
           </div>
-        </section>
-
-        <section>
-          <h3>Бар өнімдер</h3>
-          <div id="productsContainer" class="product-list"></div>
-        </section>
-      </div>
-
-      <!-- right: preview / help -->
-      <aside>
-        <div class="card">
-          <h4>Тез көрініс</h4>
-          <div id="previewArea" style="text-align:center">
-            <p class="muted">Таңдаған өніміңіз осы жерде көрсетіледі.</p>
-            <img id="previewImg" src="" alt="" style="width:100%;height:auto;max-height:220px;object-fit:cover;border-radius:8px;display:none"/>
-            <h4 id="previewName"></h4>
-            <p id="previewPrice" class="muted"></p>
+          <div class="form-group">
+            <label>Сипаттама (Қазақша)</label>
+            <textarea id="p_desc_kk" rows="2" placeholder="Сипаттама"></textarea>
           </div>
+          <div class="form-group">
+            <label>Описание (Русский)</label>
+            <textarea id="p_desc_ru" rows="2" placeholder="Описание"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Баға / Цена (&#8376;)</label>
+              <input id="p_price" type="number" placeholder="15000" />
+            </div>
+            <div class="form-group">
+              <label>Категория</label>
+              <select id="p_category">
+                <option value="dresses">Көйлектер / Dresses</option>
+                <option value="hijabs">Орамалдар / Hijabs</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Өлшемдер / Размеры</label>
+            <input id="p_sizes" placeholder="40,42,44,46 немесе XS,S,M,L,XL" />
+          </div>
+          <div class="form-group">
+            <label>Сурет / Изображение</label>
+            <div class="upload-area" id="uploadArea">
+              <div class="placeholder" id="uploadPlaceholder">Суретті жүктеу үшін басыңыз / Нажмите для загрузки</div>
+              <img id="uploadPreview" style="display:none" />
+            </div>
+            <input type="hidden" id="p_image_url" />
+          </div>
+          <div class="btn-group">
+            <button id="addProductBtn" class="btn btn-primary">Қосу / Добавить</button>
+            <button id="clearFormBtn" class="btn btn-outline">Тазалау</button>
+          </div>
+          <div id="addStatus"></div>
         </div>
 
-        <div class="card" style="margin-top:12px">
-          <h4>Ескерту / Қателер</h4>
-          <div id="note" class="note small">Мұнда Supabase немесе RLS қателері пайда болса, толық хабарлама көрсетіледі.</div>
+        <!-- Product list -->
+        <div class="card">
+          <h3 style="margin:0 0 14px;font-size:18px;font-weight:700">Бар өнімдер</h3>
+          <div id="productsContainer" class="product-list"></div>
+        </div>
+      </div>
+
+      <!-- Right sidebar -->
+      <aside>
+        <div class="card preview-panel">
+          <h4>Тез көрініс / Предпросмотр</h4>
+          <img id="previewImg" src="" alt="" style="display:none" />
+          <h4 id="previewName" style="color:var(--text)"></h4>
+          <p id="previewPrice" class="price"></p>
+        </div>
+        <div class="note" id="noteArea">
+          Мұнда қателер пайда болса, толық хабарлама көрсетіледі.
         </div>
       </aside>
     </div>
-
-    <div id="console" class="card"><pre id="log" class="console"></pre></div>
   </div>
 
-  <!-- Firebase (compat) -->
+  <!-- Uploadcare widget -->
+  <script>
+    UPLOADCARE_LOCALE = 'en';
+    UPLOADCARE_PUBLIC_KEY = '3d4dc407820559de1c77';
+  </script>
+  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
 
   <script>
-    // FIREBASE: use the same project you use to login
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjIlddTv_tWkzDAKKlK_1TuK8TTYHbGJ0",
-      authDomain: "soul-store-a1075.firebaseapp.com",
-      projectId: "soul-store-a1075",
-      storageBucket: "soul-store-a1075.appspot.com",
-      messagingSenderId: "849267908668",
-      appId: "1:849267908668:web:6c85f9fcfe7b8580e72339",
-    };
-    if (typeof firebase !== 'undefined') {
-      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-      window.auth = window.auth || firebase.auth();
-    } else {
-      console.warn("Firebase SDK not loaded");
-    }
+    (function(){
+      var statusEl = document.getElementById('authStatus');
+      var addBtn = document.getElementById('addProductBtn');
+      var clearBtn = document.getElementById('clearFormBtn');
+      var productsContainer = document.getElementById('productsContainer');
+      var addStatus = document.getElementById('addStatus');
+      var noteEl = document.getElementById('noteArea');
+      var previewImg = document.getElementById('previewImg');
+      var previewName = document.getElementById('previewName');
+      var previewPrice = document.getElementById('previewPrice');
+      var uploadPreview = document.getElementById('uploadPreview');
+      var uploadPlaceholder = document.getElementById('uploadPlaceholder');
+      var imageUrlInput = document.getElementById('p_image_url');
 
-    // Admin emails (exact emails that get admin access)
-    window.ADMIN_EMAILS = ["ggbrochilguy@gmail.com","ggbrchilguy@gmail.com"];
-  </script>
+      function escapeHtml(s){ if(s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
-  <!-- Admin logic (Supabase) -->
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+      // Uploadcare integration
+      var uploadArea = document.getElementById('uploadArea');
+      uploadArea.addEventListener('click', function() {
+        var dialog = uploadcare.openDialog(null, {
+          publicKey: '3d4dc407820559de1c77',
+          imagesOnly: true,
+          crop: 'free'
+        });
+        dialog.done(function(file) {
+          file.done(function(info) {
+            var url = info.cdnUrl;
+            imageUrlInput.value = url;
+            uploadPreview.src = url;
+            uploadPreview.style.display = 'block';
+            uploadPlaceholder.style.display = 'none';
+            // Also update preview panel
+            previewImg.src = url;
+            previewImg.style.display = 'block';
+          });
+        });
+      });
 
-    // --- YOUR Supabase settings (from you)
-    const SUPABASE_URL  = "https://mcqrqmhsosihxzpeppuu.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jcXJxbWhzb3NpaHh6cGVwcHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3MjEzNjQsImV4cCI6MjA3MjI5NzM2NH0.noFkES6WfwZKpJuPiwOaHA-qa-5ckgk2zDy3PGb9wwI";
-    const BUCKET = "product-images";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    window.supabase = supabase;
-
-    // DOM refs
-    const statusEl = document.getElementById('authStatus');
-    const addBtn = document.getElementById('addProductBtn');
-    const clearBtn = document.getElementById('clearFormBtn');
-    const productsContainer = document.getElementById('productsContainer');
-    const addStatus = document.getElementById('addStatus');
-    const logEl = document.getElementById('log');
-    const previewImg = document.getElementById('previewImg');
-    const previewName = document.getElementById('previewName');
-    const previewPrice = document.getElementById('previewPrice');
-    const noteEl = document.getElementById('note');
-
-    function log(...args){ console.log(...args); logEl.textContent += args.map(a => (typeof a === 'object'? JSON.stringify(a,null,2): String(a))).join(' ') + '\n'; logEl.scrollTop = 99999; }
-
-    // Detect product table columns (cache)
-    let detectedColumns = null;
-    async function detectProductColumns() {
-      if (detectedColumns) return detectedColumns;
-      try {
-        // try to fetch one row and use its keys
-        const { data, error } = await supabase.from('products').select('*').limit(1);
-        if (!error && data && data.length > 0) {
-          detectedColumns = Object.keys(data[0]);
-          log('Detected columns from product row:', detectedColumns);
-          return detectedColumns;
-        }
-        // fallback: try information_schema (may be blocked)
-        try {
-          const { data: cols, error: infoErr } = await supabase
-            .from('information_schema.columns')
-            .select('column_name')
-            .eq('table_name','products')
-            .order('ordinal_position',{ascending:true});
-          if (!infoErr && cols && cols.length) {
-            detectedColumns = cols.map(r=>r.column_name);
-            log('Detected columns from information_schema:', detectedColumns);
-            return detectedColumns;
-          }
-        } catch(e) { /* ignore */ }
-        // last resort: common guess
-        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes'];
-        log('Fallback guessed columns:', detectedColumns);
-        return detectedColumns;
-      } catch(e) {
-        log('detectProductColumns failed', e);
-        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes'];
-        return detectedColumns;
-      }
-    }
-
-    // Check supabase connection quickly
-    async function testSupabaseConnection(){
-      try {
-        const { data, error } = await supabase.from('products').select('id').limit(1);
-        if (error) {
-          log('Supabase test error:', error);
-          if (/401|invalid|403/i.test(error.message||'')) {
-            noteEl.textContent = "Supabase API key or URL error (401/403). Check the ANON KEY and URL in this file.";
-          }
-          if (/row-level|RLS/i.test(error.message||'')) {
-            noteEl.textContent = "RLS blocked the query. Add the following policies in Supabase dashboard under 'products' table Policies:";
-            noteEl.textContent += "\n- Update: 'auth.email() = ANY(ARRAY['ggbrochilguy@gmail.com','ggbrchilguy@gmail.com'])'";
-            noteEl.textContent += "\n- Delete: 'auth.email() = ANY(ARRAY['ggbrochilguy@gmail.com','ggbrchilguy@gmail.com'])'";
-          }
-          return { ok:false, error };
-        }
-        log('Supabase test OK', data);
-        noteEl.textContent = "Supabase connection ok (read test).";
-        return { ok:true };
-      } catch(e) {
-        log('Connection exception', e);
-        noteEl.textContent = "Network / DNS error connecting to Supabase. Check project URL.";
-        return { ok:false, error:e };
-      }
-    }
-
-    // upload file
-    async function uploadFileAndGetPublicUrl(file){
-      if(!file) return '';
-      const filename = `${Date.now()}_${file.name.replace(/\s/g,'_')}`;
-      const { data, error } = await supabase.storage.from(BUCKET).upload(filename, file, { upsert: false });
-      if (error) {
-        log('Storage upload error:', error);
-        if (error.message && /row-level/i.test(error.message)) noteEl.textContent = "Storage upload blocked by RLS. Run storage policies in Supabase SQL editor (see snippet below).";
-        throw error;
-      }
-      const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(filename);
-      return pub.publicUrl;
-    }
-
-    function publicUrlToPath(url){
-      if(!url) return null;
-      try {
-        const u = new URL(url);
-        const prefix = `/storage/v1/object/public/${BUCKET}/`;
-        if (u.pathname.startsWith(prefix)) return decodeURIComponent(u.pathname.slice(prefix.length));
-        return decodeURIComponent(u.pathname.split('/').pop());
-      } catch(e) { return null; }
-    }
-
-    // AUTH & startup
-    (function attachAuth(){
-      const allowed = (window.ADMIN_EMAILS || []).map(x => String(x||'').toLowerCase().trim()).filter(Boolean);
-      log('Allowed admin emails:', allowed);
+      // AUTH check
+      var allowed = (window.ADMIN_EMAILS || []).map(function(x){ return String(x||'').toLowerCase().trim(); }).filter(Boolean);
 
       if (!window.auth) {
-        statusEl.textContent = 'Firebase auth not found on window — ensure Firebase script loaded above.';
-        statusEl.style.color = 'crimson';
-        // but continue to test supabase
-        testSupabaseConnection();
+        statusEl.textContent = 'Firebase auth жоқ';
+        statusEl.style.color = '#c62828';
         return;
       }
 
-      auth.onAuthStateChanged(async (user) => {
-        log('onAuthStateChanged ->', user && user.email);
+      auth.onAuthStateChanged(async function(user) {
         if (!user) {
-          statusEl.textContent = 'Кіру қажет — Redirecting to login...';
-          statusEl.style.color = 'crimson';
-          setTimeout(() => location.href = 'login.html', 700);
+          statusEl.textContent = 'Кіру қажет — Redirecting...';
+          statusEl.style.color = '#c62828';
+          setTimeout(function(){ location.href = 'login.html'; }, 700);
           return;
         }
-        const email = (user.email||'').toLowerCase().trim();
+        var email = (user.email||'').toLowerCase().trim();
         if (!allowed.includes(email)) {
           statusEl.textContent = 'Сіз әкімші емессіз — қайта бағыттау...';
-          statusEl.style.color = 'crimson';
-          setTimeout(() => location.href = 'index.html', 900);
+          statusEl.style.color = '#c62828';
+          setTimeout(function(){ location.href = 'index.html'; }, 900);
           return;
         }
-        statusEl.textContent = 'Сәлем, әкімші — ' + user.email;
-        statusEl.style.color = '';
-        await testSupabaseConnection();
-        await detectProductColumns();
+        statusEl.textContent = 'Сәлем, ' + user.email;
+        statusEl.style.color = '#2e7d32';
+        statusEl.style.background = '#e8f5e9';
+        statusEl.style.borderColor = '#c8e6c9';
         await refreshList();
       });
-    })();
 
-    // ADD product
-    addBtn.addEventListener('click', async () => {
-      addStatus.textContent = 'Жүктелуде...';
-      try {
-        const name = document.getElementById('p_name').value.trim();
-        const desc_kk = document.getElementById('p_desc_kk').value.trim();
-        const desc_ru = document.getElementById('p_desc_ru').value.trim();
-        const price = Number(document.getElementById('p_price').value);
-        const category = document.getElementById('p_category').value.trim().toLowerCase();
-        const sizesStr = document.getElementById('p_sizes').value.trim();
-        const sizes = sizesStr ? sizesStr.split(',').map(s => s.trim()) : [];
-        const file = document.getElementById('p_image').files[0];
+      // ADD product
+      addBtn.addEventListener('click', async function() {
+        addStatus.textContent = 'Жүктелуде...';
+        addStatus.style.color = 'var(--text-muted)';
+        try {
+          var name = document.getElementById('p_name').value.trim();
+          var desc_kk = document.getElementById('p_desc_kk').value.trim();
+          var desc_ru = document.getElementById('p_desc_ru').value.trim();
+          var price = Number(document.getElementById('p_price').value);
+          var category = document.getElementById('p_category').value;
+          var sizesStr = document.getElementById('p_sizes').value.trim();
+          var sizes = sizesStr ? sizesStr.split(',').map(function(s){ return s.trim(); }) : [];
+          var image_url = imageUrlInput.value;
 
-        if (!name || isNaN(price) || !category || sizes.length === 0) { 
-          addStatus.textContent = 'Атауы, баға, категория және өлшемдер қажет'; 
-          addStatus.style.color = 'crimson'; 
-          return; 
-        }
+          if (!name || isNaN(price) || !category || sizes.length === 0) {
+            addStatus.textContent = 'Атауы, баға, категория және өлшемдер қажет';
+            addStatus.style.color = '#c62828';
+            return;
+          }
 
-        let image_url = '';
-        if (file) {
-          image_url = await uploadFileAndGetPublicUrl(file);
-          log('Public URL:', image_url);
-        }
-
-        const row = { name, description_kk: desc_kk, description_ru: desc_ru, price, category, image_url, sizes: JSON.stringify(sizes) };
-        const { data, error } = await supabase.from('products').insert([row]).select().single();
-
-        if (error) {
-          log('Insert product error', error);
-          addStatus.textContent = 'Өнімді қосу қатесі: ' + (error.message || JSON.stringify(error));
-          addStatus.style.color = 'crimson';
-          return;
-        }
-
-        addStatus.textContent = 'Өнім қосылды';
-        addStatus.style.color = '';
-        ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image"].forEach(id=>document.getElementById(id).value='');
-        previewImg.style.display = 'none';
-        await refreshList();
-
-        // Redirect based on category
-        if (category === 'hijabs') {
-          window.location.href = 'hijabs.html';
-        } else if (category === 'dresses') {
-          window.location.href = 'dresses.html';
-        }
-      } catch(err) {
-        log('add product exception', err);
-        addStatus.textContent = 'Сурет/Insert қатесі: ' + (err.message || err);
-        addStatus.style.color = 'crimson';
-      }
-    });
-
-    clearBtn.addEventListener('click', () => {
-      ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image"].forEach(id=>document.getElementById(id).value='');
-      previewImg.style.display = 'none';
-      addStatus.textContent = '';
-    });
-
-    // refresh list
-    async function refreshList(){
-      productsContainer.innerHTML = '<div class="muted">Жүктелуде...</div>';
-      try {
-        const { data, error } = await supabase.from('products').select('*').order('created_at', {ascending:false}).limit(500);
-        if (error) {
-          log('Load products error', error);
-          productsContainer.innerHTML = '<div class="small muted">Жүктеу қатесі: ' + (error.message || JSON.stringify(error)) + '</div>';
-          return;
-        }
-        renderProducts(data || []);
-      } catch(e) {
-        log('refreshList exception', e);
-        productsContainer.innerHTML = '<div class="small muted">Қате: ' + (e.message || e) + '</div>';
-      }
-    }
-
-    // render products + attach save/delete
-    function renderProducts(items){
-      if (!items || items.length === 0) {
-        productsContainer.innerHTML = '<div class="small muted">Өнімдер жоқ</div>';
-        return;
-      }
-      productsContainer.innerHTML = '';
-      items.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'product-item card';
-        const img = p.image_url || '';
-        const sizes = JSON.parse(p.sizes || '[]').join(', ') || '';
-        div.innerHTML = `
-          <img class="thumb" src="${img}" onerror="this.src='https://via.placeholder.com/160x160.png?text=No+Image'"/>
-          <div style="flex:1; margin-right:12px">
-            <input data-id="${p.id}" data-field="name" value="${escapeHtml(p.name||'')}" style="width:100%;margin-bottom:6px"/>
-            <textarea data-id="${p.id}" data-field="description_kk" rows="2" style="width:100%;margin-bottom:6px">${escapeHtml(p.description_kk||'')}</textarea>
-            <textarea data-id="${p.id}" data-field="description_ru" rows="2" style="width:100%;margin-bottom:6px">${escapeHtml(p.description_ru||'')}</textarea>
-            <div class="row" style="margin-top:6px">
-              <input data-id="${p.id}" data-field="price" value="${p.price || ''}" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd"/>
-              <input data-id="${p.id}" data-field="category" value="${escapeHtml(p.category||'')}" style="padding:6px;border-radius:6px;border:1px solid #ddd;flex:1"/>
-              <input data-id="${p.id}" data-field="sizes" value="${escapeHtml(sizes||'')}" style="padding:6px;border-radius:6px;border:1px solid #ddd;flex:1"/>
-            </div>
-          </div>
-          <div class="actions">
-            <label class="small">ID: ${p.id}</label>
-            <button class="btn saveBtn" data-id="${p.id}">Сақтау</button>
-            <button class="btn btn-danger delBtn" data-id="${p.id}">Өшіру</button>
-          </div>
-        `;
-        productsContainer.appendChild(div);
-      });
-
-      // save handlers
-      productsContainer.querySelectorAll('.saveBtn').forEach(btn => {
-        btn.onclick = async () => {
-          const id = btn.dataset.id;
-          const inputs = Array.from(productsContainer.querySelectorAll(`[data-id="${id}"]`));
-          const updates = {};
-          inputs.forEach(inp => {
-            const f = inp.dataset.field;
-            if (!f) return;
-            updates[f] = (f==='price') ? Number(inp.value) : (f==='sizes') ? JSON.stringify(inp.value.split(',').map(s => s.trim())) : inp.value;
+          var res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: name,
+              description_kk: desc_kk,
+              description_ru: desc_ru,
+              price: price,
+              category: category,
+              image_url: image_url,
+              sizes: JSON.stringify(sizes)
+            })
           });
-          try {
-            addStatus.textContent = 'Сақталуда...';
-            const cols = await detectProductColumns();
-            // filter updates to only existing columns
-            const safeUpdates = {};
-            Object.keys(updates).forEach(k => { if (cols.includes(k)) safeUpdates[k] = updates[k]; });
-            const { error } = await supabase.from('products').update(safeUpdates).eq('id', id);
-            if (error) {
-              log('update error', error);
-              addStatus.textContent = 'Сақтау қатесі: ' + (error.message || error.code);
-              addStatus.style.color = 'crimson';
-              return;
-            }
-            addStatus.textContent = 'Сақталды';
-            addStatus.style.color = '';
-            setTimeout(() => addStatus.textContent = '', 1200);
-            await refreshList();
-          } catch(e) {
-            log('save exception', e);
-            addStatus.textContent = 'Сақтау қатесі: ' + (e.message || e);
-            addStatus.style.color = 'crimson';
-          }
-        };
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed');
+
+          addStatus.textContent = 'Өнім қосылды!';
+          addStatus.style.color = '#2e7d32';
+          clearForm();
+          await refreshList();
+        } catch(err) {
+          addStatus.textContent = 'Қате: ' + (err.message || err);
+          addStatus.style.color = '#c62828';
+        }
       });
 
-      // delete handlers
-      productsContainer.querySelectorAll('.delBtn').forEach(btn => {
-        btn.onclick = async () => {
-          if (!confirm('Өнімді жою ғой?')) return;
-          const id = btn.dataset.id;
-          try {
-            // fetch product to get image_url
-            const { data: row, error: fetchErr } = await supabase.from('products').select('id,image_url').eq('id', id).limit(1).single();
-            if (fetchErr) { log('fetch before delete error', fetchErr); alert('Fetch error: ' + (fetchErr.message||fetchErr.code)); return; }
-            // delete row
-            const { error } = await supabase.from('products').delete().eq('id', id);
-            if (error) { log('delete row error', error); alert('Delete error: ' + (error.message||error.code)); return; }
-            // remove image if exists
-            if (row && row.image_url) {
-              const path = publicUrlToPath(row.image_url);
-              if (path) {
-                const { error: remErr } = await supabase.storage.from(BUCKET).remove([path]);
-                if (remErr) log('remove image error', remErr); else log('image removed:', path);
-              }
-            }
-            await refreshList();
-          } catch(e) {
-            log('delete exception', e); alert('Delete exception: ' + (e.message||e));
-          }
-        };
+      function clearForm() {
+        ['p_name','p_desc_kk','p_desc_ru','p_price','p_sizes'].forEach(function(id){ document.getElementById(id).value = ''; });
+        document.getElementById('p_category').selectedIndex = 0;
+        imageUrlInput.value = '';
+        uploadPreview.style.display = 'none';
+        uploadPlaceholder.style.display = 'block';
+        previewImg.style.display = 'none';
+        previewName.textContent = '';
+        previewPrice.textContent = '';
+      }
+
+      clearBtn.addEventListener('click', function() {
+        clearForm();
+        addStatus.textContent = '';
       });
-    }
 
-    // preview selected file
-    document.getElementById('p_image').addEventListener('change', (e) => {
-      const f = e.target.files[0];
-      if (!f) return;
-      const url = URL.createObjectURL(f);
-      previewImg.src = url;
-      previewImg.style.display = 'block';
-      previewName.textContent = document.getElementById('p_name').value;
-      previewPrice.textContent = document.getElementById('p_price').value ? document.getElementById('p_price').value + ' ₸' : '';
-    });
+      // Preview on input
+      document.getElementById('p_name').addEventListener('input', function() {
+        previewName.textContent = this.value;
+      });
+      document.getElementById('p_price').addEventListener('input', function() {
+        previewPrice.textContent = this.value ? this.value + ' \u20B8' : '';
+      });
 
-    function escapeHtml(s){ if (s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+      // Refresh product list
+      async function refreshList() {
+        productsContainer.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center">Жүктелуде...</div>';
+        try {
+          var res = await fetch('/api/products');
+          if (!res.ok) throw new Error('Failed to load');
+          var data = await res.json();
+          renderProducts(data || []);
+        } catch(e) {
+          productsContainer.innerHTML = '<div style="color:#c62828;padding:20px">' + escapeHtml(e.message) + '</div>';
+        }
+      }
 
-    // initial debug log
-    log('Admin client ready — supabase.from exists?', typeof supabase.from);
+      function renderProducts(items) {
+        if (!items || items.length === 0) {
+          productsContainer.innerHTML = '<div style="color:var(--text-muted);padding:30px;text-align:center">Өнімдер жоқ / Нет товаров</div>';
+          return;
+        }
+        productsContainer.innerHTML = '';
+        items.forEach(function(p) {
+          var div = document.createElement('div');
+          div.className = 'product-item';
+          var sizes = [];
+          try {
+            if (Array.isArray(p.sizes)) { sizes = p.sizes; }
+            else { sizes = JSON.parse(p.sizes || '[]'); }
+          } catch(e) {}
+
+          var img = document.createElement('img');
+          img.src = p.image_url || '';
+          img.alt = escapeHtml(p.name);
+          img.onerror = function(){ this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23f0f0f0%22 width=%2280%22 height=%2280%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2224%22>\uD83D\uDC57</text></svg>'; };
+          div.appendChild(img);
+
+          var info = document.createElement('div');
+          info.className = 'info';
+          info.innerHTML =
+            '<div class="name">' + escapeHtml(p.name) + '</div>' +
+            '<div class="meta">' + escapeHtml(p.category) + ' | ' + (Array.isArray(sizes) ? sizes.join(', ') : sizes) + '</div>' +
+            '<div class="price-tag">' + Number(p.price || 0).toLocaleString() + ' \u20B8</div>';
+          div.appendChild(info);
+
+          var actions = document.createElement('div');
+          actions.className = 'actions';
+
+          var editBtn = document.createElement('button');
+          editBtn.className = 'btn btn-outline';
+          editBtn.textContent = 'Өзгерту';
+          editBtn.addEventListener('click', function() { startEdit(p); });
+          actions.appendChild(editBtn);
+
+          var delBtn = document.createElement('button');
+          delBtn.className = 'btn btn-danger';
+          delBtn.textContent = 'Өшіру';
+          delBtn.addEventListener('click', async function() {
+            if (!confirm('Өнімді жою ғой?')) return;
+            try {
+              var res = await fetch('/api/products?id=' + p.id, { method: 'DELETE' });
+              if (!res.ok) throw new Error('Failed');
+              await refreshList();
+            } catch(e) {
+              alert('Қате: ' + (e.message || e));
+            }
+          });
+          actions.appendChild(delBtn);
+
+          div.appendChild(actions);
+          productsContainer.appendChild(div);
+        });
+      }
+
+      // Edit mode: populate form for editing
+      var editingId = null;
+
+      function startEdit(p) {
+        editingId = p.id;
+        document.getElementById('p_name').value = p.name || '';
+        document.getElementById('p_desc_kk').value = p.description_kk || '';
+        document.getElementById('p_desc_ru').value = p.description_ru || '';
+        document.getElementById('p_price').value = p.price || '';
+        document.getElementById('p_category').value = p.category || 'dresses';
+        var sizes = [];
+        try { sizes = JSON.parse(p.sizes || '[]'); } catch(e) {}
+        document.getElementById('p_sizes').value = Array.isArray(sizes) ? sizes.join(',') : '';
+        imageUrlInput.value = p.image_url || '';
+        if (p.image_url) {
+          uploadPreview.src = p.image_url;
+          uploadPreview.style.display = 'block';
+          uploadPlaceholder.style.display = 'none';
+          previewImg.src = p.image_url;
+          previewImg.style.display = 'block';
+        }
+        previewName.textContent = p.name || '';
+        previewPrice.textContent = (p.price || '') + ' \u20B8';
+        addBtn.textContent = 'Сақтау / Сохранить';
+        addStatus.textContent = 'Өзгерту режимі — ID: ' + p.id;
+        addStatus.style.color = 'var(--accent)';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Override add button to handle both add and edit
+      var originalAddHandler = addBtn.onclick;
+      addBtn.addEventListener('click', async function(e) {
+        if (!editingId) return; // handled by first listener for new products
+        e.stopImmediatePropagation();
+
+        addStatus.textContent = 'Сақталуда...';
+        addStatus.style.color = 'var(--text-muted)';
+        try {
+          var name = document.getElementById('p_name').value.trim();
+          var desc_kk = document.getElementById('p_desc_kk').value.trim();
+          var desc_ru = document.getElementById('p_desc_ru').value.trim();
+          var price = Number(document.getElementById('p_price').value);
+          var category = document.getElementById('p_category').value;
+          var sizesStr = document.getElementById('p_sizes').value.trim();
+          var sizes = sizesStr ? sizesStr.split(',').map(function(s){ return s.trim(); }) : [];
+          var image_url = imageUrlInput.value;
+
+          var res = await fetch('/api/products', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: editingId,
+              name: name,
+              description_kk: desc_kk,
+              description_ru: desc_ru,
+              price: price,
+              category: category,
+              image_url: image_url,
+              sizes: JSON.stringify(sizes)
+            })
+          });
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed');
+
+          addStatus.textContent = 'Сақталды!';
+          addStatus.style.color = '#2e7d32';
+          editingId = null;
+          addBtn.textContent = 'Қосу / Добавить';
+          clearForm();
+          await refreshList();
+        } catch(err) {
+          addStatus.textContent = 'Қате: ' + (err.message || err);
+          addStatus.style.color = '#c62828';
+        }
+      });
+
+    })();
   </script>
-
-  <!-- SQL snippet (run in Supabase SQL editor if RLS blocks you) -->
-  <!--
-  -- Create products table (if missing)
-  create table if not exists products (
-    id bigint generated always as identity primary key,
-    name text,
-    description_kk text,
-    description_ru text,
-    price numeric,
-    category text,
-    image_url text,
-    sizes jsonb DEFAULT '[]'::jsonb,
-    created_at timestamp with time zone default now()
-  );
-
-  -- Storage policies for product-images bucket (run each create policy separately)
-  create policy "Allow authenticated inserts on storage.objects" on storage.objects for insert to authenticated with check (bucket_id = 'product-images');
-  create policy "Allow public select on storage.objects" on storage.objects for select to public using (bucket_id = 'product-images');
-
-  -- Allow products table operations for testing (dangerous for production)
-  create policy "Allow anon select products" on products for select to public using (true);
-  create policy "Allow anon insert products" on products for insert to public with check (true);
-  create policy "Allow admin update products" on products for update to authenticated using (auth.email() = ANY(ARRAY['ggbrochilguy@gmail.com','ggbrchilguy@gmail.com']));
-  create policy "Allow admin delete products" on products for delete to authenticated using (auth.email() = ANY(ARRAY['ggbrochilguy@gmail.com','ggbrchilguy@gmail.com']));
-  -->
 </body>
 </html>
