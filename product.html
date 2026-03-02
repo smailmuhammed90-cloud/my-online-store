@@ -2,321 +2,224 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Өнім детальдары</title>
+  <title>Өнім — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
     :root {
-      --accent: #7b2cbf;
-      --text-color: #111;
-      --background: #fafafa;
-      --card-bg: #fff;
-      --border-color: #eee;
-      --muted: #666;
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
     }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      background: var(--background);
-      color: var(--text-color);
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 18px;
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .back-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    .back-btn:hover {
-      background: #5a189a;
-    }
-    .product-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      padding: 30px;
-    }
-    .product-image {
-      position: relative;
-    }
-    .main-image {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .product-details {
-      padding: 20px;
-    }
-    .product-name {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    .product-price {
-      font-size: 24px;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .product-description {
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-    .language-toggle {
-      margin-bottom: 10px;
-    }
-    .language-btn {
-      padding: 8px 16px;
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .sizes {
-      margin-bottom: 20px;
-    }
-    .size-label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    .size-options {
-      display: flex;
-      gap: 10px;
-    }
-    .size-btn {
-      padding: 10px 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .size-btn.selected {
-      background: var(--accent);
-      color: #fff;
-    }
-    .add-to-cart {
-      padding: 12px 20px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.2s;
-    }
-    .add-to-cart:hover {
-      background: #5a189a;
-    }
-    .size-chart {
-      margin-top: 10px;
-      cursor: pointer;
-      color: var(--accent);
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      text-align: center;
-    }
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 24px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid var(--border-color);
-      padding: 8px;
-    }
-    @media (max-width: 768px) {
-      .product-container {
-        grid-template-columns: 1fr;
-      }
-    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+    .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); }
+    .back-btn:hover { background: var(--accent-dark); }
+    .product-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px 30px; }
+    .product-image img { width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .product-details { padding: 10px 0; }
+    .product-name { font-size: 30px; font-weight: 800; margin: 0 0 12px; }
+    .product-price { font-size: 28px; color: var(--accent); font-weight: 700; margin: 0 0 24px; }
+    .lang-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+    .lang-btn { padding: 8px 18px; border: 2px solid var(--border); background: var(--card); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: var(--transition); }
+    .lang-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent-dark); }
+    .product-description { margin-bottom: 24px; line-height: 1.7; color: var(--text-muted); font-size: 15px; }
+    .sizes { margin-bottom: 24px; }
+    .size-label { display: block; margin-bottom: 10px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .size-options { display: flex; gap: 10px; flex-wrap: wrap; }
+    .size-btn { padding: 10px 18px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: var(--transition); background: var(--card); font-weight: 600; }
+    .size-btn:hover { border-color: var(--accent); }
+    .size-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .add-to-cart { padding: 14px 32px; background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 700; transition: var(--transition); }
+    .add-to-cart:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .size-chart-link { display: inline-block; margin-top: 14px; color: var(--accent); cursor: pointer; font-size: 14px; font-weight: 600; text-decoration: underline; }
+    #cart-icon { cursor: pointer; position: relative; font-size: 22px; padding: 4px 8px; margin-left: auto; }
+    #cart-count { background: var(--accent); color: white; font-size: 11px; font-weight: 700; border-radius: 50%; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+    .modal-content { background: var(--card); padding: 30px; border-radius: var(--radius); max-width: 600px; width: 90%; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 24px; color: var(--text-muted); background: none; border: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { border: 1px solid var(--border); padding: 10px 12px; font-size: 14px; }
+    th { background: var(--accent-light); color: var(--accent-dark); font-weight: 600; }
+    @media (max-width: 768px) { .product-container { grid-template-columns: 1fr; gap: 20px; padding: 20px 16px; } .product-name { font-size: 24px; } }
   </style>
 </head>
 <body>
   <div class="topbar">
-    <button class="back-btn" onclick="history.back()">← Артқа</button>
-    <div style="font-weight:600">Өнім детальдары</div>
+    <button class="back-btn" onclick="history.back()">&larr; Артқа</button>
+    <div style="font-weight:700;font-size:16px">Soul Store</div>
+    <div id="cart-icon" onclick="location.href='cart.html'" aria-label="Cart">&#128722; <span id="cart-count">0</span></div>
   </div>
 
   <div class="product-container">
     <div class="product-image">
-      <img id="main-image" src="" alt="" class="main-image">
+      <img id="main-image" src="" alt="">
     </div>
     <div class="product-details">
-      <h1 id="product-name"></h1>
+      <h1 id="product-name" class="product-name"></h1>
       <p id="product-price" class="product-price"></p>
-      <div class="language-toggle">
-        <button id="lang-kk" class="language-btn">Қазақша</button>
-        <button id="lang-ru" class="language-btn">Русский</button>
+      <div class="lang-toggle">
+        <button id="lang-kk" class="lang-btn active">Қазақша</button>
+        <button id="lang-ru" class="lang-btn">Русский</button>
       </div>
       <p id="product-description" class="product-description"></p>
       <div class="sizes">
-        <label class="size-label">Өлшемдер (Размеры):</label>
+        <label class="size-label">Өлшем / Размер:</label>
         <div id="size-options" class="size-options"></div>
       </div>
-      <button id="add-to-cart" class="add-to-cart">Себетке қосу</button>
-      <p class="size-chart" onclick="openModal()">Өлшем кестесі (Таблица размеров)</p>
+      <button id="add-to-cart" class="add-to-cart">Себетке қосу / В корзину</button>
+      <span class="size-chart-link" id="openChart">Өлшем кестесі / Таблица размеров</span>
     </div>
   </div>
 
   <div id="modal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Өлшем кестесі</h2>
+      <button class="modal-close" id="closeModal">&times;</button>
+      <h2>Өлшем кестесі / Таблица размеров</h2>
       <table>
         <thead>
-          <tr>
-            <th>Өлшем</th>
-            <th>Кеуде (Грудь)</th>
-            <th>Бел (Талия)</th>
-            <th>Жамбас (Бедра)</th>
-          </tr>
+          <tr><th>EU</th><th>Халықаралық</th><th>Кеуде (Грудь)</th><th>Бел (Талия)</th><th>Жамбас (Бедра)</th></tr>
         </thead>
         <tbody>
-          <tr><td>XS</td><td>80-84 cm</td><td>60-64 cm</td><td>88-92 cm</td></tr>
-          <tr><td>S</td><td>84-88 cm</td><td>64-68 cm</td><td>92-96 cm</td></tr>
-          <tr><td>M</td><td>88-92 cm</td><td>68-72 cm</td><td>96-100 cm</td></tr>
-          <tr><td>L</td><td>92-96 cm</td><td>72-76 cm</td><td>100-104 cm</td></tr>
-          <tr><td>XL</td><td>96-100 cm</td><td>76-80 cm</td><td>104-108 cm</td></tr>
+          <tr><td>34</td><td>XS</td><td>80-84 cm</td><td>60-64 cm</td><td>88-92 cm</td></tr>
+          <tr><td>36</td><td>S</td><td>84-88 cm</td><td>64-68 cm</td><td>92-96 cm</td></tr>
+          <tr><td>38</td><td>M</td><td>88-92 cm</td><td>68-72 cm</td><td>96-100 cm</td></tr>
+          <tr><td>40</td><td>L</td><td>92-96 cm</td><td>72-76 cm</td><td>100-104 cm</td></tr>
+          <tr><td>42</td><td>XL</td><td>96-100 cm</td><td>76-80 cm</td><td>104-108 cm</td></tr>
+          <tr><td>44</td><td>XXL</td><td>100-104 cm</td><td>80-84 cm</td><td>108-112 cm</td></tr>
+          <tr><td>46</td><td>3XL</td><td>104-108 cm</td><td>84-88 cm</td><td>112-116 cm</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  <script>
+    (function(){
+      var urlParams = new URLSearchParams(window.location.search);
+      var productId = urlParams.get('id');
+      var selectedSize = null;
+      var productData = null;
+      var currentLang = 'kk';
 
-    const SUPABASE_URL = "https://mcqrqmhsosihxzpeppuu.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jcXJxbWhzb3NpaHh6cGVwcHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3MjEzNjQsImV4cCI6MjA3MjI5NzM2NH0.noFkES6WfwZKpJuPiwOaHA-qa-5ckgk2zDy3PGb9wwI";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-
-    let selectedSize = null;
-    let productData = null;
-    let currentLang = 'kk';
-
-    async function loadProduct() {
-      try {
-        const { data, error } = await supabase.from('products').select('*').eq('id', productId).single();
-        if (error) throw error;
-        productData = data;
-        document.getElementById('product-name').textContent = productData.name;
-        document.getElementById('product-price').textContent = productData.price + ' ₸';
-        document.getElementById('main-image').src = productData.image_url || 'https://via.placeholder.com/500x500?text=No+Image';
-        updateDescription();
-        renderSizes();
-      } catch (error) {
-        console.error('Error loading product:', error);
+      function updateCartCount() {
+        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        var total = 0;
+        cart.forEach(function(item){ total += (item.quantity || 1); });
+        var el = document.getElementById('cart-count');
+        el.textContent = total;
+        el.style.display = total > 0 ? 'flex' : 'none';
       }
-    }
+      updateCartCount();
 
-    function updateDescription() {
-      const descField = currentLang === 'kk' ? 'description_kk' : 'description_ru';
-      document.getElementById('product-description').textContent = productData[descField] || 'Сипаттама жоқ';
-    }
+      function escapeHtml(s) {
+        if (!s && s !== 0) return '';
+        return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+      }
 
-    function renderSizes() {
-      const sizes = JSON.parse(productData.sizes || '[]');
-      const container = document.getElementById('size-options');
-      container.innerHTML = '';
-      sizes.forEach(size => {
-        const btn = document.createElement('button');
-        btn.className = 'size-btn';
-        btn.textContent = size;
-        btn.onclick = () => {
-          document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-          selectedSize = size;
-        };
-        container.appendChild(btn);
-      });
-    }
-
-    document.getElementById('lang-kk').onclick = () => {
-      currentLang = 'kk';
-      updateDescription();
-    };
-
-    document.getElementById('lang-ru').onclick = () => {
-      currentLang = 'ru';
-      updateDescription();
-    };
-
-    document.getElementById('add-to-cart').onclick = () => {
-      if (!selectedSize) {
-        alert('Өлшем таңдаңыз');
+      if (!productId) {
+        document.querySelector('.product-container').innerHTML = '<p style="padding:40px;text-align:center;color:var(--text-muted);grid-column:1/-1;font-size:18px">Өнім табылмады / Товар не найден</p>';
         return;
       }
-      const cartItem = {
-        id: productId,
-        name: productData.name,
-        price: productData.price,
-        image: productData.image_url,
-        size: selectedSize,
-        quantity: 1
-      };
-      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = cart.find(item => item.id === cartItem.id && item.size === cartItem.size);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push(cartItem);
+
+      async function loadProduct() {
+        try {
+          var res = await fetch('/api/products?id=' + productId);
+          var responseData = await res.json();
+          if (!res.ok) throw new Error(responseData.error || 'Not found');
+          productData = responseData;
+          document.getElementById('product-name').textContent = productData.name || '';
+          document.getElementById('product-price').textContent = (productData.price || 0).toLocaleString() + ' \u20B8';
+          var imgEl = document.getElementById('main-image');
+          imgEl.src = productData.image_url || '';
+          imgEl.alt = escapeHtml(productData.name);
+          imgEl.onerror = function(){ this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22><rect fill=%22%23f0f0f0%22 width=%22400%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2280%22>\uD83D\uDC57</text></svg>'; };
+          updateDescription();
+          renderSizes();
+        } catch (err) {
+          console.error('Error:', err);
+          document.querySelector('.product-container').innerHTML = '<p style="padding:40px;text-align:center;color:var(--text-muted);grid-column:1/-1;font-size:18px">Өнім жүктеу қатесі / Ошибка загрузки</p>';
+        }
       }
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert('Себетке қосылды');
-    };
 
-    function openModal() {
-      document.getElementById('modal').style.display = 'flex';
-    }
+      function updateDescription() {
+        var descField = currentLang === 'kk' ? 'description_kk' : 'description_ru';
+        document.getElementById('product-description').textContent = productData[descField] || productData.description || 'Сипаттама жоқ / Описание отсутствует';
+      }
 
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+      function renderSizes() {
+        var sizes = [];
+        if (Array.isArray(productData.sizes)) {
+          sizes = productData.sizes;
+        } else {
+          try { sizes = JSON.parse(productData.sizes || '[]'); } catch(e) { sizes = []; }
+        }
+        var container = document.getElementById('size-options');
+        container.innerHTML = '';
+        if (sizes.length === 0) {
+          container.innerHTML = '<span style="color:var(--text-muted)">Өлшемдер жоқ</span>';
+          return;
+        }
+        sizes.forEach(function(size) {
+          var btn = document.createElement('button');
+          btn.className = 'size-btn';
+          btn.textContent = size;
+          btn.onclick = function() {
+            document.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('selected'); });
+            btn.classList.add('selected');
+            selectedSize = size;
+          };
+          container.appendChild(btn);
+        });
+      }
 
-    loadProduct();
+      document.getElementById('lang-kk').onclick = function() {
+        currentLang = 'kk';
+        document.getElementById('lang-kk').classList.add('active');
+        document.getElementById('lang-ru').classList.remove('active');
+        if (productData) updateDescription();
+      };
+
+      document.getElementById('lang-ru').onclick = function() {
+        currentLang = 'ru';
+        document.getElementById('lang-ru').classList.add('active');
+        document.getElementById('lang-kk').classList.remove('active');
+        if (productData) updateDescription();
+      };
+
+      document.getElementById('add-to-cart').onclick = function() {
+        if (!productData) return;
+        if (!selectedSize) { alert('Өлшем таңдаңыз / Выберите размер'); return; }
+        var cartItem = {
+          id: productId,
+          name: productData.name || '',
+          price: productData.price || 0,
+          image: productData.image_url || '',
+          size: selectedSize,
+          quantity: 1
+        };
+        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        var existing = cart.find(function(item){ return item.id === cartItem.id && item.size === cartItem.size; });
+        if (existing) { existing.quantity += 1; } else { cart.push(cartItem); }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        alert('Себетке қосылды! / Добавлено в корзину!');
+      };
+
+      // Modal
+      document.getElementById('openChart').onclick = function() {
+        document.getElementById('modal').style.display = 'flex';
+      };
+      document.getElementById('closeModal').onclick = function() {
+        document.getElementById('modal').style.display = 'none';
+      };
+      document.getElementById('modal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('modal')) document.getElementById('modal').style.display = 'none';
+      });
+
+      loadProduct();
+    })();
   </script>
 </body>
 </html>
