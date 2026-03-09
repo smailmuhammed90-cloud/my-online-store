@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <title>Тіркелу</title>
+</head>
+<body>
+  <h1>Жаңа аккаунт тіркеу</h1>
+
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Құпия сөз" />
+  <input type="password" id="confirmPassword" placeholder="Құпия сөзді қайталаңыз" />
+  <button id="signupBtn">Тіркелу</button>
+
+  <p>Аккаунтыңыз бар ма? <a href="login.html">Кіру</a></p>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("❌ Құпия сөздер сәйкес емес!");
+        return;
+      }
+
+      try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        alert("✅ Аккаунт сәтті құрылды!");
+        window.location.href = "index.html"; // Back to main
+      } catch (err) {
+        alert("❌ " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
