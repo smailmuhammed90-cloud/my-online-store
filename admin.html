@@ -52,6 +52,10 @@
             </div>
             <label class="block">Өлшемдер (Размеры)<input id="p_sizes" placeholder="XS,S,M,L,XL" /></label>
             <label class="block">Сурет (файл) <input id="p_image" type="file" accept="image/*"></label>
+            <label class="block">Қосымша сурет 2 <input id="p_image_2" type="file" accept="image/*"></label>
+            <label class="block">Қосымша сурет 3 <input id="p_image_3" type="file" accept="image/*"></label>
+            <label class="block">Қосымша сурет 4 <input id="p_image_4" type="file" accept="image/*"></label>
+            <label class="block">Қосымша сурет 5 <input id="p_image_5" type="file" accept="image/*"></label>
             <div style="display:flex;gap:8px">
               <button id="addProductBtn" class="btn btn-primary">Қосу</button>
               <button id="clearFormBtn" class="btn">Тазалау</button>
@@ -165,12 +169,12 @@
           }
         } catch(e) { /* ignore */ }
         // last resort: common guess
-        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes'];
+        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes','extra_images'];
         log('Fallback guessed columns:', detectedColumns);
         return detectedColumns;
       } catch(e) {
         log('detectProductColumns failed', e);
-        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes'];
+        detectedColumns = ['id','name','description','price','category','image_url','created_at','description_kk','description_ru','sizes','extra_images'];
         return detectedColumns;
       }
     }
@@ -286,7 +290,23 @@
           log('Public URL:', image_url);
         }
 
-        const row = { name, description_kk: desc_kk, description_ru: desc_ru, price, category, image_url, sizes: JSON.stringify(sizes) };
+        // Upload extra images
+        const extraImageUrls = [];
+        const extraFileIds = ['p_image_2', 'p_image_3', 'p_image_4', 'p_image_5'];
+        for (const fid of extraFileIds) {
+          const extraFile = document.getElementById(fid).files[0];
+          if (extraFile) {
+            try {
+              const extraUrl = await uploadFileAndGetPublicUrl(extraFile);
+              extraImageUrls.push(extraUrl);
+              log('Extra image URL:', extraUrl);
+            } catch (e) {
+              log('Extra image upload failed:', e);
+            }
+          }
+        }
+
+        const row = { name, description_kk: desc_kk, description_ru: desc_ru, price, category, image_url, sizes: JSON.stringify(sizes), extra_images: JSON.stringify(extraImageUrls) };
         const { data, error } = await supabase.from('products').insert([row]).select().single();
 
         if (error) {
@@ -298,7 +318,7 @@
 
         addStatus.textContent = 'Өнім қосылды';
         addStatus.style.color = '';
-        ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image"].forEach(id=>document.getElementById(id).value='');
+        ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image","p_image_2","p_image_3","p_image_4","p_image_5"].forEach(id=>document.getElementById(id).value='');
         previewImg.style.display = 'none';
         await refreshList();
 
@@ -316,7 +336,7 @@
     });
 
     clearBtn.addEventListener('click', () => {
-      ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image"].forEach(id=>document.getElementById(id).value='');
+      ["p_name","p_desc_kk","p_desc_ru","p_price","p_category","p_sizes","p_image","p_image_2","p_image_3","p_image_4","p_image_5"].forEach(id=>document.getElementById(id).value='');
       previewImg.style.display = 'none';
       addStatus.textContent = '';
     });
@@ -350,6 +370,8 @@
         div.className = 'product-item card';
         const img = p.image_url || '';
         const sizes = JSON.parse(p.sizes || '[]').join(', ') || '';
+        const extraImages = JSON.parse(p.extra_images || '[]');
+        const extraImgThumbs = extraImages.map((u, i) => `<img src="${u}" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid #ddd" onerror="this.style.display='none'" />`).join('');
         div.innerHTML = `
           <img class="thumb" src="${img}" onerror="this.src='https://via.placeholder.com/160x160.png?text=No+Image'"/>
           <div style="flex:1; margin-right:12px">
@@ -360,6 +382,16 @@
               <input data-id="${p.id}" data-field="price" value="${p.price || ''}" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd"/>
               <input data-id="${p.id}" data-field="category" value="${escapeHtml(p.category||'')}" style="padding:6px;border-radius:6px;border:1px solid #ddd;flex:1"/>
               <input data-id="${p.id}" data-field="sizes" value="${escapeHtml(sizes||'')}" style="padding:6px;border-radius:6px;border:1px solid #ddd;flex:1"/>
+            </div>
+            ${extraImages.length > 0 ? `<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">${extraImgThumbs}</div>` : ''}
+            <div style="margin-top:8px">
+              <label class="small">Қосымша суреттер (Extra images):</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+                <input data-id="${p.id}" data-field="extraFile1" type="file" accept="image/*" style="font-size:12px;max-width:180px"/>
+                <input data-id="${p.id}" data-field="extraFile2" type="file" accept="image/*" style="font-size:12px;max-width:180px"/>
+                <input data-id="${p.id}" data-field="extraFile3" type="file" accept="image/*" style="font-size:12px;max-width:180px"/>
+                <input data-id="${p.id}" data-field="extraFile4" type="file" accept="image/*" style="font-size:12px;max-width:180px"/>
+              </div>
             </div>
           </div>
           <div class="actions">
@@ -379,9 +411,34 @@
           const updates = {};
           inputs.forEach(inp => {
             const f = inp.dataset.field;
-            if (!f) return;
+            if (!f || f.startsWith('extraFile')) return;
             updates[f] = (f==='price') ? Number(inp.value) : (f==='sizes') ? JSON.stringify(inp.value.split(',').map(s => s.trim())) : inp.value;
           });
+
+          // Upload extra images if any are selected
+          const extraFileInputs = Array.from(productsContainer.querySelectorAll(`input[data-id="${id}"][data-field^="extraFile"]`));
+          const newExtraUrls = [];
+          for (const fi of extraFileInputs) {
+            if (fi.files && fi.files[0]) {
+              try {
+                const url = await uploadFileAndGetPublicUrl(fi.files[0]);
+                newExtraUrls.push(url);
+              } catch(e) {
+                log('Extra image upload failed during save:', e);
+              }
+            }
+          }
+          if (newExtraUrls.length > 0) {
+            // Merge with existing extra_images
+            try {
+              const { data: existing } = await supabase.from('products').select('extra_images').eq('id', id).single();
+              const existingUrls = JSON.parse((existing && existing.extra_images) || '[]');
+              updates.extra_images = JSON.stringify([...existingUrls, ...newExtraUrls]);
+            } catch(e) {
+              updates.extra_images = JSON.stringify(newExtraUrls);
+            }
+          }
+
           try {
             addStatus.textContent = 'Сақталуда...';
             const cols = await detectProductColumns();
@@ -464,6 +521,7 @@
     category text,
     image_url text,
     sizes jsonb DEFAULT '[]'::jsonb,
+    extra_images jsonb DEFAULT '[]'::jsonb,
     created_at timestamp with time zone default now()
   );
 

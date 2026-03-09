@@ -61,6 +61,27 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+    .image-thumbnails {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .image-thumbnails img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .image-thumbnails img:hover {
+      transform: scale(1.05);
+    }
+    .image-thumbnails img.active {
+      border-color: var(--accent);
+    }
     .product-details {
       padding: 20px;
     }
@@ -180,6 +201,7 @@
   <div class="product-container">
     <div class="product-image">
       <img id="main-image" src="" alt="" class="main-image">
+      <div id="image-thumbnails" class="image-thumbnails"></div>
     </div>
     <div class="product-details">
       <h1 id="product-name"></h1>
@@ -236,6 +258,7 @@
     let selectedSize = null;
     let productData = null;
     let currentLang = 'kk';
+    let allImages = [];
 
     async function loadProduct() {
       try {
@@ -244,12 +267,39 @@
         productData = data;
         document.getElementById('product-name').textContent = productData.name;
         document.getElementById('product-price').textContent = productData.price + ' ₸';
-        document.getElementById('main-image').src = productData.image_url || 'https://via.placeholder.com/500x500?text=No+Image';
+        const mainImg = productData.image_url || 'https://via.placeholder.com/500x500?text=No+Image';
+        document.getElementById('main-image').src = mainImg;
+
+        // Build image gallery
+        allImages = [mainImg];
+        const extraImages = JSON.parse(productData.extra_images || '[]');
+        allImages = allImages.concat(extraImages.filter(u => u));
+        renderThumbnails();
+
         updateDescription();
         renderSizes();
       } catch (error) {
         console.error('Error loading product:', error);
       }
+    }
+
+    function renderThumbnails() {
+      const container = document.getElementById('image-thumbnails');
+      container.innerHTML = '';
+      if (allImages.length <= 1) return; // No thumbnails needed for single image
+      allImages.forEach((url, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = url;
+        thumb.alt = 'Product image ' + (idx + 1);
+        if (idx === 0) thumb.classList.add('active');
+        thumb.onerror = function() { this.style.display = 'none'; };
+        thumb.onclick = () => {
+          document.getElementById('main-image').src = url;
+          container.querySelectorAll('img').forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+        };
+        container.appendChild(thumb);
+      });
     }
 
     function updateDescription() {
