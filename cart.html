@@ -2,537 +2,289 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Себет / Корзина</title>
+  <title>Себет — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Әйелдер киімі дүкенінің себеті. Тауарларды ресімдеу және жеткізу опциялары." />
-  <meta name="keywords" content="себет, корзина, жеткізу, төлем, әйелдер киімі" />
-  <meta property="og:title" content="Себет - Әйелдер киімі дүкені" />
-  <meta property="og:description" content="Ресімдеу және төлем." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
     :root {
-      --accent: #7b2cbf;
-      --text-color: #111;
-      --background: #fafafa;
-      --card-bg: #fff;
-      --border-color: #eee;
-      --muted: #666;
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
     }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      background: var(--background);
-      color: var(--text-color);
-      line-height: 1.5;
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 18px;
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .back-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    .back-btn:hover {
-      background: #5a189a;
-    }
-    .cart-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 40px;
-      padding: 30px;
-    }
-    .delivery-section {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .delivery-title {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: var(--text-color);
-    }
-    .delivery-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      cursor: pointer;
-    }
-    .delivery-radio {
-      width: 20px;
-      height: 20px;
-    }
-    .delivery-info {
-      flex: 1;
-    }
-    .delivery-name {
-      font-weight: 600;
-    }
-    .delivery-address {
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .address-form {
-      margin-top: 15px;
-    }
-    .address-form label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
-    .address-form input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-    }
-    .payment-section {
-      margin-top: 20px;
-    }
-    .payment-title {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-    .payment-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    .payment-icon {
-      width: 40px;
-      height: 25px;
-      background: #ddd;
-      border-radius: 4px;
-    }
-    .checkbox-group {
-      margin-top: 20px;
-    }
-    .checkbox-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .place-order {
-      width: 100%;
-      padding: 15px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.2s;
-    }
-    .place-order:hover {
-      background: #5a189a;
-    }
-    .whatsapp-btn:hover {
-      background: #1ebe57 !important;
-    }
-    .order-summary {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 100px;
-    }
-    .summary-title {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-    .cart-item {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid var(--border-color);
-      position: relative;
-    }
-    .item-image {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-    .item-details {
-      flex: 1;
-    }
-    .item-name {
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-    .item-size {
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .item-model {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 2px;
-    }
-    .item-description {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 2px;
-    }
-    .item-price {
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .item-actions {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-    .quantity-btn, .remove-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      transition: background 0.2s;
-    }
-    .quantity-btn:hover, .remove-btn:hover {
-      background: #5a189a;
-    }
-    .quantity {
-      font-weight: 600;
-      margin: 0 5px;
-    }
-    .size-select {
-      padding: 4px;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      font-size: 12px;
-    }
-    .total {
-      font-size: 24px;
-      font-weight: 700;
-      text-align: right;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 2px solid var(--border-color);
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-    }
-    .success {
-      color: green;
-      margin-top: 10px;
-    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); }
+    .back-btn:hover { background: var(--accent-dark); }
+    .cart-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; padding: 30px; }
+    .section-card { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .section-title { font-size: 22px; font-weight: 700; margin: 0 0 20px; }
+    .delivery-option { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding: 12px; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
+    .delivery-option:hover { border-color: var(--accent-light); }
+    .delivery-option input[type="radio"] { accent-color: var(--accent); width: 18px; height: 18px; }
+    .delivery-name { font-weight: 600; font-size: 15px; }
+    .delivery-desc { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
+    .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: var(--transition); }
+    .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+    .place-order { width: 100%; padding: 16px; background: #25D366; color: #fff; border: none; border-radius: var(--radius); font-size: 17px; font-weight: 700; cursor: pointer; margin-top: 16px; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .place-order:hover { background: #1da851; }
+    .place-order:disabled { opacity: 0.5; cursor: not-allowed; }
+    .wa-icon { width: 24px; height: 24px; fill: #fff; }
+    .order-summary { position: sticky; top: 80px; }
+    .cart-item { display: flex; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; background: var(--bg); }
+    .item-details { flex: 1; }
+    .item-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .item-meta { color: var(--text-muted); font-size: 13px; }
+    .item-actions { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+    .qty-btn, .remove-btn { padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; background: var(--card); transition: var(--transition); }
+    .qty-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .remove-btn { color: #e53935; border-color: #ffcdd2; }
+    .remove-btn:hover { background: #ffebee; }
+    .qty-display { font-weight: 700; min-width: 24px; text-align: center; }
+    .item-price { font-weight: 700; color: var(--accent); font-size: 15px; white-space: nowrap; }
+    .total { font-size: 22px; font-weight: 800; text-align: right; margin-top: 20px; padding-top: 16px; border-top: 2px solid var(--border); }
+    .total span:last-child { color: var(--accent); }
+    .msg { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 14px; }
+    .msg.error { background: #ffebee; color: #c62828; }
+    .msg.success { background: #e8f5e9; color: #2e7d32; }
+    .whatsapp-note { margin-top: 12px; padding: 14px; background: #e8f5e9; border-radius: var(--radius); font-size: 13px; color: #2e7d32; border: 1px solid #c8e6c9; line-height: 1.5; }
     @media (max-width: 768px) {
-      .cart-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      .order-summary {
-        position: static;
-      }
+      .cart-container { grid-template-columns: 1fr; gap: 20px; padding: 16px; }
+      .order-summary { position: static; }
     }
   </style>
 </head>
 <body>
   <div class="topbar">
-    <button class="back-btn" onclick="history.back()">← Артқа</button>
-    <div style="font-weight:600">Себет / Корзина</div>
+    <button class="back-btn" onclick="history.back()">&larr; Артқа</button>
+    <div style="font-weight:700;font-size:16px">Себет / Корзина</div>
   </div>
 
   <div class="cart-container">
-    <div class="delivery-section">
-      <h2 class="delivery-title">Жеткізу опциялары / Варианты доставки</h2>
-      <div class="delivery-option">
-        <input type="radio" id="home-delivery" name="delivery" value="home" class="delivery-radio" checked>
-        <label for="home-delivery">
-          <div class="delivery-info">
-            <div class="delivery-name">Үйге жеткізу / Доставка домой</div>
-            <div class="delivery-address">Алматы қаласы, Астана даңғылы 1, №123 (5-7 жұмыс күні) / Алматы, ул. Астаны 1, кв. 123 (5-7 рабочих дней)</div>
-          </div>
-        </label>
+    <div class="section-card">
+      <h2 class="section-title">Тапсырыс мәліметтері / Данные заказа</h2>
+
+      <div class="form-group">
+        <label>Атыңыз / Ваше имя</label>
+        <input type="text" id="customerName" placeholder="Айгүл" required />
       </div>
-      <div class="delivery-option">
-        <input type="radio" id="pickup" name="delivery" value="pickup" class="delivery-radio">
-        <label for="pickup">
-          <div class="delivery-info">
-            <div class="delivery-name">Алмас нүктесі / Пункт выдачи</div>
-            <div class="delivery-address">Алматы, ТЦ "Апорт", 2-қабат (2-3 жұмыс күні) / Алматы, ТЦ "Апорт", 2 этаж (2-3 рабочих дня)</div>
-          </div>
-        </label>
-      </div>
-      <div class="address-form" id="address-form" style="display:block;">
-        <label>Қала / Город:</label>
-        <input type="text" id="city" placeholder="Алматы / Алматы" required />
-        <label>Мекенжайы / Адрес:</label>
-        <input type="text" id="address" placeholder="Абай даңғылы 10 / ул. Абаи 10" required />
-        <label>Телефон нөмірі / Телефон:</label>
+      <div class="form-group">
+        <label>Телефон</label>
         <input type="tel" id="phone" placeholder="+7 777 123 45 67" required />
       </div>
 
-      <div class="payment-section">
-        <h3 class="payment-title">Төлем әдістері / Способы оплаты</h3>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: linear-gradient(45deg, #000, #fff);"></div>
-          <label>Kaspi Pay</label>
+      <h3 style="font-size:18px;font-weight:700;margin:24px 0 14px">Жеткізу / Доставка</h3>
+      <div class="delivery-option">
+        <input type="radio" id="home-delivery" name="delivery" value="home" checked>
+        <label for="home-delivery">
+          <div class="delivery-name">Үйге жеткізу / Доставка домой</div>
+          <div class="delivery-desc">5-7 жұмыс күні / рабочих дней</div>
+        </label>
+      </div>
+      <div class="delivery-option">
+        <input type="radio" id="pickup" name="delivery" value="pickup">
+        <label for="pickup">
+          <div class="delivery-name">Алу нүктесі / Пункт выдачи</div>
+          <div class="delivery-desc">2-3 жұмыс күні / рабочих дней</div>
+        </label>
+      </div>
+
+      <div id="address-form">
+        <div class="form-group">
+          <label>Қала / Город</label>
+          <input type="text" id="city" placeholder="Алматы" />
         </div>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: linear-gradient(45deg, #fff, #000);"></div>
-          <label>Halyk Bank</label>
-        </div>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">VISA</div>
-          <label>Visa</label>
-        </div>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: #eb001b; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">MC</div>
-          <label>MasterCard</label>
-        </div>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">GP</div>
-          <label>Google Pay</label>
-        </div>
-        <div class="payment-option">
-          <div class="payment-icon" style="background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">AP</div>
-          <label>Apple Pay</label>
+        <div class="form-group">
+          <label>Мекенжай / Адрес</label>
+          <input type="text" id="address" placeholder="Абай даңғылы 10" />
         </div>
       </div>
 
-      <div class="checkbox-group">
-        <div class="checkbox-item">
-          <input type="checkbox" id="terms" required>
-          <label for="terms">Шарттар мен ережелерді қабылдаймын / Соглашаюсь с условиями и положениями</label>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="marketing">
-          <label for="marketing">Жаңалықтарды алуға келісемін / Подписаться на рассылку</label>
-        </div>
+      <button id="place-order" class="place-order">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp арқылы тапсырыс беру
+      </button>
+      <div class="whatsapp-note">
+        Тапсырыс мәліметтері WhatsApp-қа жіберіледі. Төлем туралы дүкен менеджері хабарласады.<br>
+        Данные заказа будут отправлены в WhatsApp. Менеджер свяжется для оплаты.
       </div>
-
-      <button id="place-order" class="place-order">Тағайындау / Заказать</button>
-      <a id="whatsapp-order" class="whatsapp-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;background:#25D366;color:#fff;border:none;border-radius:6px;font-size:18px;font-weight:600;cursor:pointer;margin-top:10px;text-decoration:none;text-align:center;transition:background 0.2s;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp арқылы тапсырыс / Заказ через WhatsApp
-      </a>
-      <div id="error-message" class="error"></div>
-      <div id="success-message" class="success"></div>
+      <div id="error-message" class="msg error" style="display:none"></div>
     </div>
 
-    <div class="order-summary">
-      <h3 class="summary-title">Тапсырыс қорытындысы / Итог заказа</h3>
+    <div class="section-card order-summary">
+      <h3 class="section-title">Тапсырыс / Заказ</h3>
       <div id="cart-items"></div>
       <div class="total">
-        <span>Жалпы сомасы / Итого: </span>
-        <span id="total-price">0 ₸</span>
+        Барлығы / Итого: <span id="total-price">0 &#8376;</span>
       </div>
     </div>
   </div>
 
   <script>
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    let selectedDelivery = 'home';
-    let selectedPayment = 'kaspi';
+    (function(){
+      // Store WhatsApp number (change this to the store's actual WhatsApp number)
+      var STORE_WHATSAPP = '77777777777';
 
-    function renderCart() {
-      const container = document.getElementById('cart-items');
-      container.innerHTML = '';
-      let total = 0;
-      cart.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'cart-item';
-        const availableSizes = item.sizes ? item.sizes.split(',').map(s => s.trim()) : ['S', 'M', 'L', 'XL'];
-        itemDiv.innerHTML = `
-          <img src="${item.image}" alt="${item.name}" class="item-image">
-          <div class="item-details">
-            <div class="item-name">${item.name}</div>
-            <div class="item-size">Өлшем: <select class="size-select" data-index="${index}">
-              ${availableSizes.map(size => `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`).join('')}
-            </select></div>
-            <div class="item-model">Модель: ${item.model || 'Н/Д'}</div>
-            <div class="item-description">Сипаттама: ${item.description || 'Жоқ / Нет'}</div>
-            <div class="item-price">${item.price} ₸ x <span class="quantity">${item.quantity}</span></div>
-          </div>
-          <div class="item-actions">
-            <button class="quantity-btn" data-action="decrease" data-index="${index}">-</button>
-            <span class="quantity">${item.quantity}</span>
-            <button class="quantity-btn" data-action="increase" data-index="${index}">+</button>
-            <button class="remove-btn" data-index="${index}">Удалить</button>
-          </div>
-          <div>${item.price * item.quantity} ₸</div>
-        `;
-        container.appendChild(itemDiv);
-        total += item.price * item.quantity;
-      });
-      document.getElementById('total-price').textContent = total + ' ₸';
-      if (cart.length === 0) {
-        container.innerHTML = '<p>Себет бос / Корзина пуста</p>';
-        document.getElementById('place-order').disabled = true;
-      } else {
+      function escapeHtml(s) {
+        if (!s && s !== 0) return '';
+        return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+      }
+
+      var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      var selectedDelivery = 'home';
+
+      function renderCart() {
+        var container = document.getElementById('cart-items');
+        container.innerHTML = '';
+        var total = 0;
+
+        if (cart.length === 0) {
+          container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:20px">Себет бос / Корзина пуста</p>';
+          document.getElementById('place-order').disabled = true;
+          document.getElementById('total-price').textContent = '0 \u20B8';
+          return;
+        }
+
         document.getElementById('place-order').disabled = false;
-      }
 
-      // Add event listeners
-      document.querySelectorAll('.size-select').forEach(select => {
-        select.addEventListener('change', (e) => {
-          const index = e.target.dataset.index;
-          cart[index].size = e.target.value;
-          localStorage.setItem('cart', JSON.stringify(cart));
-          renderCart();
+        cart.forEach(function(item, index) {
+          var qty = item.quantity || 1;
+          var price = Number(item.price) || 0;
+
+          var div = document.createElement('div');
+          div.className = 'cart-item';
+
+          var img = document.createElement('img');
+          img.src = item.image || '';
+          img.alt = escapeHtml(item.name);
+          img.className = 'item-img';
+          img.onerror = function(){ this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 70 70%22><rect fill=%22%23f0f0f0%22 width=%2270%22 height=%2270%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2220%22>\uD83D\uDC57</text></svg>'; };
+          div.appendChild(img);
+
+          var details = document.createElement('div');
+          details.className = 'item-details';
+          details.innerHTML =
+            '<div class="item-name">' + escapeHtml(item.name) + '</div>' +
+            '<div class="item-meta">Өлшем: ' + escapeHtml(item.size || '-') + '</div>' +
+            '<div class="item-actions">' +
+              '<button class="qty-btn" data-action="decrease" data-index="' + index + '">&minus;</button>' +
+              '<span class="qty-display">' + qty + '</span>' +
+              '<button class="qty-btn" data-action="increase" data-index="' + index + '">+</button>' +
+              '<button class="remove-btn" data-index="' + index + '">&#10005;</button>' +
+            '</div>';
+          div.appendChild(details);
+
+          var priceEl = document.createElement('div');
+          priceEl.className = 'item-price';
+          priceEl.textContent = (price * qty).toLocaleString() + ' \u20B8';
+          div.appendChild(priceEl);
+
+          container.appendChild(div);
+          total += price * qty;
         });
-      });
-      document.querySelectorAll('.quantity-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const index = e.target.dataset.index;
-          const action = e.target.dataset.action;
-          if (action === 'increase') {
-            cart[index].quantity++;
-          } else if (action === 'decrease' && cart[index].quantity > 1) {
-            cart[index].quantity--;
-          }
-          localStorage.setItem('cart', JSON.stringify(cart));
-          renderCart();
-        });
-      });
-      document.querySelectorAll('.remove-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const index = e.target.dataset.index;
-          cart.splice(index, 1);
-          localStorage.setItem('cart', JSON.stringify(cart));
-          renderCart();
-        });
-      });
-    }
 
-    document.querySelectorAll('input[name="delivery"]').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        selectedDelivery = e.target.value;
-        if (selectedDelivery === 'home') {
-          document.getElementById('address-form').style.display = 'block';
-        } else {
-          document.getElementById('address-form').style.display = 'none';
-        }
-      });
-    });
+        document.getElementById('total-price').textContent = total.toLocaleString() + ' \u20B8';
 
-    document.querySelectorAll('.payment-option').forEach(option => {
-      option.addEventListener('click', () => {
-        selectedPayment = option.querySelector('label').textContent.toLowerCase();
-      });
-    });
-
-    document.getElementById('place-order').addEventListener('click', async () => {
-      if (!document.getElementById('terms').checked) {
-        document.getElementById('error-message').textContent = 'Шарттарды қабылдаңыз / Примите условия';
-        return;
-      }
-      const city = document.getElementById('city').value;
-      const address = document.getElementById('address').value;
-      const phone = document.getElementById('phone').value;
-      if (selectedDelivery === 'home' && (!city || !address || !phone)) {
-        document.getElementById('error-message').textContent = 'Қала, мекенжай және телефонды толтырыңыз / Заполните город, адрес и телефон';
-        return;
-      }
-
-      const orderData = {
-        user_email: 'ggbrochilguy@gmail.com', // Replace with actual user email from Firebase
-        items: cart,
-        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        delivery: selectedDelivery,
-        payment: selectedPayment,
-        city: city,
-        address: address,
-        phone: phone,
-        status: 'pending'
-      };
-
-      try {
-        const { data, error } = await supabase.from('orders').insert([orderData]);
-        if (error) throw error;
-
-        localStorage.removeItem('cart');
-        renderCart();
-
-        if (selectedPayment === 'kaspi') {
-          window.location.href = 'https://pay.kaspi.kz/pay?orderId=' + data[0].id; // Placeholder
-        } else if (selectedPayment === 'halyk') {
-          window.location.href = 'https://halykbank.kz/pay?orderId=' + data[0].id;
-        } else {
-          const stripe = Stripe('pk_test_your_key'); // Replace with your key
-          stripe.redirectToCheckout({
-            sessionId: 'cs_test_session_id' // Create session server-side
+        container.querySelectorAll('.qty-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var idx = Number(this.dataset.index);
+            if (this.dataset.action === 'increase') {
+              cart[idx].quantity = (cart[idx].quantity || 1) + 1;
+            } else if ((cart[idx].quantity || 1) > 1) {
+              cart[idx].quantity--;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
           });
+        });
+        container.querySelectorAll('.remove-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            cart.splice(Number(this.dataset.index), 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+          });
+        });
+      }
+
+      // Delivery toggle
+      document.querySelectorAll('input[name="delivery"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+          selectedDelivery = this.value;
+          document.getElementById('address-form').style.display = selectedDelivery === 'home' ? 'block' : 'none';
+        });
+      });
+
+      // WhatsApp order
+      document.getElementById('place-order').addEventListener('click', function() {
+        var errorEl = document.getElementById('error-message');
+        errorEl.style.display = 'none';
+
+        var customerName = document.getElementById('customerName').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        if (!customerName || !phone) {
+          errorEl.textContent = 'Атыңызды және телефонды толтырыңыз / Укажите имя и телефон';
+          errorEl.style.display = 'block';
+          return;
         }
 
-        document.getElementById('success-message').textContent = 'Тапсырыс қабылданды! / Заказ принят!';
-      } catch (error) {
-        document.getElementById('error-message').textContent = 'Қате: ' + error.message;
-      }
-    });
+        var city = document.getElementById('city').value.trim();
+        var address = document.getElementById('address').value.trim();
+        if (selectedDelivery === 'home' && (!city || !address)) {
+          errorEl.textContent = 'Қала мен мекенжайды толтырыңыз / Укажите город и адрес';
+          errorEl.style.display = 'block';
+          return;
+        }
 
-    function updateWhatsAppLink() {
-      const whatsappBtn = document.getElementById('whatsapp-order');
-      if (!whatsappBtn) return;
-      if (cart.length === 0) {
-        whatsappBtn.style.display = 'none';
-        return;
-      }
-      whatsappBtn.style.display = 'inline-flex';
-      const city = document.getElementById('city').value || '';
-      const address = document.getElementById('address').value || '';
-      const phone = document.getElementById('phone').value || '';
-      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      let message = 'Сәлеметсіз бе! Тапсырыс бергім келеді / Здравствуйте! Хочу сделать заказ:\n\n';
-      cart.forEach((item, i) => {
-        message += `${i + 1}. ${item.name} — ${item.price} ₸ x ${item.quantity} = ${item.price * item.quantity} ₸`;
-        if (item.size) message += ` (Өлшем/Размер: ${item.size})`;
-        message += '\n';
+        if (cart.length === 0) {
+          errorEl.textContent = 'Себет бос / Корзина пуста';
+          errorEl.style.display = 'block';
+          return;
+        }
+
+        // Build WhatsApp message
+        var total = 0;
+        var itemLines = [];
+        cart.forEach(function(item) {
+          var qty = item.quantity || 1;
+          var price = Number(item.price) || 0;
+          var lineTotal = price * qty;
+          total += lineTotal;
+          itemLines.push(
+            '- ' + item.name +
+            ' | Өлшем: ' + (item.size || '-') +
+            ' | x' + qty +
+            ' | ' + lineTotal.toLocaleString() + ' ₸'
+          );
+        });
+
+        var deliveryText = selectedDelivery === 'home'
+          ? 'Үйге жеткізу / Доставка: ' + city + ', ' + address
+          : 'Алу нүктесі / Самовывоз';
+
+        var message = '🛍 *Soul Store — Жаңа тапсырыс*\n\n' +
+          '👤 Аты / Имя: ' + customerName + '\n' +
+          '📞 Телефон: ' + phone + '\n\n' +
+          '📦 *Тауарлар / Товары:*\n' + itemLines.join('\n') + '\n\n' +
+          '💰 *Барлығы / Итого: ' + total.toLocaleString() + ' ₸*\n\n' +
+          '🚚 ' + deliveryText + '\n\n' +
+          'Рахмет! / Спасибо!';
+
+        // Open WhatsApp with the message
+        var whatsappUrl = 'https://wa.me/' + STORE_WHATSAPP + '?text=' + encodeURIComponent(message);
+        window.open(whatsappUrl, '_blank');
+
+        // Clear cart after sending
+        localStorage.removeItem('cart');
+        cart = [];
+        renderCart();
       });
-      message += `\nЖалпы сомасы / Итого: ${total} ₸`;
-      if (city) message += `\nҚала / Город: ${city}`;
-      if (address) message += `\nМекенжай / Адрес: ${address}`;
-      if (phone) message += `\nТелефон: ${phone}`;
-      const waNumber = '77755614670';
-      whatsappBtn.href = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(message);
-    }
 
-    // Update WhatsApp link when form inputs change
-    ['city', 'address', 'phone'].forEach(id => {
-      document.getElementById(id).addEventListener('input', updateWhatsAppLink);
-    });
-
-    // Override renderCart to also update WhatsApp link
-    const origRenderCart = renderCart;
-    renderCart = function() {
-      origRenderCart();
-      updateWhatsAppLink();
-    };
-
-    renderCart();
+      renderCart();
+    })();
   </script>
 </body>
 </html>
