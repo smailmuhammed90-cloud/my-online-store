@@ -90,8 +90,10 @@
   <!-- PRODUCTS -->
   <section>
     <h3 style="text-align:center;margin-top:22px">Таңдаулы тауарлар</h3>
+    <p style="text-align:center;color:#888;font-size:13px">Ең жақсы ұсыныстар / Лучшие предложения</p>
     <div id="productList" class="products-grid"></div>
-    <div id="loading" style="display:none;">Жүктелуде...</div>
+    <div id="loading" style="text-align:center;padding:20px;color:#666;">Жүктелуде... / Загрузка...</div>
+    <div id="product-error" style="display:none;text-align:center;color:red;padding:20px;"></div>
   </section>
 
   <footer>
@@ -180,10 +182,13 @@
     // Load products from Supabase
     async function loadProducts(){
       $('loading').style.display = 'block';
+      $('product-error').style.display = 'none';
       try {
         const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false }).limit(500);
         if(error){
           console.error('Supabase load error', error);
+          $('product-error').style.display = 'block';
+          $('product-error').textContent = 'Қате: ' + (error.message || JSON.stringify(error));
           renderProducts([]);
           return;
         }
@@ -191,6 +196,8 @@
         renderProducts(allProducts);
       } catch(e){
         console.error('Unexpected error loading products', e);
+        $('product-error').style.display = 'block';
+        $('product-error').textContent = 'Қате: ' + e.message;
         renderProducts([]);
       } finally {
         $('loading').style.display = 'none';
