@@ -1,17 +1,12 @@
 {
-  "name": "my-online-store",
+  "name": "soul-store",
   "version": "1.0.0",
-  "description": "",
-  "main": "admin.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "echo 'no build needed'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.56.1",
-    "firebase": "^12.2.1"
-  }
+    "@neondatabase/serverless": "^1.0.2"
+  },
+  "license": "ISC"
 }
