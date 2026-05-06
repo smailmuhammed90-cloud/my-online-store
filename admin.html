@@ -1,354 +1,352 @@
 <!doctype html>
 <html lang="kk">
 <head>
-  <meta charset="utf-8" />
-  <title>Admin — Soul Store</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    :root {
-      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
-      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
-      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
-      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding: 20px; }
-    .wrap { max-width: 1200px; margin: 0 auto; }
-    .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; text-decoration: none; font-weight: 600; font-size: 14px; }
-    h1 { margin: 0; font-size: 24px; font-weight: 800; }
-    #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; }
-    .admin-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
-    .card { background: var(--card); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: var(--text-muted); }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: var(--transition); }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-outline { background: var(--card); border: 1px solid var(--border); }
-    
-    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; min-height: 80px; overflow: visible; }
-    .upload-area:hover { border-color: var(--accent); background: #fafafa; }
-    .img-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center; }
-    .img-gallery img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid var(--border); display: block !important; flex-shrink: 0; }
-    #galleryPreview img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid #ddd; display: inline-block !important; }
-    #previewGallery img { width: 50px !important; height: 50px !important; object-fit: cover !important; border-radius: 6px; cursor: pointer; }
-    .main-preview { width: 100%; max-height: 350px; object-fit: cover; border-radius: var(--radius); display: none; }
-    .product-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
-    .product-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
-    
-    @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
-  </style>
+  <meta charset="utf-8" />
+  <title>Admin — Soul Store</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding: 20px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; text-decoration: none; font-weight: 600; font-size: 14px; }
+    h1 { margin: 0; font-size: 24px; font-weight: 800; }
+    #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+    .card { background: var(--card); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: var(--text-muted); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: var(--transition); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline { background: var(--card); border: 1px solid var(--border); }
+    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; min-height: 80px; overflow: visible; }
+    .upload-area:hover { border-color: var(--accent); background: #fafafa; }
+    .img-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center; }
+    .img-gallery img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid var(--border); display: block !important; flex-shrink: 0; }
+    #galleryPreview img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid #ddd; display: inline-block !important; }
+    #previewGallery img { width: 50px !important; height: 50px !important; object-fit: cover !important; border-radius: 6px; cursor: pointer; }
+    .main-preview { width: 100%; max-height: 350px; object-fit: cover; border-radius: var(--radius); display: none; }
+    .product-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
+    .product-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+    @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <a class="back-btn" href="/">&larr; Дүкенге қайту</a>
-      <h1>Admin Soul Store</h1>
-    </div>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="back-btn" href="/">&larr; Дүкенге қайту</a>
+      <h1>Admin Soul Store</h1>
+    </div>
 
-    <div id="authStatus">Тексеру...</div>
+    <div id="authStatus">Тексеру...</div>
 
-    <div class="admin-grid">
-      <div>
-        <div class="card" style="margin-bottom:20px">
-          <h3 style="margin:0 0 18px;">Өнімді басқару</h3>
-          
-          <div class="form-group">
-            <label>Атауы</label>
-            <input id="p_name" placeholder="Өнім атауы" />
-          </div>
+    <div class="admin-grid">
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <h3 style="margin:0 0 18px;">Өнімді басқару</h3>
 
-<div class="form-row">
-  <div class="form-group">
-    <label>Баға (₸)</label>
-    <input id="p_price" type="number" placeholder="15000" />
+          <div class="form-group">
+            <label>Атауы</label>
+            <input id="p_name" placeholder="Өнім атауы" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Баға (₸)</label>
+              <input id="p_price" type="number" placeholder="15000" />
+            </div>
+            <div class="form-group">
+              <label>Категория</label>
+              <select id="p_category">
+                <option value="dresses">Көйлектер</option>
+                <option value="hijabs">Орамалдар</option>
+                <option value="underwear">Іш киім</option>
+                <option value="suits">Костюмдер</option>
+                <option value="sweaters">Кофталар</option>
+                <option value="shirts">Рубашкалар</option>
+                <option value="pants">Штандар</option>
+                <option value="jeans">Джинсылар</option>
+                <option value="jackets">Пиджактар</option>
+                <option value="sundresses">Сарафандар</option>
+                <option value="skirts">Юбкалар</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Өлшемдер (S, M, L)</label>
+            <input id="p_sizes" placeholder="S, M, L" />
+          </div>
+
+          <div class="form-group">
+            <label>Сипаттама</label>
+            <textarea id="p_desc_kk" rows="2" placeholder="Сипаттама жазыңыз..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Суреттер (Бірнешеуін таңдаңыз)</label>
+            <div class="upload-area" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
+              <div id="uploadPlaceholder">🖼️ Суреттерді жүктеу үшін басыңыз</div>
+              <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:center;min-height:0;"></div>
+            </div>
+            <input type="file" id="fileInput" multiple accept="image/*" style="display:none" />
+            <div id="uploadProgress" style="font-size:13px; color:#666; margin-top:6px;"></div>
+          </div>
+
+          <div class="btn-group" style="display:flex; gap:10px;">
+            <button id="saveBtn" class="btn btn-primary">Сақтау / Сохранить</button>
+            <button id="clearBtn" class="btn btn-outline">Тазалау</button>
+          </div>
+          <div id="addStatus" style="margin-top:10px; font-weight: bold;"></div>
+        </div>
+
+        <div class="card">
+          <h3>Бар өнімдер</h3>
+          <div id="productsContainer"></div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h4>Көрініс (Preview)</h4>
+          <img id="previewImg" class="main-preview" src="" />
+          <div id="previewGallery" class="img-gallery"></div>
+          <h4 id="previewName" style="margin-top:15px;"></h4>
+          <p id="previewPrice" style="color:var(--accent); font-weight:bold; font-size: 1.2rem;"></p>
+        </div>
+      </aside>
+    </div>
   </div>
-  <div class="form-group">
-    <label>Категория</label>
-    <select id="p_category">
-      <option value="dresses">Көйлектер</option>
-      <option value="hijabs">Орамалдар</option>
-      <option value="underwear">Іш киім</option>
-      <option value="suits">Костюмдер</option>
-      <option value="sweaters">Кофталар</option>
-      <option value="shirts">Рубашкалар</option>
-      <option value="pants">Штандар</option>
-      <option value="jeans">Джинсылар</option>
-      <option value="jackets">Пиджактар</option>
-      <option value="sundresses">Сарафандар</option>
-      <option value="skirts">Юбкалар</option>
-    </select>
-  </div>
-</div>
 
-          <div class="form-group">
-            <label>Өлшемдер (S, M, L)</label>
-            <input id="p_sizes" placeholder="S, M, L" />
-          </div>
+  <script>
+    UPLOADCARE_PUBLIC_KEY = '3d4dc407820559de1c77';
+  </script>
+  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
 
-          <div class="form-group">
-            <label>Сипаттама</label>
-            <textarea id="p_desc_kk" rows="2" placeholder="Сипаттама жазыңыз..."></textarea>
-          </div>
+  <script>
+    (function(){
+      var currentImages = [];
+      var editingId = null;
+      var UPLOADCARE_KEY = '3d4dc407820559de1c77';
 
-          <div class="form-group">
-            <label>Суреттер (Бірнешеуін таңдаңыз)</label>
-            <div class="upload-area" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
-              <div id="uploadPlaceholder">🖼️ Суреттерді жүктеу үшін басыңыз</div>
-              <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:center;min-height:0;"></div>
-            </div>
-            <input type="file" id="fileInput" multiple accept="image/*" style="display:none" />
-            <div id="uploadProgress" style="font-size:13px; color:#666; margin-top:6px;"></div>
-          </div>
+      // 1. UPLOAD — click area → open file picker → upload each file to Uploadcare REST API
+      document.getElementById('uploadBtn').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+      });
 
-          <div class="btn-group" style="display:flex; gap:10px;">
-            <button id="saveBtn" class="btn btn-primary">Сақтау / Сохранить</button>
-            <button id="clearBtn" class="btn btn-outline">Тазалау</button>
-          </div>
-          <div id="addStatus" style="margin-top:10px; font-weight: bold;"></div>
-        </div>
+      document.getElementById('fileInput').addEventListener('change', async function(e) {
+        var files = Array.from(e.target.files);
+        if (!files.length) return;
 
-        <div class="card">
-          <h3>Бар өнімдер</h3>
-          <div id="productsContainer"></div>
-        </div>
-      </div>
+        var placeholder = document.getElementById('uploadPlaceholder');
+        var progress = document.getElementById('uploadProgress');
+        var gallery = document.getElementById('galleryPreview');
 
-      <aside>
-        <div class="card">
-          <h4>Көрініс (Preview)</h4>
-          <img id="previewImg" class="main-preview" src="" />
-          <div id="previewGallery" class="img-gallery"></div>
-          <h4 id="previewName" style="margin-top:15px;"></h4>
-          <p id="previewPrice" style="color:var(--accent); font-weight:bold; font-size: 1.2rem;"></p>
-        </div>
-      </aside>
-    </div>
-  </div>
+        placeholder.style.display = 'none';
+        gallery.innerHTML = '';
+        currentImages = [];
+        progress.textContent = '⏳ 0 / ' + files.length + ' жүктелуде...';
 
-  <script>
-    UPLOADCARE_PUBLIC_KEY = '3d4dc407820559de1c77';
-  </script>
-  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-  <script src="firebase.js"></script>
+        for (var i = 0; i < files.length; i++) {
+          try {
+            var formData = new FormData();
+            formData.append('UPLOADCARE_PUB_KEY', UPLOADCARE_KEY);
+            formData.append('UPLOADCARE_STORE', '1');
+            formData.append('file', files[i]);
 
-  <script>
-    (function(){
-      var currentImages = [];
-      var editingId = null;
-      var UPLOADCARE_KEY = '3d4dc407820559de1c77';
+            var res = await fetch('https://upload.uploadcare.com/base/', {
+              method: 'POST',
+              body: formData
+            });
+            var json = await res.json();
 
-      // 1. UPLOAD — click area → open file picker → upload each file to Uploadcare REST API
-      document.getElementById('uploadBtn').addEventListener('click', function() {
-        document.getElementById('fileInput').click();
-      });
+            if (json.file) {
+              var url = 'https://248uyxjgu2.ucarecd.net/' + json.file + '/';
+              currentImages.push(url);
 
-      document.getElementById('fileInput').addEventListener('change', async function(e) {
-        var files = Array.from(e.target.files);
-        if (!files.length) return;
+              // Show thumbnail immediately as each one finishes
+              var img = document.createElement('img');
+              img.src = url;
+              img.style.cssText = 'width:80px !important;height:80px !important;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:inline-block;flex-shrink:0;';
+              gallery.appendChild(img);
+            }
 
-        var placeholder = document.getElementById('uploadPlaceholder');
-        var progress = document.getElementById('uploadProgress');
-        var gallery = document.getElementById('galleryPreview');
+            progress.textContent = '⏳ ' + (i + 1) + ' / ' + files.length + ' жүктелуде...';
+          } catch(err) {
+            console.error('Upload failed for file', i, err);
+          }
+        }
 
-        placeholder.style.display = 'none';
-        gallery.innerHTML = '';
-        currentImages = [];
-        progress.textContent = '⏳ 0 / ' + files.length + ' жүктелуде...';
+        // Update sidebar preview too
+        updateSidebarPreview();
+        progress.textContent = '✅ ' + currentImages.length + ' сурет жүктелді';
+        // Reset file input so same files can be re-selected
+        e.target.value = '';
+      });
 
-        for (var i = 0; i < files.length; i++) {
-          try {
-            var formData = new FormData();
-            formData.append('UPLOADCARE_PUB_KEY', UPLOADCARE_KEY);
-            formData.append('UPLOADCARE_STORE', '1');
-            formData.append('file', files[i]);
+      // 2. UPDATE SIDEBAR PREVIEW ONLY (gallery in form is updated inline above)
+      function updateSidebarPreview() {
+        var sidebarMain = document.getElementById('previewImg');
+        var sidebarGallery = document.getElementById('previewGallery');
 
-            var res = await fetch('https://upload.uploadcare.com/base/', {
-              method: 'POST',
-              body: formData
-            });
-            var json = await res.json();
+        if (currentImages.length > 0) {
+          sidebarMain.src = currentImages[0];
+          sidebarMain.style.display = 'block';
+          sidebarGallery.innerHTML = currentImages.map(function(url) {
+            return '<img src="' + url + '" onclick="document.getElementById(\'previewImg\').src=\'' + url + '\'" style="cursor:pointer;width:50px;height:50px;object-fit:cover;border-radius:6px;">';
+          }).join('');
+        } else {
+          sidebarMain.style.display = 'none';
+          sidebarGallery.innerHTML = '';
+        }
+      }
 
-            if (json.file) {
-              var url = 'https://248uyxjgu2.ucarecd.net/' + json.file + '/';
-              currentImages.push(url);
+      // Full UI update (used when loading edit mode)
+      function updateImageUI() {
+        var gallery = document.getElementById('galleryPreview');
+        var placeholder = document.getElementById('uploadPlaceholder');
 
-              // Show thumbnail immediately as each one finishes
-              var img = document.createElement('img');
-              img.src = url;
-              img.style.cssText = 'width:80px !important;height:80px !important;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:inline-block;flex-shrink:0;';
-              gallery.appendChild(img);
-            }
+        gallery.innerHTML = currentImages.map(function(url) {
+          return '<img src="' + url + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #ddd;">';
+        }).join('');
 
-            progress.textContent = '⏳ ' + (i + 1) + ' / ' + files.length + ' жүктелуде...';
-          } catch(err) {
-            console.error('Upload failed for file', i, err);
-          }
-        }
+        placeholder.style.display = currentImages.length ? 'none' : 'block';
+        updateSidebarPreview();
+      }
 
-        // Update sidebar preview too
-        updateSidebarPreview();
-        progress.textContent = '✅ ' + currentImages.length + ' сурет жүктелді';
-        // Reset file input so same files can be re-selected
-        e.target.value = '';
-      });
+      // 3. AUTH & LIST
+      auth.onAuthStateChanged(function(user) {
+        if (!user || !(window.ADMIN_EMAILS || []).includes(user.email)) {
+          location.href = 'login.html';
+          return;
+        }
+        document.getElementById('authStatus').textContent = 'Admin: ' + user.email;
+        refreshList();
+      });
 
-      // 2. UPDATE SIDEBAR PREVIEW ONLY (gallery in form is updated inline above)
-      function updateSidebarPreview() {
-        var sidebarMain = document.getElementById('previewImg');
-        var sidebarGallery = document.getElementById('previewGallery');
+      async function refreshList() {
+        var res = await fetch('/api/products');
+        var data = await res.json();
+        var container = document.getElementById('productsContainer');
+        container.innerHTML = '';
 
-        if (currentImages.length > 0) {
-          sidebarMain.src = currentImages[0];
-          sidebarMain.style.display = 'block';
-          sidebarGallery.innerHTML = currentImages.map(function(url) {
-            return '<img src="' + url + '" onclick="document.getElementById(\'previewImg\').src=\'' + url + '\'" style="cursor:pointer;width:50px;height:50px;object-fit:cover;border-radius:6px;">';
-          }).join('');
-        } else {
-          sidebarMain.style.display = 'none';
-          sidebarGallery.innerHTML = '';
-        }
-      }
+        data.forEach(function(p) {
+          var imgs = [];
+          try {
+            var raw = typeof p.image_url === 'string' ? p.image_url : JSON.stringify(p.image_url);
+            imgs = raw.startsWith('[') ? JSON.parse(raw) : [raw];
+          } catch(e) { imgs = [p.image_url]; }
 
-      // Full UI update (used when loading edit mode)
-      function updateImageUI() {
-        var gallery = document.getElementById('galleryPreview');
-        var placeholder = document.getElementById('uploadPlaceholder');
+          var div = document.createElement('div');
+          div.className = 'product-item';
+          div.innerHTML =
+            '<img src="' + (imgs[0] || '') + '" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">' +
+            '<div style="flex:1"><b>' + p.name + '</b><br><small>' + p.category + ' | ' + imgs.length + ' сурет</small></div>' +
+            '<button class="btn btn-outline" style="font-size:12px" onclick=\'editProduct(' + JSON.stringify(JSON.stringify(p)) + ')\'>Өзгерту</button>';
 
-        gallery.innerHTML = currentImages.map(function(url) {
-          return '<img src="' + url + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #ddd;">';
-        }).join('');
+          container.appendChild(div);
+        });
+      }
 
-        placeholder.style.display = currentImages.length ? 'none' : 'block';
-        updateSidebarPreview();
-      }
+      // 4. SAVE
+      document.getElementById('saveBtn').addEventListener('click', async function() {
+        if (currentImages.length === 0) {
+          alert('Кем дегенде 1 сурет жүктеңіз!');
+          return;
+        }
+        var status = document.getElementById('addStatus');
+        status.style.color = '';
+        status.textContent = 'Сақталуда...';
 
-      // 3. AUTH & LIST
-      auth.onAuthStateChanged(function(user) {
-        if (!user || !(window.ADMIN_EMAILS || []).includes(user.email)) {
-          location.href = 'login.html';
-          return;
-        }
-        document.getElementById('authStatus').textContent = 'Admin: ' + user.email;
-        refreshList();
-      });
+        var payload = {
+          name: document.getElementById('p_name').value,
+          description_kk: document.getElementById('p_desc_kk').value,
+          description_ru: '',
+          price: Number(document.getElementById('p_price').value),
+          category: document.getElementById('p_category').value,
+          image_url: JSON.stringify(currentImages),
+          sizes: JSON.stringify(
+            document.getElementById('p_sizes').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean)
+          )
+        };
+        if (editingId) payload.id = editingId;
 
-      async function refreshList() {
-        var res = await fetch('/api/products');
-        var data = await res.json();
-        var container = document.getElementById('productsContainer');
-        container.innerHTML = '';
+        try {
+          var res = await fetch('/api/products', {
+            method: editingId ? 'PUT' : 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            status.style.color = 'green';
+            status.textContent = 'Сәтті сақталды! Бет жаңартылуда...';
+            setTimeout(function(){ location.reload(); }, 1500);
+          } else {
+            throw new Error('Server error');
+          }
+        } catch(e) {
+          status.style.color = 'red';
+          status.textContent = 'Қате: Сақтау мүмкін болмады.';
+        }
+      });
 
-        data.forEach(function(p) {
-          var imgs = [];
-          try {
-            var raw = typeof p.image_url === 'string' ? p.image_url : JSON.stringify(p.image_url);
-            imgs = raw.startsWith('[') ? JSON.parse(raw) : [raw];
-          } catch(e) { imgs = [p.image_url]; }
+      // 5. EDIT MODE — called via onclick with JSON string
+      window.editProduct = function(jsonStr) {
+        var p = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+        editingId = p.id;
+        document.getElementById('p_name').value = p.name || '';
+        document.getElementById('p_price').value = p.price || '';
+        document.getElementById('p_category').value = p.category || '';
+        document.getElementById('p_desc_kk').value = p.description_kk || '';
 
-          var div = document.createElement('div');
-          div.className = 'product-item';
-          div.innerHTML =
-            '<img src="' + (imgs[0] || '') + '" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">' +
-            '<div style="flex:1"><b>' + p.name + '</b><br><small>' + p.category + ' | ' + imgs.length + ' сурет</small></div>' +
-            '<button class="btn btn-outline" style="font-size:12px" onclick=\'editProduct(' + JSON.stringify(JSON.stringify(p)) + ')\'>Өзгерту</button>';
+        // Parse image_url safely — could be array, JSON string, or plain string
+        try {
+          if (Array.isArray(p.image_url)) {
+            currentImages = p.image_url;
+          } else if (typeof p.image_url === 'string' && p.image_url.startsWith('[')) {
+            currentImages = JSON.parse(p.image_url);
+          } else {
+            currentImages = [p.image_url];
+          }
+        } catch(e) {
+          currentImages = [p.image_url];
+        }
 
-          container.appendChild(div);
-        });
-      }
+        // Parse sizes safely — could be array, JSON string, or plain string
+        var sz = [];
+        try {
+          if (Array.isArray(p.sizes)) {
+            sz = p.sizes;
+          } else if (typeof p.sizes === 'string' && p.sizes.startsWith('[')) {
+            sz = JSON.parse(p.sizes);
+          } else if (p.sizes) {
+            sz = [p.sizes];
+          }
+        } catch(e) { sz = []; }
+        document.getElementById('p_sizes').value = sz.join(', ');
 
-      // 4. SAVE
-      document.getElementById('saveBtn').addEventListener('click', async function() {
-        if (currentImages.length === 0) {
-          alert('Кем дегенде 1 сурет жүктеңіз!');
-          return;
-        }
-        var status = document.getElementById('addStatus');
-        status.style.color = '';
-        status.textContent = 'Сақталуда...';
+        updateImageUI();
+        document.getElementById('uploadProgress').textContent = currentImages.length + ' сурет жүктелген';
+        document.getElementById('saveBtn').textContent = 'Өзгерісті сақтау';
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      };
 
-        var payload = {
-          name: document.getElementById('p_name').value,
-          description_kk: document.getElementById('p_desc_kk').value,
-          description_ru: '',
-          price: Number(document.getElementById('p_price').value),
-          category: document.getElementById('p_category').value,
-          image_url: JSON.stringify(currentImages),
-          sizes: JSON.stringify(
-            document.getElementById('p_sizes').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean)
-          )
-        };
-        if (editingId) payload.id = editingId;
+      document.getElementById('clearBtn').addEventListener('click', function(){ location.reload(); });
+      document.getElementById('p_name').addEventListener('input', function(e){ document.getElementById('previewName').textContent = e.target.value; });
+      document.getElementById('p_price').addEventListener('input', function(e){ document.getElementById('previewPrice').textContent = e.target.value + ' ₸'; });
 
-        try {
-          var res = await fetch('/api/products', {
-            method: editingId ? 'PUT' : 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-          });
-          if (res.ok) {
-            status.style.color = 'green';
-            status.textContent = 'Сәтті сақталды! Бет жаңартылуда...';
-            setTimeout(function(){ location.reload(); }, 1500);
-          } else {
-            throw new Error('Server error');
-          }
-        } catch(e) {
-          status.style.color = 'red';
-          status.textContent = 'Қате: Сақтау мүмкін болмады.';
-        }
-      });
-
-      // 5. EDIT MODE — called via onclick with JSON string
-      window.editProduct = function(jsonStr) {
-        var p = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
-        editingId = p.id;
-        document.getElementById('p_name').value = p.name || '';
-        document.getElementById('p_price').value = p.price || '';
-        document.getElementById('p_category').value = p.category || '';
-        document.getElementById('p_desc_kk').value = p.description_kk || '';
-
-        // Parse image_url safely — could be array, JSON string, or plain string
-        try {
-          if (Array.isArray(p.image_url)) {
-            currentImages = p.image_url;
-          } else if (typeof p.image_url === 'string' && p.image_url.startsWith('[')) {
-            currentImages = JSON.parse(p.image_url);
-          } else {
-            currentImages = [p.image_url];
-          }
-        } catch(e) {
-          currentImages = [p.image_url];
-        }
-
-        // Parse sizes safely — could be array, JSON string, or plain string
-        var sz = [];
-        try {
-          if (Array.isArray(p.sizes)) {
-            sz = p.sizes;
-          } else if (typeof p.sizes === 'string' && p.sizes.startsWith('[')) {
-            sz = JSON.parse(p.sizes);
-          } else if (p.sizes) {
-            sz = [p.sizes];
-          }
-        } catch(e) { sz = []; }
-        document.getElementById('p_sizes').value = sz.join(', ');
-
-        updateImageUI();
-        document.getElementById('uploadProgress').textContent = currentImages.length + ' сурет жүктелген';
-        document.getElementById('saveBtn').textContent = 'Өзгерісті сақтау';
-        window.scrollTo({top: 0, behavior: 'smooth'});
-      };
-
-      document.getElementById('clearBtn').addEventListener('click', function(){ location.reload(); });
-      document.getElementById('p_name').addEventListener('input', function(e){ document.getElementById('previewName').textContent = e.target.value; });
-      document.getElementById('p_price').addEventListener('input', function(e){ document.getElementById('previewPrice').textContent = e.target.value + ' ₸'; });
-
-    })();
-  </script>
+    })();
+  </script>
 </body>
 </html>
