@@ -18,19 +18,14 @@
     .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-block; }
     .back-btn:hover { background: var(--accent-dark); }
     h1 { margin: 0; font-size: 24px; font-weight: 800; }
-
     #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
-
     .admin-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
     .card { background: var(--card); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
-
-    /* Form */
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); }
     .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: var(--transition); font-family: inherit; }
     .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
     .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: var(--transition); }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-primary:hover { background: var(--accent-dark); }
@@ -39,10 +34,7 @@
     .btn-outline { background: var(--card); border: 1px solid var(--border); color: var(--text); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
     .btn-group { display: flex; gap: 10px; margin-top: 8px; }
-
     #addStatus { font-size: 13px; margin-top: 8px; min-height: 20px; }
-
-    /* Product list */
     .product-list { max-height: 65vh; overflow-y: auto; }
     .product-item { display: flex; gap: 14px; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: var(--transition); }
     .product-item:hover { background: var(--bg); }
@@ -53,25 +45,16 @@
     .product-item .info .price-tag { color: var(--accent); font-weight: 700; font-size: 15px; }
     .product-item .actions { display: flex; flex-direction: column; gap: 6px; }
     .product-item .actions .btn { font-size: 12px; padding: 6px 12px; }
-
-    /* Uploadcare preview */
     .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; transition: var(--transition); margin-bottom: 14px; }
     .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
     .upload-area img { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px; }
     .upload-area .placeholder { color: var(--text-muted); font-size: 14px; }
-
-    /* Preview panel */
     .preview-panel { text-align: center; }
     .preview-panel img { max-width: 100%; max-height: 250px; border-radius: var(--radius); object-fit: cover; }
     .preview-panel h4 { margin: 12px 0 4px; }
     .preview-panel .price { color: var(--accent); }
-
     .note { background: #fff8e1; padding: 12px; border-radius: 8px; color: #795548; font-size: 13px; margin-top: 12px; border: 1px solid #ffe0b2; }
-
-    @media (max-width: 900px) {
-      .admin-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -85,7 +68,6 @@
 
     <div class="admin-grid">
       <div>
-        <!-- Add product form -->
         <div class="card" style="margin-bottom:20px">
           <h3 style="margin:0 0 18px;font-size:18px;font-weight:700">Жаңа өнім қосу</h3>
           <div class="form-group">
@@ -102,7 +84,7 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Баға / Цена (&#8376;)</label>
+              <label>Баға / Цена (₸)</label>
               <input id="p_price" type="number" placeholder="15000" />
             </div>
             <div class="form-group">
@@ -110,6 +92,15 @@
               <select id="p_category">
                 <option value="dresses">Көйлектер / Dresses</option>
                 <option value="hijabs">Орамалдар / Hijabs</option>
+                <option value="shirts">Рубашка / Shirts</option>
+                <option value="underwear">Белье / Underwear</option>
+                <option value="suits">Костюмдер / Suits</option>
+                <option value="sweaters">Кофта / Sweaters</option>
+                <option value="pants">Штаны / Pants</option>
+                <option value="jeans">Джинсы / Jeans</option>
+                <option value="jackets">Пиджактар / Jackets</option>
+                <option value="sundresses">Сарафандар / Sundresses</option>
+                <option value="skirts">Юбкалар / Skirts</option>
               </select>
             </div>
           </div>
@@ -132,14 +123,12 @@
           <div id="addStatus"></div>
         </div>
 
-        <!-- Product list -->
         <div class="card">
           <h3 style="margin:0 0 14px;font-size:18px;font-weight:700">Бар өнімдер</h3>
           <div id="productsContainer" class="product-list"></div>
         </div>
       </div>
 
-      <!-- Right sidebar -->
       <aside>
         <div class="card preview-panel">
           <h4>Тез көрініс / Предпросмотр</h4>
@@ -154,14 +143,12 @@
     </div>
   </div>
 
-  <!-- Uploadcare widget -->
   <script>
     UPLOADCARE_LOCALE = 'en';
     UPLOADCARE_PUBLIC_KEY = '3d4dc407820559de1c77';
   </script>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
@@ -183,7 +170,6 @@
 
       function escapeHtml(s){ if(s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 
-      // Uploadcare integration
       var uploadArea = document.getElementById('uploadArea');
       uploadArea.addEventListener('click', function() {
         var dialog = uploadcare.openDialog(null, {
@@ -198,14 +184,12 @@
             uploadPreview.src = url;
             uploadPreview.style.display = 'block';
             uploadPlaceholder.style.display = 'none';
-            // Also update preview panel
             previewImg.src = url;
             previewImg.style.display = 'block';
           });
         });
       });
 
-      // AUTH check
       var allowed = (window.ADMIN_EMAILS || []).map(function(x){ return String(x||'').toLowerCase().trim(); }).filter(Boolean);
 
       if (!window.auth) {
@@ -235,9 +219,8 @@
         await refreshList();
       });
 
-      // ADD product
       addBtn.addEventListener('click', async function() {
-        if (editingId) return; // skip — edit handler below will handle this
+        if (editingId) return; 
         addStatus.textContent = 'Жүктелуде...';
         addStatus.style.color = 'var(--text-muted)';
         try {
@@ -300,7 +283,6 @@
         addStatus.textContent = '';
       });
 
-      // Preview on input
       document.getElementById('p_name').addEventListener('input', function() {
         previewName.textContent = this.value;
       });
@@ -308,7 +290,6 @@
         previewPrice.textContent = this.value ? this.value + ' \u20B8' : '';
       });
 
-      // Refresh product list
       async function refreshList() {
         productsContainer.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center">Жүктелуде...</div>';
         try {
@@ -381,7 +362,6 @@
         });
       }
 
-      // Edit mode: populate form for editing
       var editingId = null;
 
       function startEdit(p) {
@@ -410,9 +390,8 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      // Edit handler (runs when editingId is set)
       addBtn.addEventListener('click', async function(e) {
-        if (!editingId) return; // handled by first listener for new products
+        if (!editingId) return; 
 
         addStatus.textContent = 'Сақталуда...';
         addStatus.style.color = 'var(--text-muted)';
