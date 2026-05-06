@@ -69,6 +69,7 @@
               <label>Категория</label>
               <select id="p_category">
                 <option value="dresses">Көйлектер</option>
+                <option value="shirts">Рубашкалар</option>
                 <option value="hijabs">Орамалдар</option>
                 <option value="underwear">Іш киім</option>
                 <option value="suits">Костюмдер</option>
@@ -94,7 +95,7 @@
 
           <div class="form-group">
             <label>Суреттер (Бірнешеуін таңдаңыз)</label>
-            <div class="upload-area" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-area" id="uploadBtn">
               <div id="uploadPlaceholder">🖼️ Суреттерді жүктеу үшін басыңыз</div>
               <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:center;min-height:0;"></div>
             </div>
@@ -141,7 +142,7 @@
       var editingId = null;
       var UPLOADCARE_KEY = '3d4dc407820559de1c77';
 
-      // 1. UPLOAD — click area → open file picker → upload each file to Uploadcare REST API
+      // 1. UPLOAD
       document.getElementById('uploadBtn').addEventListener('click', function() {
         document.getElementById('fileInput').click();
       });
@@ -173,39 +174,35 @@
             var json = await res.json();
 
             if (json.file) {
-              var url = 'https://248uyxjgu2.ucarecd.net/' + json.file + '/';
+              var url = 'https://ucarecdn.com/' + json.file + '/';
               currentImages.push(url);
 
-              // Show thumbnail immediately as each one finishes
               var img = document.createElement('img');
               img.src = url;
-              img.style.cssText = 'width:80px !important;height:80px !important;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:inline-block;flex-shrink:0;';
               gallery.appendChild(img);
             }
-
             progress.textContent = '⏳ ' + (i + 1) + ' / ' + files.length + ' жүктелуде...';
           } catch(err) {
-            console.error('Upload failed for file', i, err);
+            console.error('Upload failed', err);
           }
         }
-
-        // Update sidebar preview too
         updateSidebarPreview();
         progress.textContent = '✅ ' + currentImages.length + ' сурет жүктелді';
-        // Reset file input so same files can be re-selected
         e.target.value = '';
       });
 
-      // 2. UPDATE SIDEBAR PREVIEW ONLY (gallery in form is updated inline above)
+      // 2. PREVIEW LOGIC
       function updateSidebarPreview() {
         var sidebarMain = document.getElementById('previewImg');
         var sidebarGallery = document.getElementById('previewGallery');
+        document.getElementById('previewName').textContent = document.getElementById('p_name').value;
+        document.getElementById('previewPrice').textContent = document.getElementById('p_price').value ? document.getElementById('p_price').value + ' ₸' : '';
 
         if (currentImages.length > 0) {
           sidebarMain.src = currentImages[0];
           sidebarMain.style.display = 'block';
           sidebarGallery.innerHTML = currentImages.map(function(url) {
-            return '<img src="' + url + '" onclick="document.getElementById(\'previewImg\').src=\'' + url + '\'" style="cursor:pointer;width:50px;height:50px;object-fit:cover;border-radius:6px;">';
+            return '<img src="' + url + '" onclick="document.getElementById(\'previewImg\').src=\'' + url + '\'">';
           }).join('');
         } else {
           sidebarMain.style.display = 'none';
@@ -213,20 +210,17 @@
         }
       }
 
-      // Full UI update (used when loading edit mode)
       function updateImageUI() {
         var gallery = document.getElementById('galleryPreview');
         var placeholder = document.getElementById('uploadPlaceholder');
-
         gallery.innerHTML = currentImages.map(function(url) {
-          return '<img src="' + url + '" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #ddd;">';
+          return '<img src="' + url + '">';
         }).join('');
-
         placeholder.style.display = currentImages.length ? 'none' : 'block';
         updateSidebarPreview();
       }
 
-      // 3. AUTH & LIST
+      // 3. AUTH & REFRESH
       auth.onAuthStateChanged(function(user) {
         if (!user || !(window.ADMIN_EMAILS || []).includes(user.email)) {
           location.href = 'login.html';
@@ -237,27 +231,28 @@
       });
 
       async function refreshList() {
-        var res = await fetch('/api/products');
-        var data = await res.json();
-        var container = document.getElementById('productsContainer');
-        container.innerHTML = '';
+        try {
+          var res = await fetch('/api/products');
+          var data = await res.json();
+          var container = document.getElementById('productsContainer');
+          container.innerHTML = '';
 
-        data.forEach(function(p) {
-          var imgs = [];
-          try {
-            var raw = typeof p.image_url === 'string' ? p.image_url : JSON.stringify(p.image_url);
-            imgs = raw.startsWith('[') ? JSON.parse(raw) : [raw];
-          } catch(e) { imgs = [p.image_url]; }
+          data.forEach(function(p) {
+            var imgs = [];
+            try {
+              var raw = typeof p.image_url === 'string' ? p.image_url : JSON.stringify(p.image_url);
+              imgs = raw.startsWith('[') ? JSON.parse(raw) : [raw];
+            } catch(e) { imgs = [p.image_url]; }
 
-          var div = document.createElement('div');
-          div.className = 'product-item';
-          div.innerHTML =
-            '<img src="' + (imgs[0] || '') + '" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">' +
-            '<div style="flex:1"><b>' + p.name + '</b><br><small>' + p.category + ' | ' + imgs.length + ' сурет</small></div>' +
-            '<button class="btn btn-outline" style="font-size:12px" onclick=\'editProduct(' + JSON.stringify(JSON.stringify(p)) + ')\'>Өзгерту</button>';
-
-          container.appendChild(div);
-        });
+            var div = document.createElement('div');
+            div.className = 'product-item';
+            div.innerHTML =
+              '<img src="' + (imgs[0] || '') + '">' +
+              '<div style="flex:1"><b>' + p.name + '</b><br><small>' + p.category + ' | ' + imgs.length + ' сурет</small></div>' +
+              '<button class="btn btn-outline" style="font-size:12px" onclick=\'editProduct(' + JSON.stringify(p).replace(/'/g, "&apos;") + ')\'>Өзгерту</button>';
+            container.appendChild(div);
+          });
+        } catch(e) { console.error("List refresh failed", e); }
       }
 
       // 4. SAVE
@@ -291,61 +286,43 @@
           });
           if (res.ok) {
             status.style.color = 'green';
-            status.textContent = 'Сәтті сақталды! Бет жаңартылуда...';
-            setTimeout(function(){ location.reload(); }, 1500);
-          } else {
-            throw new Error('Server error');
-          }
+            status.textContent = 'Сәтті сақталды!';
+            setTimeout(function(){ location.reload(); }, 1000);
+          } else { throw new Error(); }
         } catch(e) {
           status.style.color = 'red';
           status.textContent = 'Қате: Сақтау мүмкін болмады.';
         }
       });
 
-      // 5. EDIT MODE — called via onclick with JSON string
-      window.editProduct = function(jsonStr) {
-        var p = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+      // 5. EDIT
+      window.editProduct = function(p) {
         editingId = p.id;
         document.getElementById('p_name').value = p.name || '';
         document.getElementById('p_price').value = p.price || '';
         document.getElementById('p_category').value = p.category || '';
         document.getElementById('p_desc_kk').value = p.description_kk || '';
 
-        // Parse image_url safely — could be array, JSON string, or plain string
         try {
-          if (Array.isArray(p.image_url)) {
-            currentImages = p.image_url;
-          } else if (typeof p.image_url === 'string' && p.image_url.startsWith('[')) {
-            currentImages = JSON.parse(p.image_url);
-          } else {
-            currentImages = [p.image_url];
-          }
-        } catch(e) {
-          currentImages = [p.image_url];
-        }
+          currentImages = (typeof p.image_url === 'string' && p.image_url.startsWith('[')) 
+            ? JSON.parse(p.image_url) : (Array.isArray(p.image_url) ? p.image_url : [p.image_url]);
+        } catch(e) { currentImages = [p.image_url]; }
 
-        // Parse sizes safely — could be array, JSON string, or plain string
         var sz = [];
         try {
-          if (Array.isArray(p.sizes)) {
-            sz = p.sizes;
-          } else if (typeof p.sizes === 'string' && p.sizes.startsWith('[')) {
-            sz = JSON.parse(p.sizes);
-          } else if (p.sizes) {
-            sz = [p.sizes];
-          }
+          sz = (typeof p.sizes === 'string' && p.sizes.startsWith('[')) 
+            ? JSON.parse(p.sizes) : (Array.isArray(p.sizes) ? p.sizes : [p.sizes]);
         } catch(e) { sz = []; }
         document.getElementById('p_sizes').value = sz.join(', ');
 
         updateImageUI();
-        document.getElementById('uploadProgress').textContent = currentImages.length + ' сурет жүктелген';
         document.getElementById('saveBtn').textContent = 'Өзгерісті сақтау';
         window.scrollTo({top: 0, behavior: 'smooth'});
       };
 
       document.getElementById('clearBtn').addEventListener('click', function(){ location.reload(); });
-      document.getElementById('p_name').addEventListener('input', function(e){ document.getElementById('previewName').textContent = e.target.value; });
-      document.getElementById('p_price').addEventListener('input', function(e){ document.getElementById('previewPrice').textContent = e.target.value + ' ₸'; });
+      document.getElementById('p_name').addEventListener('input', updateSidebarPreview);
+      document.getElementById('p_price').addEventListener('input', updateSidebarPreview);
 
     })();
   </script>
