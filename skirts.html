@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <title>Юбкалар — Soul Store</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Әйелдерге арналған юбкалар каталогы." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
+      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
+      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; }
+    .back-btn:hover { background: var(--accent-dark); }
+    .topbar-title { font-weight: 700; font-size: 16px; }
+    .page-header { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #222 0%, #111 50%, #000 100%); position: relative; }
+    .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background: linear-gradient(to top, var(--bg), transparent); }
+    .page-header h1 { font-size: 36px; margin: 0 0 8px; color: #fff; font-weight: 800; }
+    .page-header p { font-size: 16px; color: rgba(255,255,255,0.8); margin: 0; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; padding: 30px; max-width: 1200px; margin: 0 auto; }
+    .product-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); cursor: pointer; border: 1px solid var(--border); }
+    .product-card:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .product-card img { width: 100%; height: 300px; object-fit: cover; display: block; background: #eee; }
+    .product-card .card-body { padding: 16px; }
+    .product-card h3 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
+    .price { font-weight: 700; color: var(--accent); font-size: 18px; }
+    .empty { text-align: center; color: var(--text-muted); padding: 50px 20px; font-size: 16px; grid-column: 1 / -1; }
+    footer { padding: 30px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--card); font-size: 14px; }
+    #loading { text-align: center; padding: 40px; color: var(--text-muted); }
+    #cart-icon { cursor: pointer; position: relative; font-size: 22px; padding: 4px 8px; margin-left: auto; }
+    #cart-count { background: var(--accent); color: white; font-size: 11px; font-weight: 700; border-radius: 50%; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+    @media (max-width: 700px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .product-card img { height: 220px; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-btn" href="index.html">&larr; Артқа</a>
+    <div class="topbar-title">Юбкалар — Soul Store</div>
+    <div id="cart-icon" onclick="location.href='cart.html'" aria-label="Cart">&#128722; <span id="cart-count">0</span></div>
+  </div>
+
+  <header class="page-header">
+    <h1>Юбкалар</h1>
+    <p>Каталог — Skirts</p>
+  </header>
+
+  <main>
+    <div id="products" class="products-grid"></div>
+    <div id="loading">Жүктелуде...</div>
+    <div id="emptyHint" class="empty" style="display:none">Юбкалар табылмады</div>
+  </main>
+
+  <footer>&copy; 2026 Soul Store — Әйелдер киімі дүкені</footer>
+
+  <script>
+    (function(){
+      const grid = document.getElementById('products');
+      const emptyHint = document.getElementById('emptyHint');
+      const loading = document.getElementById('loading');
+
+      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+      async function loadSkirts() {
+        loading.style.display = 'block';
+        grid.innerHTML = '';
+        try {
+          const res = await fetch('/api/products?category=skirts');
+          const data = await res.json();
+          if(!res.ok) throw new Error(data.error || 'Failed to load');
+          if (!data || data.length === 0) { emptyHint.style.display = ''; return; }
+          emptyHint.style.display = 'none';
+          data.forEach(function(p) {
+            var card = document.createElement('div');
+            card.className = 'product-card';
+            card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
+            card.innerHTML =
+              '<img src="' + escapeHtml(p.image_url) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>👗</text></svg>\'" loading="lazy">' +
+              '<div class="card-body">' +
+                '<h3>' + escapeHtml(p.name) + '</h3>' +
+                '<div class="price">' + Number(p.price).toLocaleString() + ' &#8376;</div>' +
+              '</div>';
+            grid.appendChild(card);
+          });
+        } catch (e) {
+          console.error('Error', e);
+          grid.innerHTML = '<div class="empty">Қате пайда болды / Произошла ошибка</div>';
+        } finally {
+          loading.style.display = 'none';
+        }
+      }
+      loadSkirts();
+    })();
+  </script>
+  <script>
+    (function(){
+      function updateCartCount() {
+        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        var total = 0;
+        cart.forEach(function(item){ total += (item.quantity || 1); });
+        var el = document.getElementById('cart-count');
+        if(el) {
+          el.textContent = total;
+          el.style.display = total > 0 ? 'flex' : 'none';
+        }
+      }
+      updateCartCount();
+    })();
+  </script>
+</body>
+</html>
