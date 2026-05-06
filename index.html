@@ -171,8 +171,23 @@
         }
         list.forEach(function(p) {
           var name = p.name || '—';
-          var img = p.image_url || '';
           var price = p.price;
+          
+          // Image extraction logic updated for arrays/JSON
+          var img = '';
+          if (Array.isArray(p.images) && p.images.length > 0) {
+            img = p.images[0];
+          } else if (Array.isArray(p.imageUrls) && p.imageUrls.length > 0) {
+            img = p.imageUrls[0];
+          } else if (p.image_url) {
+            try {
+              var parsed = JSON.parse(p.image_url);
+              img = Array.isArray(parsed) && parsed.length > 0 ? parsed[0] : p.image_url;
+            } catch(e) {
+              img = p.image_url;
+            }
+          }
+
           var card = document.createElement('div');
           card.className = 'product-card';
           card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
