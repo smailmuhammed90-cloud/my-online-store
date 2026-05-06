@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="kk">
 <head>
@@ -67,7 +66,18 @@
 
       function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 
-      async function loadSuits() {
+      function getFirstImage(image_url) {
+        if (!image_url) return '';
+        try {
+          var parsed = JSON.parse(image_url);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+          return image_url;
+        } catch(e) {
+          return image_url;
+        }
+      }
+
+      async function loadProducts() {
         loading.style.display = 'block';
         grid.innerHTML = '';
         try {
@@ -77,11 +87,12 @@
           if (!data || data.length === 0) { emptyHint.style.display = ''; return; }
           emptyHint.style.display = 'none';
           data.forEach(function(p) {
+            var img = getFirstImage(p.image_url);
             var card = document.createElement('div');
             card.className = 'product-card';
             card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
             card.innerHTML =
-              '<img src="' + escapeHtml(p.image_url) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>&#129509;</text></svg>\'" loading="lazy">' +
+              '<img src="' + escapeHtml(img) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>&#129509;</text></svg>\'" loading="lazy">' +
               '<div class="card-body">' +
                 '<h3>' + escapeHtml(p.name) + '</h3>' +
                 '<div class="price">' + Number(p.price).toLocaleString() + ' &#8376;</div>' +
@@ -95,20 +106,14 @@
           loading.style.display = 'none';
         }
       }
-      loadSuits();
-    })();
-  </script>
-  <script>
-    (function(){
+      loadProducts();
+
       function updateCartCount() {
         var cart = JSON.parse(localStorage.getItem('cart') || '[]');
         var total = 0;
         cart.forEach(function(item){ total += (item.quantity || 1); });
         var el = document.getElementById('cart-count');
-        if(el) {
-          el.textContent = total;
-          el.style.display = total > 0 ? 'flex' : 'none';
-        }
+        if(el) { el.textContent = total; el.style.display = total > 0 ? 'flex' : 'none'; }
       }
       updateCartCount();
     })();
