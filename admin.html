@@ -16,36 +16,26 @@
     .wrap { max-width: 1200px; margin: 0 auto; }
     .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
     .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-block; }
-    .back-btn:hover { background: var(--accent-dark); }
     h1 { margin: 0; font-size: 24px; font-weight: 800; }
-    #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+    #authStatus { padding: 12px 18px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); margin-bottom: 20px; font-size: 14px; }
     .admin-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
     .card { background: var(--card); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
     .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: var(--transition); font-family: inherit; }
-    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: var(--text-muted); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: var(--transition); }
+    .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: var(--transition); }
     .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-outline { background: var(--card); border: 1px solid var(--border); }
     .btn-danger { background: #e53935; color: #fff; }
-    .btn-danger:hover { background: #c62828; }
-    .btn-outline { background: var(--card); border: 1px solid var(--border); color: var(--text); }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-group { display: flex; gap: 10px; margin-top: 8px; }
-    #addStatus { font-size: 13px; margin-top: 8px; min-height: 20px; }
-    .product-list { max-height: 65vh; overflow-y: auto; }
-    .product-item { display: flex; gap: 14px; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: var(--transition); }
-    .product-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; background: var(--bg); }
-    .product-item .info { flex: 1; }
-    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; transition: var(--transition); margin-bottom: 14px; }
-    .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
     
-    /* Gallery Styles */
+    /* Image Gallery Styles */
+    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; }
     .img-gallery { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
-    .img-gallery img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
-    .preview-panel .main-preview { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius); margin-bottom: 10px; }
+    .img-gallery img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+    .main-preview { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius); display: none; }
+    .product-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
+    .product-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
     
     @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
   </style>
@@ -62,16 +52,16 @@
     <div class="admin-grid">
       <div>
         <div class="card" style="margin-bottom:20px">
-          <h3 style="margin:0 0 18px;font-size:18px;font-weight:700">Өнімді басқару</h3>
+          <h3 style="margin:0 0 18px;">Өнімді басқару</h3>
           
           <div class="form-group">
-            <label>Атауы / Название</label>
+            <label>Атауы</label>
             <input id="p_name" placeholder="Өнім атауы" />
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Баға / Цена (₸)</label>
+              <label>Баға (₸)</label>
               <input id="p_price" type="number" placeholder="15000" />
             </div>
             <div class="form-group">
@@ -92,45 +82,43 @@
           </div>
 
           <div class="form-group">
-            <label>Өлшемдер / Размеры</label>
-            <input id="p_sizes" placeholder="S,M,L,XL" />
+            <label>Өлшемдер (Үтір арқылы: S, M, L)</label>
+            <input id="p_sizes" placeholder="S, M, L" />
           </div>
 
           <div class="form-group">
-            <label>Сипаттама (KK/RU)</label>
-            <textarea id="p_desc_kk" rows="2" placeholder="Қазақша сипаттама"></textarea>
-            <textarea id="p_desc_ru" rows="2" placeholder="Описание на русском" style="margin-top:8px"></textarea>
+            <label>Сипаттама (KK)</label>
+            <textarea id="p_desc_kk" rows="2"></textarea>
           </div>
 
           <div class="form-group">
-            <label>Суреттер / Изображения (Бірнешеуін таңдауға болады)</label>
+            <label>Суреттер (Multiple)</label>
             <div class="upload-area" id="uploadArea">
-              <div id="uploadPlaceholder">Суреттерді таңдау (Multiple)</div>
+              <div id="uploadPlaceholder">Суреттерді таңдау үшін басыңыз</div>
               <div id="galleryPreview" class="img-gallery"></div>
             </div>
-            <input type="hidden" id="p_image_urls" />
           </div>
 
-          <div class="btn-group">
-            <button id="addProductBtn" class="btn btn-primary">Қосу / Добавить</button>
-            <button id="clearFormBtn" class="btn btn-outline">Тазалау</button>
+          <div class="btn-group" style="display:flex; gap:10px;">
+            <button id="saveBtn" class="btn btn-primary">Қосу / Добавить</button>
+            <button id="clearBtn" class="btn btn-outline">Тазалау</button>
           </div>
-          <div id="addStatus"></div>
+          <div id="addStatus" style="margin-top:10px; font-size:14px;"></div>
         </div>
 
         <div class="card">
-          <h3 style="margin:0 0 14px;font-size:18px;font-weight:700">Бар өнімдер</h3>
-          <div id="productsContainer" class="product-list"></div>
+          <h3>Бар өнімдер</h3>
+          <div id="productsContainer"></div>
         </div>
       </div>
 
       <aside>
-        <div class="card preview-panel">
+        <div class="card">
           <h4>Предпросмотр</h4>
-          <img id="previewImg" class="main-preview" src="" style="display:none" />
+          <img id="previewImg" class="main-preview" src="" />
           <div id="previewGallery" class="img-gallery"></div>
-          <h4 id="previewName" style="margin-top:15px"></h4>
-          <p id="previewPrice" style="font-weight:bold; color:var(--accent)"></p>
+          <h4 id="previewName" style="margin-top:10px;"></h4>
+          <p id="previewPrice" style="color:var(--accent); font-weight:bold;"></p>
         </div>
       </aside>
     </div>
@@ -146,146 +134,137 @@
 
   <script>
     (function(){
-      const $ = (id) => document.getElementById(id);
-      let editingId = null;
       let currentImages = [];
+      let editingId = null;
 
-      // MULTI-UPLOAD LOGIC
-      $('uploadArea').onclick = function() {
+      // 1. MULTI-UPLOAD LOGIC
+      document.getElementById('uploadArea').onclick = function() {
         uploadcare.openDialog(null, {
           multiple: true,
           imagesOnly: true
         }).done(function(group) {
           group.promise().done(function(groupInfo) {
-            // Wait for all files to be ready and get their URLs
-            Promise.all(groupInfo.files().map(f => f.promise())).then(files => {
-              currentImages = files.map(f => f.cdnUrl);
+            const files = groupInfo.files();
+            Promise.all(files.map(f => f.promise())).then(fileInfos => {
+              currentImages = fileInfos.map(info => info.cdnUrl);
               updateImageUI();
             });
           });
         });
       };
 
+      // 2. UPDATE UI (GALLERY & PREVIEW)
       function updateImageUI() {
-        $('p_image_urls').value = JSON.stringify(currentImages);
-        
-        // Update Form Gallery
-        $('galleryPreview').innerHTML = currentImages.map(url => `<img src="${url}">`).join('');
-        $('uploadPlaceholder').style.display = currentImages.length ? 'none' : 'block';
+        const gallery = document.getElementById('galleryPreview');
+        const sidebarMain = document.getElementById('previewImg');
+        const sidebarGallery = document.getElementById('previewGallery');
+        const placeholder = document.getElementById('uploadPlaceholder');
 
-        // Update Sidebar Preview
-        if(currentImages.length) {
-          $('previewImg').src = currentImages[0];
-          $('previewImg').style.display = 'block';
-          $('previewGallery').innerHTML = currentImages.map(url => `<img src="${url}">`).join('');
+        gallery.innerHTML = currentImages.map(url => `<img src="${url}">`).join('');
+        placeholder.style.display = currentImages.length ? 'none' : 'block';
+
+        if(currentImages.length > 0) {
+          sidebarMain.src = currentImages[0];
+          sidebarMain.style.display = 'block';
+          sidebarGallery.innerHTML = currentImages.map(url => 
+            `<img src="${url}" onclick="document.getElementById('previewImg').src='${url}'" style="cursor:pointer">`
+          ).join('');
+        } else {
+          sidebarMain.style.display = 'none';
+          sidebarGallery.innerHTML = '';
         }
       }
 
-      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
-
-      // AUTH & LOAD
-      auth.onAuthStateChanged(async user => {
+      // 3. AUTH & LOAD
+      auth.onAuthStateChanged(user => {
         if (!user || !(window.ADMIN_EMAILS || []).includes(user.email)) {
           location.href = 'login.html';
           return;
         }
-        $('authStatus').textContent = 'Админ: ' + user.email;
+        document.getElementById('authStatus').textContent = 'Сәлем, ' + user.email;
         refreshList();
       });
 
       async function refreshList() {
         const res = await fetch('/api/products');
         const data = await res.json();
-        renderProducts(data);
-      }
-
-      function renderProducts(items) {
-        const container = $('productsContainer');
+        const container = document.getElementById('productsContainer');
         container.innerHTML = '';
-        items.forEach(p => {
+
+        data.forEach(p => {
           let imgs = [];
-          try { imgs = JSON.parse(p.image_url || '[]'); } catch(e) { imgs = [p.image_url]; }
+          try { imgs = JSON.parse(p.image_url); } catch(e) { imgs = [p.image_url]; }
           
           const div = document.createElement('div');
           div.className = 'product-item';
           div.innerHTML = `
-            <img src="${imgs[0] || ''}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23eee%22 width=%2280%22 height=%2280%22/></svg>'">
-            <div class="info">
-              <div class="name">${escapeHtml(p.name)}</div>
-              <div class="meta">${escapeHtml(p.category)} | ${imgs.length} сурет</div>
-              <div style="font-weight:bold">${Number(p.price).toLocaleString()} ₸</div>
+            <img src="${imgs[0] || ''}">
+            <div style="flex:1">
+              <b>${p.name}</b><br>
+              <small>${p.category} | ${imgs.length} сурет</small>
             </div>
-            <div class="actions">
-              <button class="btn btn-outline" onclick='editProduct(${JSON.stringify(p)})'>Өзгерту</button>
-              <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Өшіру</button>
-            </div>
+            <button class="btn btn-outline" onclick='editProduct(${JSON.stringify(p)})'>Өзгерту</button>
           `;
           container.appendChild(div);
         });
       }
 
-      // SAVE / UPDATE
-      $('addProductBtn').onclick = async function() {
+      // 4. SAVE / UPDATE
+      document.getElementById('saveBtn').onclick = async function() {
+        const status = document.getElementById('addStatus');
+        status.textContent = 'Сақталуда...';
+
         const payload = {
-          name: $('p_name').value,
-          description_kk: $('p_desc_kk').value,
-          description_ru: $('p_desc_ru').value,
-          price: Number($('p_price').value),
-          category: $('p_category').value,
-          image_url: JSON.stringify(currentImages), // Store as array
-          sizes: JSON.stringify($('p_sizes').value.split(',').map(s => s.trim()))
+          name: document.getElementById('p_name').value,
+          description_kk: document.getElementById('p_desc_kk').value,
+          description_ru: '', 
+          price: Number(document.getElementById('p_price').value),
+          category: document.getElementById('p_category').value,
+          image_url: JSON.stringify(currentImages), // Массивті JSON қылып сақтаймыз
+          sizes: JSON.stringify(document.getElementById('p_sizes').value.split(',').map(s => s.trim()))
         };
 
-        const method = editingId ? 'PUT' : 'POST';
         if(editingId) payload.id = editingId;
 
         const res = await fetch('/api/products', {
-          method: method,
+          method: editingId ? 'PUT' : 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
         });
 
         if(res.ok) {
-          alert('Сәтті!');
-          location.reload();
+          status.textContent = 'Сәтті сақталды!';
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          status.textContent = 'Қате орын алды.';
         }
       };
 
+      // 5. EDIT PRODUCT
       window.editProduct = (p) => {
         editingId = p.id;
-        $('p_name').value = p.name;
-        $('p_price').value = p.price;
-        $('p_category').value = p.category;
-        $('p_desc_kk').value = p.description_kk || '';
-        $('p_desc_ru').value = p.description_ru || '';
+        document.getElementById('p_name').value = p.name;
+        document.getElementById('p_price').value = p.price;
+        document.getElementById('p_category').value = p.category;
+        document.getElementById('p_desc_kk').value = p.description_kk || '';
         
         try { 
-          currentImages = JSON.parse(p.image_url || '[]'); 
+          currentImages = JSON.parse(p.image_url); 
         } catch(e) { 
           currentImages = p.image_url ? [p.image_url] : []; 
         }
-        
+
         try {
           const sz = JSON.parse(p.sizes || '[]');
-          $('p_sizes').value = Array.isArray(sz) ? sz.join(',') : sz;
+          document.getElementById('p_sizes').value = Array.isArray(sz) ? sz.join(', ') : sz;
         } catch(e) {}
 
         updateImageUI();
-        $('addProductBtn').textContent = 'Сақтау / Сохранить';
-        window.scrollTo(0,0);
+        document.getElementById('saveBtn').textContent = 'Жаңарту';
+        window.scrollTo({top: 0, behavior: 'smooth'});
       };
 
-      window.deleteProduct = async (id) => {
-        if(!confirm('Жоюды растайсыз ба?')) return;
-        await fetch('/api/products?id=' + id, { method: 'DELETE' });
-        refreshList();
-      };
-
-      $('clearFormBtn').onclick = () => location.reload();
-      
-      // Live Preview for Text
-      $('p_name').oninput = (e) => $('previewName').textContent = e.target.value;
-      $('p_price').oninput = (e) => $('previewPrice').textContent = e.target.value + ' ₸';
+      document.getElementById('clearBtn').onclick = () => location.reload();
 
     })();
   </script>
