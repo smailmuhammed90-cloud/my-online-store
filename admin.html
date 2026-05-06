@@ -29,10 +29,10 @@
     .btn-outline { background: var(--card); border: 1px solid var(--border); }
     
     /* Upload Gallery Area */
-    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 30px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; }
+    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; min-height: 80px; }
     .upload-area:hover { border-color: var(--accent); background: #fafafa; }
-    .img-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; justify-content: center; }
-    .img-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+    .img-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center; }
+    .img-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block; background: #eee; }
     .main-preview { width: 100%; max-height: 350px; object-fit: cover; border-radius: var(--radius); display: none; }
     .product-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
     .product-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
@@ -168,7 +168,9 @@
  
             var json = await res.json();
             if (json.file) {
-              currentImages.push('https://ucarecdn.com/' + json.file + '/');
+              var url = 'https://ucarecdn.com/' + json.file + '/';
+              console.log('Uploaded file URL:', url);
+              currentImages.push(url);
             }
  
             done++;
@@ -191,7 +193,7 @@
  
         // Form gallery thumbnails
         gallery.innerHTML = currentImages.map(function(url) {
-          return '<img src="' + url + '">';
+          return '<img src="' + url + '" onerror="console.error(\'Image failed:\', this.src)">';
         }).join('');
  
         placeholder.style.display = currentImages.length ? 'none' : 'block';
