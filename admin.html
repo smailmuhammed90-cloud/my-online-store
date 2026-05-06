@@ -37,51 +37,38 @@
     #addStatus { font-size: 13px; margin-top: 8px; min-height: 20px; }
     .product-list { max-height: 65vh; overflow-y: auto; }
     .product-item { display: flex; gap: 14px; align-items: center; padding: 14px; border-bottom: 1px solid var(--border); transition: var(--transition); }
-    .product-item:hover { background: var(--bg); }
-    .product-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background: var(--bg); }
+    .product-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; background: var(--bg); }
     .product-item .info { flex: 1; }
-    .product-item .info .name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-    .product-item .info .meta { font-size: 12px; color: var(--text-muted); }
-    .product-item .info .price-tag { color: var(--accent); font-weight: 700; font-size: 15px; }
-    .product-item .actions { display: flex; flex-direction: column; gap: 6px; }
-    .product-item .actions .btn { font-size: 12px; padding: 6px 12px; }
     .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; transition: var(--transition); margin-bottom: 14px; }
     .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
-    .upload-area img { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px; }
-    .upload-area .placeholder { color: var(--text-muted); font-size: 14px; }
-    .preview-panel { text-align: center; }
-    .preview-panel img { max-width: 100%; max-height: 250px; border-radius: var(--radius); object-fit: cover; }
-    .preview-panel h4 { margin: 12px 0 4px; }
-    .preview-panel .price { color: var(--accent); }
-    .note { background: #fff8e1; padding: 12px; border-radius: 8px; color: #795548; font-size: 13px; margin-top: 12px; border: 1px solid #ffe0b2; }
-    @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
+    
+    /* Gallery Styles */
+    .img-gallery { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
+    .img-gallery img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+    .preview-panel .main-preview { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius); margin-bottom: 10px; }
+    
+    @media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="topbar">
-      <a class='back-btn' href='/'>&larr; Дүкенге қайту</a>
+      <a class="back-btn" href="/">&larr; Дүкенге қайту</a>
       <h1>Admin панелі</h1>
     </div>
 
-    <div id="authStatus">Тексеру — кіру күйі...</div>
+    <div id="authStatus">Тексеру...</div>
 
     <div class="admin-grid">
       <div>
         <div class="card" style="margin-bottom:20px">
-          <h3 style="margin:0 0 18px;font-size:18px;font-weight:700">Жаңа өнім қосу</h3>
+          <h3 style="margin:0 0 18px;font-size:18px;font-weight:700">Өнімді басқару</h3>
+          
           <div class="form-group">
             <label>Атауы / Название</label>
             <input id="p_name" placeholder="Өнім атауы" />
           </div>
-          <div class="form-group">
-            <label>Сипаттама (Қазақша)</label>
-            <textarea id="p_desc_kk" rows="2" placeholder="Сипаттама"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Описание (Русский)</label>
-            <textarea id="p_desc_ru" rows="2" placeholder="Описание"></textarea>
-          </div>
+
           <div class="form-row">
             <div class="form-group">
               <label>Баға / Цена (₸)</label>
@@ -90,32 +77,40 @@
             <div class="form-group">
               <label>Категория</label>
               <select id="p_category">
-                <option value="dresses">Көйлектер / Dresses</option>
-                <option value="hijabs">Орамалдар / Hijabs</option>
-                <option value="shirts">Рубашка / Shirts</option>
-                <option value="underwear">Белье / Underwear</option>
-                <option value="suits">Костюмдер / Suits</option>
-                <option value="sweaters">Кофта / Sweaters</option>
-                <option value="pants">Штаны / Pants</option>
-                <option value="jeans">Джинсы / Jeans</option>
-                <option value="jackets">Пиджактар / Jackets</option>
-                <option value="sundresses">Сарафандар / Sundresses</option>
-                <option value="skirts">Юбкалар / Skirts</option>
+                <option value="dresses">Көйлектер</option>
+                <option value="hijabs">Орамалдар</option>
+                <option value="underwear">Іш киім</option>
+                <option value="suits">Костюмдер</option>
+                <option value="sweaters">Кофталар</option>
+                <option value="pants">Штандар</option>
+                <option value="jeans">Джинсылар</option>
+                <option value="jackets">Пиджактар</option>
+                <option value="sundresses">Сарафандар</option>
+                <option value="skirts">Юбкалар</option>
               </select>
             </div>
           </div>
+
           <div class="form-group">
             <label>Өлшемдер / Размеры</label>
-            <input id="p_sizes" placeholder="40,42,44,46 немесе XS,S,M,L,XL" />
+            <input id="p_sizes" placeholder="S,M,L,XL" />
           </div>
+
           <div class="form-group">
-            <label>Сурет / Изображение</label>
-            <div class="upload-area" id="uploadArea">
-              <div class="placeholder" id="uploadPlaceholder">Суретті жүктеу үшін басыңыз / Нажмите для загрузки</div>
-              <img id="uploadPreview" style="display:none" />
-            </div>
-            <input type="hidden" id="p_image_url" />
+            <label>Сипаттама (KK/RU)</label>
+            <textarea id="p_desc_kk" rows="2" placeholder="Қазақша сипаттама"></textarea>
+            <textarea id="p_desc_ru" rows="2" placeholder="Описание на русском" style="margin-top:8px"></textarea>
           </div>
+
+          <div class="form-group">
+            <label>Суреттер / Изображения (Бірнешеуін таңдауға болады)</label>
+            <div class="upload-area" id="uploadArea">
+              <div id="uploadPlaceholder">Суреттерді таңдау (Multiple)</div>
+              <div id="galleryPreview" class="img-gallery"></div>
+            </div>
+            <input type="hidden" id="p_image_urls" />
+          </div>
+
           <div class="btn-group">
             <button id="addProductBtn" class="btn btn-primary">Қосу / Добавить</button>
             <button id="clearFormBtn" class="btn btn-outline">Тазалау</button>
@@ -131,308 +126,166 @@
 
       <aside>
         <div class="card preview-panel">
-          <h4>Тез көрініс / Предпросмотр</h4>
-          <img id="previewImg" src="" alt="" style="display:none" />
-          <h4 id="previewName" style="color:var(--text)"></h4>
-          <p id="previewPrice" class="price"></p>
-        </div>
-        <div class="note" id="noteArea">
-          Мұнда қателер пайда болса, толық хабарлама көрсетіледі.
+          <h4>Предпросмотр</h4>
+          <img id="previewImg" class="main-preview" src="" style="display:none" />
+          <div id="previewGallery" class="img-gallery"></div>
+          <h4 id="previewName" style="margin-top:15px"></h4>
+          <p id="previewPrice" style="font-weight:bold; color:var(--accent)"></p>
         </div>
       </aside>
     </div>
   </div>
 
   <script>
-    UPLOADCARE_LOCALE = 'en';
     UPLOADCARE_PUBLIC_KEY = '3d4dc407820559de1c77';
   </script>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
 
   <script>
     (function(){
-      var statusEl = document.getElementById('authStatus');
-      var addBtn = document.getElementById('addProductBtn');
-      var clearBtn = document.getElementById('clearFormBtn');
-      var productsContainer = document.getElementById('productsContainer');
-      var addStatus = document.getElementById('addStatus');
-      var noteEl = document.getElementById('noteArea');
-      var previewImg = document.getElementById('previewImg');
-      var previewName = document.getElementById('previewName');
-      var previewPrice = document.getElementById('previewPrice');
-      var uploadPreview = document.getElementById('uploadPreview');
-      var uploadPlaceholder = document.getElementById('uploadPlaceholder');
-      var imageUrlInput = document.getElementById('p_image_url');
+      const $ = (id) => document.getElementById(id);
+      let editingId = null;
+      let currentImages = [];
 
-      function escapeHtml(s){ if(s === null || s === undefined) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-      var uploadArea = document.getElementById('uploadArea');
-      uploadArea.addEventListener('click', function() {
-        var dialog = uploadcare.openDialog(null, {
-          publicKey: '3d4dc407820559de1c77',
-          imagesOnly: true,
-          crop: 'free'
-        });
-        dialog.done(function(file) {
-          file.done(function(info) {
-            var url = info.cdnUrl;
-            imageUrlInput.value = url;
-            uploadPreview.src = url;
-            uploadPreview.style.display = 'block';
-            uploadPlaceholder.style.display = 'none';
-            previewImg.src = url;
-            previewImg.style.display = 'block';
+      // MULTI-UPLOAD LOGIC
+      $('uploadArea').onclick = function() {
+        uploadcare.openDialog(null, {
+          multiple: true,
+          imagesOnly: true
+        }).done(function(group) {
+          group.promise().done(function(groupInfo) {
+            // Wait for all files to be ready and get their URLs
+            Promise.all(groupInfo.files().map(f => f.promise())).then(files => {
+              currentImages = files.map(f => f.cdnUrl);
+              updateImageUI();
+            });
           });
         });
-      });
+      };
 
-      var allowed = (window.ADMIN_EMAILS || []).map(function(x){ return String(x||'').toLowerCase().trim(); }).filter(Boolean);
+      function updateImageUI() {
+        $('p_image_urls').value = JSON.stringify(currentImages);
+        
+        // Update Form Gallery
+        $('galleryPreview').innerHTML = currentImages.map(url => `<img src="${url}">`).join('');
+        $('uploadPlaceholder').style.display = currentImages.length ? 'none' : 'block';
 
-      if (!window.auth) {
-        statusEl.textContent = 'Firebase auth жоқ';
-        statusEl.style.color = '#c62828';
-        return;
+        // Update Sidebar Preview
+        if(currentImages.length) {
+          $('previewImg').src = currentImages[0];
+          $('previewImg').style.display = 'block';
+          $('previewGallery').innerHTML = currentImages.map(url => `<img src="${url}">`).join('');
+        }
       }
 
-      auth.onAuthStateChanged(async function(user) {
-        if (!user) {
-          statusEl.textContent = 'Кіру қажет — Redirecting...';
-          statusEl.style.color = '#c62828';
-          setTimeout(function(){ location.href = 'login.html'; }, 700);
+      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+      // AUTH & LOAD
+      auth.onAuthStateChanged(async user => {
+        if (!user || !(window.ADMIN_EMAILS || []).includes(user.email)) {
+          location.href = 'login.html';
           return;
         }
-        var email = (user.email||'').toLowerCase().trim();
-        if (!allowed.includes(email)) {
-          statusEl.textContent = 'Сіз әкімші емессіз — қайта бағыттау...';
-          statusEl.style.color = '#c62828';
-          setTimeout(function(){ location.href = 'index.html'; }, 900);
-          return;
-        }
-        statusEl.textContent = 'Сәлем, ' + user.email;
-        statusEl.style.color = '#2e7d32';
-        statusEl.style.background = '#e8f5e9';
-        statusEl.style.borderColor = '#c8e6c9';
-        await refreshList();
-      });
-
-      addBtn.addEventListener('click', async function() {
-        if (editingId) return; 
-        addStatus.textContent = 'Жүктелуде...';
-        addStatus.style.color = 'var(--text-muted)';
-        try {
-          var name = document.getElementById('p_name').value.trim();
-          var desc_kk = document.getElementById('p_desc_kk').value.trim();
-          var desc_ru = document.getElementById('p_desc_ru').value.trim();
-          var price = Number(document.getElementById('p_price').value);
-          var category = document.getElementById('p_category').value;
-          var sizesStr = document.getElementById('p_sizes').value.trim();
-          var sizes = sizesStr ? sizesStr.split(',').map(function(s){ return s.trim(); }) : [];
-          var image_url = imageUrlInput.value;
-
-          if (!name || isNaN(price) || !category || sizes.length === 0) {
-            addStatus.textContent = 'Атауы, баға, категория және өлшемдер қажет';
-            addStatus.style.color = '#c62828';
-            return;
-          }
-
-          var res = await fetch('/api/products', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: name,
-              description_kk: desc_kk,
-              description_ru: desc_ru,
-              price: price,
-              category: category,
-              image_url: image_url,
-              sizes: JSON.stringify(sizes)
-            })
-          });
-          var data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Failed');
-
-          addStatus.textContent = 'Өнім қосылды!';
-          addStatus.style.color = '#2e7d32';
-          clearForm();
-          await refreshList();
-        } catch(err) {
-          addStatus.textContent = 'Қате: ' + (err.message || err);
-          addStatus.style.color = '#c62828';
-        }
-      });
-
-      function clearForm() {
-        ['p_name','p_desc_kk','p_desc_ru','p_price','p_sizes'].forEach(function(id){ document.getElementById(id).value = ''; });
-        document.getElementById('p_category').selectedIndex = 0;
-        imageUrlInput.value = '';
-        uploadPreview.style.display = 'none';
-        uploadPlaceholder.style.display = 'block';
-        previewImg.style.display = 'none';
-        previewName.textContent = '';
-        previewPrice.textContent = '';
-      }
-
-      clearBtn.addEventListener('click', function() {
-        clearForm();
-        editingId = null;
-        addBtn.textContent = 'Қосу / Добавить';
-        addStatus.textContent = '';
-      });
-
-      document.getElementById('p_name').addEventListener('input', function() {
-        previewName.textContent = this.value;
-      });
-      document.getElementById('p_price').addEventListener('input', function() {
-        previewPrice.textContent = this.value ? this.value + ' \u20B8' : '';
+        $('authStatus').textContent = 'Админ: ' + user.email;
+        refreshList();
       });
 
       async function refreshList() {
-        productsContainer.innerHTML = '<div style="color:var(--text-muted);padding:20px;text-align:center">Жүктелуде...</div>';
-        try {
-          var res = await fetch('/api/products');
-          var data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Failed to load');
-          renderProducts(Array.isArray(data) ? data : []);
-        } catch(e) {
-          productsContainer.innerHTML = '<div style="color:#c62828;padding:20px">' + escapeHtml(e.message) + '</div>';
-          noteEl.textContent = 'API қатесі: ' + (e.message || 'Unknown error');
-          noteEl.style.color = '#c62828';
-        }
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        renderProducts(data);
       }
 
       function renderProducts(items) {
-        if (!items || items.length === 0) {
-          productsContainer.innerHTML = '<div style="color:var(--text-muted);padding:30px;text-align:center">Өнімдер жоқ / Нет товаров</div>';
-          return;
-        }
-        productsContainer.innerHTML = '';
-        items.forEach(function(p) {
-          var div = document.createElement('div');
+        const container = $('productsContainer');
+        container.innerHTML = '';
+        items.forEach(p => {
+          let imgs = [];
+          try { imgs = JSON.parse(p.image_url || '[]'); } catch(e) { imgs = [p.image_url]; }
+          
+          const div = document.createElement('div');
           div.className = 'product-item';
-          var sizes = [];
-          try {
-            if (Array.isArray(p.sizes)) { sizes = p.sizes; }
-            else { sizes = JSON.parse(p.sizes || '[]'); }
-          } catch(e) {}
-
-          var img = document.createElement('img');
-          img.src = p.image_url || '';
-          img.alt = escapeHtml(p.name);
-          img.onerror = function(){ this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23f0f0f0%22 width=%2280%22 height=%2280%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2224%22>\uD83D\uDC57</text></svg>'; };
-          div.appendChild(img);
-
-          var info = document.createElement('div');
-          info.className = 'info';
-          info.innerHTML =
-            '<div class="name">' + escapeHtml(p.name) + '</div>' +
-            '<div class="meta">' + escapeHtml(p.category) + ' | ' + (Array.isArray(sizes) ? sizes.join(', ') : sizes) + '</div>' +
-            '<div class="price-tag">' + Number(p.price || 0).toLocaleString() + ' \u20B8</div>';
-          div.appendChild(info);
-
-          var actions = document.createElement('div');
-          actions.className = 'actions';
-
-          var editBtn = document.createElement('button');
-          editBtn.className = 'btn btn-outline';
-          editBtn.textContent = 'Өзгерту';
-          editBtn.addEventListener('click', function() { startEdit(p); });
-          actions.appendChild(editBtn);
-
-          var delBtn = document.createElement('button');
-          delBtn.className = 'btn btn-danger';
-          delBtn.textContent = 'Өшіру';
-          delBtn.addEventListener('click', async function() {
-            if (!confirm('Өнімді жою ғой?')) return;
-            try {
-              var res = await fetch('/api/products?id=' + p.id, { method: 'DELETE' });
-              if (!res.ok) throw new Error('Failed');
-              await refreshList();
-            } catch(e) {
-              alert('Қате: ' + (e.message || e));
-            }
-          });
-          actions.appendChild(delBtn);
-
-          div.appendChild(actions);
-          productsContainer.appendChild(div);
+          div.innerHTML = `
+            <img src="${imgs[0] || ''}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23eee%22 width=%2280%22 height=%2280%22/></svg>'">
+            <div class="info">
+              <div class="name">${escapeHtml(p.name)}</div>
+              <div class="meta">${escapeHtml(p.category)} | ${imgs.length} сурет</div>
+              <div style="font-weight:bold">${Number(p.price).toLocaleString()} ₸</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-outline" onclick='editProduct(${JSON.stringify(p)})'>Өзгерту</button>
+              <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Өшіру</button>
+            </div>
+          `;
+          container.appendChild(div);
         });
       }
 
-      var editingId = null;
+      // SAVE / UPDATE
+      $('addProductBtn').onclick = async function() {
+        const payload = {
+          name: $('p_name').value,
+          description_kk: $('p_desc_kk').value,
+          description_ru: $('p_desc_ru').value,
+          price: Number($('p_price').value),
+          category: $('p_category').value,
+          image_url: JSON.stringify(currentImages), // Store as array
+          sizes: JSON.stringify($('p_sizes').value.split(',').map(s => s.trim()))
+        };
 
-      function startEdit(p) {
+        const method = editingId ? 'PUT' : 'POST';
+        if(editingId) payload.id = editingId;
+
+        const res = await fetch('/api/products', {
+          method: method,
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        if(res.ok) {
+          alert('Сәтті!');
+          location.reload();
+        }
+      };
+
+      window.editProduct = (p) => {
         editingId = p.id;
-        document.getElementById('p_name').value = p.name || '';
-        document.getElementById('p_desc_kk').value = p.description_kk || '';
-        document.getElementById('p_desc_ru').value = p.description_ru || '';
-        document.getElementById('p_price').value = p.price || '';
-        document.getElementById('p_category').value = p.category || 'dresses';
-        var sizes = [];
-        try { sizes = JSON.parse(p.sizes || '[]'); } catch(e) {}
-        document.getElementById('p_sizes').value = Array.isArray(sizes) ? sizes.join(',') : '';
-        imageUrlInput.value = p.image_url || '';
-        if (p.image_url) {
-          uploadPreview.src = p.image_url;
-          uploadPreview.style.display = 'block';
-          uploadPlaceholder.style.display = 'none';
-          previewImg.src = p.image_url;
-          previewImg.style.display = 'block';
+        $('p_name').value = p.name;
+        $('p_price').value = p.price;
+        $('p_category').value = p.category;
+        $('p_desc_kk').value = p.description_kk || '';
+        $('p_desc_ru').value = p.description_ru || '';
+        
+        try { 
+          currentImages = JSON.parse(p.image_url || '[]'); 
+        } catch(e) { 
+          currentImages = p.image_url ? [p.image_url] : []; 
         }
-        previewName.textContent = p.name || '';
-        previewPrice.textContent = (p.price || '') + ' \u20B8';
-        addBtn.textContent = 'Сақтау / Сохранить';
-        addStatus.textContent = 'Өзгерту режимі — ID: ' + p.id;
-        addStatus.style.color = 'var(--accent)';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      addBtn.addEventListener('click', async function(e) {
-        if (!editingId) return; 
-
-        addStatus.textContent = 'Сақталуда...';
-        addStatus.style.color = 'var(--text-muted)';
+        
         try {
-          var name = document.getElementById('p_name').value.trim();
-          var desc_kk = document.getElementById('p_desc_kk').value.trim();
-          var desc_ru = document.getElementById('p_desc_ru').value.trim();
-          var price = Number(document.getElementById('p_price').value);
-          var category = document.getElementById('p_category').value;
-          var sizesStr = document.getElementById('p_sizes').value.trim();
-          var sizes = sizesStr ? sizesStr.split(',').map(function(s){ return s.trim(); }) : [];
-          var image_url = imageUrlInput.value;
+          const sz = JSON.parse(p.sizes || '[]');
+          $('p_sizes').value = Array.isArray(sz) ? sz.join(',') : sz;
+        } catch(e) {}
 
-          var res = await fetch('/api/products', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: editingId,
-              name: name,
-              description_kk: desc_kk,
-              description_ru: desc_ru,
-              price: price,
-              category: category,
-              image_url: image_url,
-              sizes: JSON.stringify(sizes)
-            })
-          });
-          var data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Failed');
+        updateImageUI();
+        $('addProductBtn').textContent = 'Сақтау / Сохранить';
+        window.scrollTo(0,0);
+      };
 
-          addStatus.textContent = 'Сақталды!';
-          addStatus.style.color = '#2e7d32';
-          editingId = null;
-          addBtn.textContent = 'Қосу / Добавить';
-          clearForm();
-          await refreshList();
-        } catch(err) {
-          addStatus.textContent = 'Қате: ' + (err.message || err);
-          addStatus.style.color = '#c62828';
-        }
-      });
+      window.deleteProduct = async (id) => {
+        if(!confirm('Жоюды растайсыз ба?')) return;
+        await fetch('/api/products?id=' + id, { method: 'DELETE' });
+        refreshList();
+      };
+
+      $('clearFormBtn').onclick = () => location.reload();
+      
+      // Live Preview for Text
+      $('p_name').oninput = (e) => $('previewName').textContent = e.target.value;
+      $('p_price').oninput = (e) => $('previewPrice').textContent = e.target.value + ' ₸';
 
     })();
   </script>
