@@ -33,12 +33,11 @@
     /* Sidebar */
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 55; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .overlay.active { opacity: 1; pointer-events: auto; }
-    #sidebar { position: fixed; left: -280px; top: 0; width: 260px; height: 100%; background: var(--card); padding: 30px 20px; transition: left 0.3s ease; z-index: 60; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+    #sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: var(--card); padding: 30px 10px; transition: left 0.3s ease; z-index: 60; box-shadow: 4px 0 20px rgba(0,0,0,0.1); overflow-y: auto; }
     #sidebar.active { left: 0; }
-    #sidebar h3 { margin: 0 0 24px; font-size: 18px; color: var(--accent); }
+    #sidebar h3 { margin: 0 0 20px 14px; font-size: 18px; color: var(--accent); }
     #sidebar ul { list-style: none; padding: 0; margin: 0; }
-    #sidebar ul li { margin: 4px 0; }
-    #sidebar a { text-decoration: none; color: var(--text); font-size: 15px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius); transition: var(--transition); }
+    #sidebar a { text-decoration: none; color: var(--text); font-size: 14px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius); transition: var(--transition); }
     #sidebar a:hover { background: var(--accent-light); color: var(--accent); }
 
     /* Hero */
@@ -48,6 +47,12 @@
     .hero p { font-size: 17px; color: rgba(255,255,255,0.85); margin: 0 0 28px; }
     .hero-btn { display: inline-block; padding: 14px 32px; background: #fff; color: #111; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,0,0,0.3); }
+
+    /* Categories Quick Links */
+    .cat-nav { display: flex; gap: 10px; overflow-x: auto; padding: 20px 30px; scrollbar-width: none; }
+    .cat-nav::-webkit-scrollbar { display: none; }
+    .cat-chip { padding: 8px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; white-space: nowrap; text-decoration: none; color: var(--text); font-size: 13px; font-weight: 600; transition: var(--transition); }
+    .cat-chip:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
 
     /* Products */
     .section-title { text-align: center; margin: 40px 0 8px; font-size: 26px; font-weight: 700; }
@@ -65,11 +70,10 @@
     /* Footer */
     footer { padding: 30px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--card); font-size: 14px; }
     footer a.ig-link { display: inline-flex; align-items: center; gap: 6px; margin: 0 10px; color: var(--accent); text-decoration: none; font-weight: 600; }
-    footer a.ig-link:hover { opacity: 0.7; }
 
     /* Search */
     .search-input { padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border); width: 160px; transition: var(--transition); font-size: 13px; background: var(--bg); }
-    .search-input:focus { width: 220px; border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-light); }
+    .search-input:focus { width: 220px; border-color: var(--accent); outline: none; }
 
     @media (max-width: 700px) {
       .center h1 { font-size: 16px; }
@@ -77,11 +81,8 @@
       .hero { padding: 60px 16px 50px; }
       .hero h2 { font-size: 28px; }
       .search-input { width: 100px; }
-      .search-input:focus { width: 140px; }
       .header-btn { padding: 6px 10px; font-size: 12px; }
-      .product-card img { height: 200px; }
     }
-    @media (min-width: 1200px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
   </style>
 </head>
 <body>
@@ -104,16 +105,34 @@
     <h3>Soul Store</h3>
     <ul>
       <li><a href='index.html'>&#127968; Басты бет</a></li>
-      <li><a href='dresses.html'>&#128087; Көйлектер</a></li>
-      <li><a href='hijabs.html'>&#129525; Орамалдар</a></li>
+      <li><a href='dresses.html'>&#128087; Көйлектер (Dresses)</a></li>
+      <li><a href='hijabs.html'>&#129525; Орамалдар (Hijabs)</a></li>
+      <li><a href='underwear.html'>&#128089; Іш киім (Underwear)</a></li>
+      <li><a href='suits.html'>&#129509; Костюмдер (Suits)</a></li>
+      <li><a href='sweaters.html'>&#129505; Кофталар (Sweaters)</a></li>
+      <li><a href='pants.html'>&#128069; Штандар (Pants)</a></li>
+      <li><a href='jeans.html'>&#128110; Джинсылар (Jeans)</a></li>
+      <li><a href='jackets.html'>&#129507; Пиджактар (Jackets)</a></li>
+      <li><a href='sundresses.html'>&#128087; Сарафандар (Sundresses)</a></li>
+      <li><a href='skirts.html'>&#128087; Юбкалар (Skirts)</a></li>
     </ul>
   </nav>
 
   <section class="hero">
-    <h2>2025 Жаңа Коллекция</h2>
-    <p>Әйелдерге арналған сәнді көйлектер мен орамалдар</p>
-    <a class='hero-btn' href='dresses.html'>Көйлектерді көру</a>
+    <h2>2026 Жаңа Коллекция</h2>
+    <p>Әйелдерге арналған сәнді киімдер мен аксессуарлар</p>
+    <a class='hero-btn' href='dresses.html'>Барлық тауарлар</a>
   </section>
+
+  <nav class="cat-nav">
+    <a href="dresses.html" class="cat-chip">Көйлектер</a>
+    <a href="hijabs.html" class="cat-chip">Орамалдар</a>
+    <a href="underwear.html" class="cat-chip">Іш киім</a>
+    <a href="suits.html" class="cat-chip">Костюмдер</a>
+    <a href="sweaters.html" class="cat-chip">Кофталар</a>
+    <a href="pants.html" class="cat-chip">Штандар</a>
+    <a href="jeans.html" class="cat-chip">Джинсылар</a>
+  </nav>
 
   <section>
     <h3 class="section-title">Таңдаулы тауарлар</h3>
@@ -128,15 +147,10 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         @soul_store.kz
       </a>
-      <a href="https://www.instagram.com/musylman_kiyimi_astana" target="_blank" rel="noopener" class="ig-link">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        @musylman_kiyimi_astana
-      </a>
     </div>
-    &copy; 2025 Soul Store &mdash; Әйелдер киімі дүкені
+    &copy; 2026 Soul Store &mdash; Әйелдер киімі дүкені
   </footer>
 
-  <!-- Firebase Auth -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
@@ -183,7 +197,7 @@
           renderProducts(allProducts);
         } catch(e){
           console.error('Error loading products', e);
-          $('productList').innerHTML = '<p style="text-align:center;color:#c62828;padding:30px;grid-column:1/-1">Қате: ' + (e.message || 'Тауарларды жүктеу мүмкін болмады') + '</p>';
+          $('productList').innerHTML = '<p style="text-align:center;color:#c62828;padding:30px;grid-column:1/-1">Қате орын алды</p>';
         } finally {
           $('loading').style.display = 'none';
         }
@@ -202,7 +216,6 @@
         }));
       });
 
-      // Cart count
       function updateCartCount(){
         var cart = JSON.parse(localStorage.getItem('cart') || '[]');
         var total = 0;
@@ -213,22 +226,18 @@
       updateCartCount();
       window.addEventListener('storage', function(e){ if(e.key === 'cart') updateCartCount(); });
 
-      // Sidebar
       var menuBtn = $('menuBtn'), sidebar = $('sidebar'), overlay = $('overlay');
       menuBtn.addEventListener('click', function(){ sidebar.classList.toggle('active'); overlay.classList.toggle('active'); });
       overlay.addEventListener('click', function(){ sidebar.classList.remove('active'); overlay.classList.remove('active'); });
 
-      // Cart
       $('cart-icon').addEventListener('click', function(){ location.href = 'cart.html'; });
 
-      // Auth buttons
       $('loginBtn').addEventListener('click', function(){ location.href = 'login.html'; });
       $('signupBtn').addEventListener('click', function(){ location.href = 'signup.html'; });
       $('logoutBtn').addEventListener('click', function(){
         firebase.auth().signOut().then(function(){ location.reload(); });
       });
 
-      // Auth state
       function setupAuth(){
         if(typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
           setTimeout(setupAuth, 200);
@@ -253,8 +262,6 @@
         });
       }
       setupAuth();
-
-      window.reloadProducts = loadProducts;
     })();
   </script>
 </body>
