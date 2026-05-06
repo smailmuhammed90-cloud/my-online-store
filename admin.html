@@ -1,7 +1,4 @@
-
-Copy
-
-<!doctype html>
+\<!doctype html>
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
@@ -151,26 +148,25 @@ Copy
           document.getElementById('galleryPreview').innerHTML = '';
  
           fileGroup.promise().then(function(groupInfo) {
-            console.log('=== groupInfo ===', groupInfo);
-            console.log('keys:', Object.keys(groupInfo));
-            console.log('cdnUrl:', groupInfo.cdnUrl);
-            console.log('count:', groupInfo.count ? groupInfo.count() : 'no count fn');
- 
-            // Try to extract file count from cdnUrl
-            // Uploadcare group CDN URLs look like: https://ucarecdn.com/GROUP_ID~3/
-            // The number after ~ is the file count
+            // cdnUrl looks like: https://ucarecdn.com/GROUP_ID~3/
+            // The ~3 tells us there are 3 files. Use nth/0/, nth/1/ etc. to get each one.
             var cdnUrl = groupInfo.cdnUrl || '';
-            var match = cdnUrl.match(/~(\d+)\/$/);
+            var match = cdnUrl.match(/~(\d+)\/?$/);
             var count = match ? parseInt(match[1]) : 0;
  
-            console.log('count from URL:', count);
+            if (count === 0) {
+              document.getElementById('uploadPlaceholder').textContent = '❌ Сурет табылмады, қайта көріңіз';
+              document.getElementById('uploadPlaceholder').style.display = 'block';
+              return;
+            }
  
             currentImages = [];
             for (var i = 0; i < count; i++) {
-              currentImages.push(cdnUrl + 'nth/' + i + '/');
+              // Make sure cdnUrl ends with /
+              var base = cdnUrl.endsWith('/') ? cdnUrl : cdnUrl + '/';
+              currentImages.push(base + 'nth/' + i + '/');
             }
  
-            console.log('currentImages:', currentImages);
             updateImageUI();
             document.getElementById('uploadPlaceholder').textContent =
               '✅ ' + currentImages.length + ' сурет жүктелді';
