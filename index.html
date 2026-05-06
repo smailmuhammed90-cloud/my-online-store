@@ -110,6 +110,7 @@
       <li><a href='underwear.html'>&#128089; Іш киім (Underwear)</a></li>
       <li><a href='suits.html'>&#129509; Костюмдер (Suits)</a></li>
       <li><a href='sweaters.html'>&#129505; Кофталар (Sweaters)</a></li>
+      <li><a href='shirts.html'>&#128083; Рубашкалар (Shirts)</a></li>
       <li><a href='pants.html'>&#128069; Штандар (Pants)</a></li>
       <li><a href='jeans.html'>&#128110; Джинсылар (Jeans)</a></li>
       <li><a href='jackets.html'>&#129507; Пиджактар (Jackets)</a></li>
@@ -130,8 +131,12 @@
     <a href="underwear.html" class="cat-chip">Іш киім</a>
     <a href="suits.html" class="cat-chip">Костюмдер</a>
     <a href="sweaters.html" class="cat-chip">Кофталар</a>
+    <a href="shirts.html" class="cat-chip">Рубашкалар</a>
     <a href="pants.html" class="cat-chip">Штандар</a>
     <a href="jeans.html" class="cat-chip">Джинсылар</a>
+    <a href="jackets.html" class="cat-chip">Пиджактар</a>
+    <a href="sundresses.html" class="cat-chip">Сарафандар</a>
+    <a href="skirts.html" class="cat-chip">Юбкалар</a>
   </nav>
 
   <section>
@@ -172,8 +177,7 @@
         list.forEach(function(p) {
           var name = p.name || '—';
           var price = p.price;
-          
-          // Image extraction logic updated for arrays/JSON
+
           var img = '';
           if (Array.isArray(p.images) && p.images.length > 0) {
             img = p.images[0];
