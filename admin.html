@@ -172,7 +172,7 @@
             var json = await res.json();
 
             if (json.file) {
-              var url = 'https://ucarecdn.com/' + json.file + '/';
+              var url = 'https://248uyxjgu2.ucarecd.net/' + json.file + '/';
               currentImages.push(url);
 
               // Show thumbnail immediately as each one finishes
@@ -254,6 +254,7 @@
             '<img src="' + (imgs[0] || '') + '" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">' +
             '<div style="flex:1"><b>' + p.name + '</b><br><small>' + p.category + ' | ' + imgs.length + ' сурет</small></div>' +
             '<button class="btn btn-outline" style="font-size:12px" onclick=\'editProduct(' + JSON.stringify(JSON.stringify(p)) + ')\'>Өзгерту</button>';
+
           container.appendChild(div);
         });
       }
