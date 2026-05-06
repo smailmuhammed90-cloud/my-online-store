@@ -28,11 +28,12 @@
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-outline { background: var(--card); border: 1px solid var(--border); }
     
-    /* Upload Gallery Area */
-    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; min-height: 80px; }
+    .upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 14px; transition: 0.2s; min-height: 80px; overflow: visible; }
     .upload-area:hover { border-color: var(--accent); background: #fafafa; }
     .img-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center; }
-    .img-gallery img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block; background: #eee; }
+    .img-gallery img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid var(--border); display: block !important; flex-shrink: 0; }
+    #galleryPreview img { width: 80px !important; height: 80px !important; object-fit: cover !important; border-radius: 8px; border: 1px solid #ddd; display: inline-block !important; }
+    #previewGallery img { width: 50px !important; height: 50px !important; object-fit: cover !important; border-radius: 6px; cursor: pointer; }
     .main-preview { width: 100%; max-height: 350px; object-fit: cover; border-radius: var(--radius); display: none; }
     .product-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border); }
     .product-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
@@ -95,7 +96,7 @@
             <label>Суреттер (Бірнешеуін таңдаңыз)</label>
             <div class="upload-area" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
               <div id="uploadPlaceholder">🖼️ Суреттерді жүктеу үшін басыңыз</div>
-              <div id="galleryPreview" class="img-gallery"></div>
+              <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:center;min-height:0;"></div>
             </div>
             <input type="file" id="fileInput" multiple accept="image/*" style="display:none" />
             <div id="uploadProgress" style="font-size:13px; color:#666; margin-top:6px;"></div>
@@ -178,7 +179,7 @@
               // Show thumbnail immediately as each one finishes
               var img = document.createElement('img');
               img.src = url;
-              img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #ddd;';
+              img.style.cssText = 'width:80px !important;height:80px !important;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:inline-block;flex-shrink:0;';
               gallery.appendChild(img);
             }
 
