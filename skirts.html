@@ -16,7 +16,7 @@
     }
     body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
     .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
-    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; }
+    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-block; }
     .back-btn:hover { background: var(--accent-dark); }
     .topbar-title { font-weight: 700; font-size: 16px; }
     .page-header { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #222 0%, #111 50%, #000 100%); position: relative; }
@@ -29,13 +29,15 @@
     .product-card img { width: 100%; height: 300px; object-fit: cover; display: block; background: #eee; }
     .product-card .card-body { padding: 16px; }
     .product-card h3 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
+    .product-card p { color: var(--text-muted); margin: 0 0 10px; font-size: 13px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .price { font-weight: 700; color: var(--accent); font-size: 18px; }
     .empty { text-align: center; color: var(--text-muted); padding: 50px 20px; font-size: 16px; grid-column: 1 / -1; }
     footer { padding: 30px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--card); font-size: 14px; }
     #loading { text-align: center; padding: 40px; color: var(--text-muted); }
     #cart-icon { cursor: pointer; position: relative; font-size: 22px; padding: 4px 8px; margin-left: auto; }
     #cart-count { background: var(--accent); color: white; font-size: 11px; font-weight: 700; border-radius: 50%; width: 20px; height: 20px; display: none; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
-    @media (max-width: 700px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .product-card img { height: 220px; } }
+    @media (max-width: 700px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .page-header { padding: 40px 20px; } .page-header h1 { font-size: 28px; } .product-card img { height: 220px; } }
+    @media (min-width: 1200px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
   </style>
 </head>
 <body>
@@ -56,33 +58,47 @@
     <div id="emptyHint" class="empty" style="display:none">Юбкалар табылмады</div>
   </main>
 
-  <footer>&copy; 2026 Soul Store — Әйелдер киімі дүкені</footer>
+  <footer>&copy; 2026 Soul Store &mdash; Әйелдер киімі дүкені</footer>
 
   <script>
     (function(){
-      const grid = document.getElementById('products');
-      const emptyHint = document.getElementById('emptyHint');
-      const loading = document.getElementById('loading');
+      var grid = document.getElementById('products');
+      var emptyHint = document.getElementById('emptyHint');
+      var loading = document.getElementById('loading');
 
-      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'>':">",'"':'&quot;',"'":'&#39;'}[c]; }); }
 
-      async function loadSkirts() {
+      function getFirstImage(image_url) {
+        if (!image_url) return '';
+        try {
+          var parsed = JSON.parse(image_url);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+          return image_url;
+        } catch(e) {
+          return image_url;
+        }
+      }
+
+      async function loadProducts() {
         loading.style.display = 'block';
         grid.innerHTML = '';
         try {
-          const res = await fetch('/api/products?category=skirts');
-          const data = await res.json();
+          var res = await fetch('/api/products?category=skirts');
+          var data = await res.json();
           if(!res.ok) throw new Error(data.error || 'Failed to load');
           if (!data || data.length === 0) { emptyHint.style.display = ''; return; }
           emptyHint.style.display = 'none';
           data.forEach(function(p) {
+            var img = getFirstImage(p.image_url);
+            var desc = p.description_kk || p.description || '';
             var card = document.createElement('div');
             card.className = 'product-card';
             card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
             card.innerHTML =
-              '<img src="' + escapeHtml(p.image_url) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>👗</text></svg>\'" loading="lazy">' +
+              '<img src="' + escapeHtml(img) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>&#128087;</text></svg>\'" loading="lazy">' +
               '<div class="card-body">' +
                 '<h3>' + escapeHtml(p.name) + '</h3>' +
+                (desc ? '<p>' + escapeHtml(desc) + '</p>' : '') +
                 '<div class="price">' + Number(p.price).toLocaleString() + ' &#8376;</div>' +
               '</div>';
             grid.appendChild(card);
@@ -94,20 +110,14 @@
           loading.style.display = 'none';
         }
       }
-      loadSkirts();
-    })();
-  </script>
-  <script>
-    (function(){
+      loadProducts();
+
       function updateCartCount() {
         var cart = JSON.parse(localStorage.getItem('cart') || '[]');
         var total = 0;
         cart.forEach(function(item){ total += (item.quantity || 1); });
         var el = document.getElementById('cart-count');
-        if(el) {
-          el.textContent = total;
-          el.style.display = total > 0 ? 'flex' : 'none';
-        }
+        if(el) { el.textContent = total; el.style.display = total > 0 ? 'flex' : 'none'; }
       }
       updateCartCount();
     })();
