@@ -18,7 +18,12 @@
     .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); }
     .back-btn:hover { background: var(--accent-dark); }
     .product-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px 30px; }
-    .product-image img { width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .product-image { display: flex; flex-direction: column; }
+    .product-image img#main-image { width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .thumbnails { display: flex; gap: 10px; margin-top: 16px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: thin; }
+    .thumbnail { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: var(--transition); opacity: 0.6; }
+    .thumbnail:hover { opacity: 1; }
+    .thumbnail.active { border-color: var(--accent); opacity: 1; }
     .product-details { padding: 10px 0; }
     .product-name { font-size: 30px; font-weight: 800; margin: 0 0 12px; }
     .product-price { font-size: 28px; color: var(--accent); font-weight: 700; margin: 0 0 24px; }
@@ -56,6 +61,7 @@
   <div class="product-container">
     <div class="product-image">
       <img id="main-image" src="" alt="">
+      <div id="thumbnails" class="thumbnails"></div>
     </div>
     <div class="product-details">
       <h1 id="product-name" class="product-name"></h1>
@@ -131,10 +137,44 @@
           productData = responseData;
           document.getElementById('product-name').textContent = productData.name || '';
           document.getElementById('product-price').textContent = (productData.price || 0).toLocaleString() + ' \u20B8';
+          
+          // Updated Image handling for Gallery
+          var images = [];
+          if (Array.isArray(productData.images)) { images = productData.images; }
+          else if (Array.isArray(productData.imageUrls)) { images = productData.imageUrls; }
+          else if (productData.image_url) {
+            try {
+              var parsed = JSON.parse(productData.image_url);
+              images = Array.isArray(parsed) ? parsed : [productData.image_url];
+            } catch(e) {
+              images = [productData.image_url];
+            }
+          }
+
           var imgEl = document.getElementById('main-image');
-          imgEl.src = productData.image_url || '';
-          imgEl.alt = escapeHtml(productData.name);
+          var thumbsContainer = document.getElementById('thumbnails');
+
+          imgEl.alt = escapeHtml(productData.name || '');
           imgEl.onerror = function(){ this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22><rect fill=%22%23f0f0f0%22 width=%22400%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2280%22>\uD83D\uDC57</text></svg>'; };
+
+          if (images.length > 0) {
+            imgEl.src = images[0];
+            thumbsContainer.innerHTML = '';
+            images.forEach(function(src, index) {
+              var thumb = document.createElement('img');
+              thumb.src = src;
+              thumb.className = 'thumbnail' + (index === 0 ? ' active' : '');
+              thumb.onclick = function() {
+                imgEl.src = src;
+                document.querySelectorAll('.thumbnail').forEach(function(t){ t.classList.remove('active'); });
+                thumb.classList.add('active');
+              };
+              thumbsContainer.appendChild(thumb);
+            });
+          } else {
+            imgEl.src = '';
+          }
+
           updateDescription();
           renderSizes();
         } catch (err) {
@@ -191,11 +231,25 @@
       document.getElementById('add-to-cart').onclick = function() {
         if (!productData) return;
         if (!selectedSize) { alert('Өлшем таңдаңыз / Выберите размер'); return; }
+        
+        // Use the first image for the cart thumbnail
+        var cartImage = '';
+        var images = [];
+        if (Array.isArray(productData.images)) { images = productData.images; }
+        else if (Array.isArray(productData.imageUrls)) { images = productData.imageUrls; }
+        else if (productData.image_url) {
+          try {
+            var parsed = JSON.parse(productData.image_url);
+            images = Array.isArray(parsed) ? parsed : [productData.image_url];
+          } catch(e) { images = [productData.image_url]; }
+        }
+        if (images.length > 0) { cartImage = images[0]; }
+
         var cartItem = {
           id: productId,
           name: productData.name || '',
           price: productData.price || 0,
-          image: productData.image_url || '',
+          image: cartImage,
           size: selectedSize,
           quantity: 1
         };
