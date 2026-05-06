@@ -1,4 +1,7 @@
-\<!doctype html>
+
+Copy
+
+<!doctype html>
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
@@ -137,29 +140,45 @@
       let currentImages = [];
       let editingId = null;
  
-      // 1. UPLOADCARE LOGIC — FIXED
+      // 1. UPLOADCARE — debug what groupInfo contains
       document.getElementById('uploadBtn').onclick = function() {
         uploadcare.openDialog(null, {
           multiple: true,
-          imagesOnly: true,
-          crop: 'free'
+          imagesOnly: true
         }).done(function(fileGroup) {
+ 
           document.getElementById('uploadPlaceholder').textContent = "Жүктелуде... күте тұрыңыз";
+          document.getElementById('galleryPreview').innerHTML = '';
  
-          // ✅ FIX: Call .files() directly on the fileGroup (not on groupInfo inside .promise())
-          // fileGroup.promise() resolves to groupInfo which has no .files() method reliably.
-          // Instead, use fileGroup.files() immediately — these are already tracked file objects.
-          var filePromises = fileGroup.files().map(function(file) {
-            return file.promise();
-          });
+          fileGroup.promise().then(function(groupInfo) {
+            console.log('=== groupInfo ===', groupInfo);
+            console.log('keys:', Object.keys(groupInfo));
+            console.log('cdnUrl:', groupInfo.cdnUrl);
+            console.log('count:', groupInfo.count ? groupInfo.count() : 'no count fn');
  
-          Promise.all(filePromises).then(function(resolvedFiles) {
-            currentImages = resolvedFiles.map(function(f) { return f.cdnUrl; });
+            // Try to extract file count from cdnUrl
+            // Uploadcare group CDN URLs look like: https://ucarecdn.com/GROUP_ID~3/
+            // The number after ~ is the file count
+            var cdnUrl = groupInfo.cdnUrl || '';
+            var match = cdnUrl.match(/~(\d+)\/$/);
+            var count = match ? parseInt(match[1]) : 0;
+ 
+            console.log('count from URL:', count);
+ 
+            currentImages = [];
+            for (var i = 0; i < count; i++) {
+              currentImages.push(cdnUrl + 'nth/' + i + '/');
+            }
+ 
+            console.log('currentImages:', currentImages);
             updateImageUI();
-            document.getElementById('uploadPlaceholder').textContent = "Суреттер жүктелді ✅ (" + currentImages.length + " сурет)";
+            document.getElementById('uploadPlaceholder').textContent =
+              '✅ ' + currentImages.length + ' сурет жүктелді';
+ 
           }).catch(function(err) {
-            console.error('Upload error:', err);
-            document.getElementById('uploadPlaceholder').textContent = "Қате! Қайта көріңіз ❌";
+            console.error('Uploadcare error:', err);
+            document.getElementById('uploadPlaceholder').textContent = '❌ Қате! Қайта көріңіз';
+            document.getElementById('uploadPlaceholder').style.display = 'block';
           });
         });
       };
