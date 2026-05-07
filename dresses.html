@@ -43,13 +43,13 @@
 <body>
   <div class="topbar">
     <a class="back-btn" href="index.html">&larr; Артқа</a>
-    <div class="topbar-title">Көйлектер &mdash; Soul Store</div>
+    <div class="topbar-title">Көйлектер — Soul Store</div>
     <div id="cart-icon" onclick="location.href='cart.html'" aria-label="Cart">&#128722; <span id="cart-count">0</span></div>
   </div>
 
   <header class="page-header">
     <h1>Көйлектер</h1>
-    <p>Каталог &mdash; Dresses</p>
+    <p>Каталог — Dresses</p>
   </header>
 
   <main>
@@ -61,12 +61,16 @@
   <footer>&copy; 2026 Soul Store &mdash; Әйелдер киімі дүкені</footer>
 
   <script>
-    (function(){
+    (function() {
       var grid = document.getElementById('products');
       var emptyHint = document.getElementById('emptyHint');
       var loading = document.getElementById('loading');
 
-      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'>':">",'"':'&quot;',"'":'&#39;'}[c]; }); }
+      function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, function(c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
 
       function getFirstImage(image_url) {
         if (!image_url) return '';
@@ -85,7 +89,7 @@
         try {
           var res = await fetch('/api/products?category=dresses');
           var data = await res.json();
-          if(!res.ok) throw new Error(data.error || 'Failed to load');
+          if (!res.ok) throw new Error(data.error || 'Failed to load');
           if (!data || data.length === 0) { emptyHint.style.display = ''; return; }
           emptyHint.style.display = 'none';
           data.forEach(function(p) {
@@ -93,17 +97,17 @@
             var desc = p.description_kk || p.description || '';
             var card = document.createElement('div');
             card.className = 'product-card';
-            card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
-            card.innerHTML =
-              '<img src="' + escapeHtml(img) + '" alt="' + escapeHtml(p.name) + '" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f0f0f0%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23111%22 font-size=%2240%22>&#128087;</text></svg>\'" loading="lazy">' +
-              '<div class="card-body">' +
-                '<h3>' + escapeHtml(p.name) + '</h3>' +
-                (desc ? '<p>' + escapeHtml(desc) + '</p>' : '') +
-                '<div class="price">' + Number(p.price).toLocaleString() + ' &#8376;</div>' +
-              '</div>';
+            card.onclick = function() { location.href = 'product.html?id=' + p.id; };
+            var cardHtml = '<img src="' + escapeHtml(img) + '" alt="' + escapeHtml(p.name) + '" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 200\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'200\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23111\' font-size=\'40\'>&#128087;</text></svg>'">';
+            cardHtml += '<div class="card-body">';
+            cardHtml += '<h3>' + escapeHtml(p.name) + '</h3>';
+            if (desc) cardHtml += '<p>' + escapeHtml(desc) + '</p>';
+            cardHtml += '<div class="price">' + Number(p.price).toLocaleString() + ' &#8376;</div>';
+            cardHtml += '</div>';
+            card.innerHTML = cardHtml;
             grid.appendChild(card);
           });
-        } catch (e) {
+        } catch(e) {
           console.error('Error', e);
           grid.innerHTML = '<div class="empty">Қате пайда болды / Произошла ошибка</div>';
         } finally {
@@ -115,9 +119,9 @@
       function updateCartCount() {
         var cart = JSON.parse(localStorage.getItem('cart') || '[]');
         var total = 0;
-        cart.forEach(function(item){ total += (item.quantity || 1); });
+        cart.forEach(function(item) { total += (item.quantity || 1); });
         var el = document.getElementById('cart-count');
-        if(el) { el.textContent = total; el.style.display = total > 0 ? 'flex' : 'none'; }
+        if (el) { el.textContent = total; el.style.display = total > 0 ? 'flex' : 'none'; }
       }
       updateCartCount();
     })();
