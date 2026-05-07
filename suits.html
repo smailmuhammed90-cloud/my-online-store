@@ -4,97 +4,343 @@
   <meta charset="utf-8" />
   <title>Костюмдер — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧥</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕴️</text></svg>" />
   <style>
+    /* Premium Theme Definitions */
     *, *::before, *::after { box-sizing: border-box; }
     :root {
-      --accent: #111; --accent-dark: #000; --accent-light: #e8e8e8;
-      --text: #111; --text-muted: #666; --bg: #f5f5f5; --card: #fff;
-      --border: #ddd; --shadow: 0 4px 20px rgba(0,0,0,0.06);
-      --radius: 12px; --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+      --accent: #111;
+      --accent-dark: #000;
+      --bg: #f8f8f8;
+      --card: #ffffff;
+      --border: #e2e2e2;
+      --text-main: #1a1a1a;
+      --text-muted: #717171;
+      --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+      --radius: 16px;
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
-    .topbar { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
-    .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: var(--transition); text-decoration: none; display: inline-block; }
-    .back-btn:hover { background: var(--accent-dark); transform: translateX(-2px); }
-    .topbar-title { font-weight: 700; font-size: 16px; flex: 1; }
-    .page-header { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #222 0%, #111 50%, #000 100%); position: relative; color: white; }
-    .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background: linear-gradient(to top, var(--bg), transparent); }
-    .page-header h1 { font-size: 36px; margin: 0 0 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-    .page-header p { font-size: 16px; opacity: 0.8; margin: 0; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; padding: 30px; max-width: 1200px; margin: 0 auto; }
-    .product-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); cursor: pointer; border: 1px solid var(--border); display: flex; flex-direction: column; }
-    .product-card:hover { transform: translateY(-6px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-    .product-card img { width: 100%; height: 320px; object-fit: cover; display: block; background: #eee; }
-    .product-card .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-    .product-card h3 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
-    .product-card p { color: var(--text-muted); margin: 0 0 12px; font-size: 13px; line-height: 1.4; flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-    .price { font-weight: 700; color: var(--accent); font-size: 18px; }
-    #cart-icon { cursor: pointer; position: relative; font-size: 22px; padding: 4px 8px; }
-    #cart-count { background: #ff3b30; color: white; font-size: 10px; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; position: absolute; top: -2px; right: -2px; border: 2px solid white; }
-    #loading { text-align: center; padding: 60px; font-weight: 500; color: var(--text-muted); }
-    .empty { text-align: center; color: var(--text-muted); padding: 80px 20px; font-size: 16px; grid-column: 1 / -1; }
-    footer { padding: 40px 20px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--card); font-size: 14px; margin-top: 40px; }
-    @media (max-width: 700px) { .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; } .product-card img { height: 240px; } .page-header h1 { font-size: 26px; } }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navigation Bar */
+    .nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+    .back-link:hover { opacity: 0.7; transform: translateX(-3px); }
+
+    .cart-trigger {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #ff3b30;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    /* Hero Section */
+    .hero-banner {
+      background: #000;
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+    .hero-banner p {
+      margin: 10px 0 0;
+      opacity: 0.6;
+      font-size: 16px;
+      letter-spacing: 2px;
+    }
+
+    /* Product Grid */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    /* Product Card with "Pop-up" Image effect */
+    .product-item {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .product-item:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+      border-color: #000;
+    }
+
+    .image-container {
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #f0f0f0;
+      position: relative;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      opacity: 0; /* Starts hidden for fade-in */
+    }
+
+    .product-item:hover .product-img {
+      transform: scale(1.08);
+    }
+
+    .product-info {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-info h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .product-info p {
+      margin: 0 0 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price-tag {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    /* Loading and Empty States */
+    #loader {
+      display: flex;
+      justify-content: center;
+      padding: 100px 0;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0,0,0,0.1);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-msg {
+      text-align: center;
+      padding: 100px 20px;
+      grid-column: 1 / -1;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+      .container { padding: 0 10px 40px; }
+      .product-info { padding: 12px; }
+      .product-info h3 { font-size: 15px; }
+      .price-tag { font-size: 16px; }
+    }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <a class="back-btn" href="index.html">← Артқа</a>
-    <div class="topbar-title">Soul Store — Костюмдер</div>
-    <div id="cart-icon" onclick="location.href='cart.html'">🛒 <span id="cart-count">0</span></div>
-  </div>
-  <header class="page-header">
+
+  <nav class="nav-header">
+    <a href="index.html" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Артқа
+    </a>
+    <div style="font-weight: 900; letter-spacing: 1px; font-size: 18px;">SOUL STORE</div>
+    <div class="cart-trigger" onclick="location.href='cart.html'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+  </nav>
+
+  <header class="hero-banner">
     <h1>Костюмдер</h1>
-    <p>Catalog — Suits</p>
+    <p>SUIT COLLECTION</p>
   </header>
-  <main>
-    <div id="loading">Жүктелуде...</div>
-    <div id="products" class="products-grid"></div>
-    <div id="emptyHint" class="empty" style="display:none">Өнімдер табылмады</div>
+
+  <main class="container">
+    <div id="loader"><div class="spinner"></div></div>
+    <div id="productGrid" class="products-grid"></div>
   </main>
-  <footer>&copy; 2026 Soul Store</footer>
+
   <script>
-    (function() {
-      const category = 'suits';
-      const grid = document.getElementById('products');
-      const emptyHint = document.getElementById('emptyHint');
-      const loading = document.getElementById('loading');
+    const CATEGORY_NAME = 'suits';
+    const EMOJI_FALLBACK = '🕴️';
 
-      function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-      function getFirstImage(raw) { try { const p = JSON.parse(raw); return Array.isArray(p)?p[0]:raw; } catch(e) { return raw; } }
+    function parseImage(raw) {
+      if (!raw) return '';
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed[0] : raw;
+      } catch (e) {
+        return raw;
+      }
+    }
 
-      async function loadProducts() {
-        try {
-          const res = await fetch(`/api/products?category=${category}`);
-          const products = await res.json();
-          if (!products || products.length === 0) { emptyHint.style.display = 'block'; }
-          else {
-            products.forEach(p => {
-              const card = document.createElement('div');
-              card.className = 'product-card';
-              card.onclick = () => location.href = `product.html?id=${p.id}`;
-              card.innerHTML = `
-                <img src="${escapeHtml(getFirstImage(p.image_url))}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23eee%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2240%22%3E🧥%3C/text%3E%3C/svg%3E'">
-                <div class="card-body">
-                  <h3>${escapeHtml(p.name)}</h3>
-                  <p>${escapeHtml(p.description_kk || p.description || '')}</p>
-                  <div class="price">${Number(p.price).toLocaleString()} ₸</div>
-                </div>`;
-              grid.appendChild(card);
-            });
-          }
-        } catch (err) { grid.innerHTML = '<div class="empty">Қате орын алды</div>'; }
-        finally { loading.style.display = 'none'; }
+    function escape(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    async function init() {
+      const grid = document.getElementById('productGrid');
+      const loader = document.getElementById('loader');
+      const cartBadge = document.getElementById('cartBadge');
+
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (cart.length > 0) {
+        cartBadge.innerText = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        cartBadge.style.display = 'flex';
       }
-      function updateCart() {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const count = cart.reduce((s, i) => s + (i.quantity || 1), 0);
-        const el = document.getElementById('cart-count');
-        if (el) { el.textContent = count; el.style.display = count > 0 ? 'flex' : 'none'; }
+
+      try {
+        const response = await fetch(`/api/products?category=${CATEGORY_NAME}`);
+        if (!response.ok) throw new Error('Network error');
+        const products = await response.json();
+
+        loader.style.display = 'none';
+
+        if (!products || products.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-msg">
+              <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
+              <h3>Бұл бөлімде әзірге өнімдер жоқ</h3>
+              <p>Жақында жаңа топтамалар қосылады.</p>
+            </div>`;
+          return;
+        }
+
+        products.forEach(p => {
+          const imgUrl = parseImage(p.image_url);
+          const name = escape(p.name);
+          const desc = escape(p.description_kk || p.description);
+          const price = Number(p.price).toLocaleString('ru-RU');
+
+          const card = document.createElement('div');
+          card.className = 'product-item';
+          card.onclick = () => location.href = `product.html?id=${p.id}`;
+
+          card.innerHTML = `
+            <div class="image-container">
+              <img 
+                src="${imgUrl}" 
+                alt="${name}" 
+                class="product-img" 
+                onload="this.style.opacity='1'"
+                onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23eee%22/%3E%3Ctext x=%2250%25%22 y=%2255%25%22 font-size=%2250%22 text-anchor=%22middle%22%3E${EMOJI_FALLBACK}%3C/text%3E%3C/svg%3E'; this.style.opacity='1';"
+              >
+            </div>
+            <div class="product-info">
+              <h3>${name}</h3>
+              <p>${desc}</p>
+              <div class="product-footer">
+                <span class="price-tag">${price} ₸</span>
+                <div style="background: #f0f0f0; padding: 8px; border-radius: 50%;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error('Error loading products:', error);
+        loader.innerHTML = '<p>Жүктеу кезінде қате орын алды. Бетті жаңартып көріңіз.</p>';
       }
-      loadProducts(); updateCart();
-    })();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
