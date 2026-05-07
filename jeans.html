@@ -2,9 +2,9 @@
 <html lang="kk">
 <head>
   <meta charset="utf-8" />
-  <title>Штандар — Soul Store</title>
+  <title>Джинсылар — Soul Store</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Әйелдерге арналған штандар каталогы." />
+  <meta name="description" content="Әйелдерге арналған джинсылар каталогы." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👖</text></svg>" />
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -43,19 +43,19 @@
 <body>
   <div class="topbar">
     <a class="back-btn" href="index.html">&larr; Артқа</a>
-    <div class="topbar-title">Штандар — Soul Store</div>
+    <div class="topbar-title">Джинсылар — Soul Store</div>
     <div id="cart-icon" onclick="location.href='cart.html'" aria-label="Cart">&#128722; <span id="cart-count">0</span></div>
   </div>
 
   <header class="page-header">
-    <h1>Штандар</h1>
-    <p>Каталог — Pants</p>
+    <h1>Джинсылар</h1>
+    <p>Каталог — Jeans</p>
   </header>
 
   <main>
     <div id="products" class="products-grid"></div>
     <div id="loading">Жүктелуде...</div>
-    <div id="emptyHint" class="empty" style="display:none">Штандар табылмады</div>
+    <div id="emptyHint" class="empty" style="display:none">Джинсылар табылмады</div>
   </main>
 
   <footer>&copy; 2026 Soul Store &mdash; Әйелдер киімі дүкені</footer>
@@ -87,7 +87,7 @@
         loading.style.display = 'block';
         grid.innerHTML = '';
         try {
-          var res = await fetch('/api/products?category=pants');
+          var res = await fetch('/api/products?category=jeans');
           var data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Failed to load');
           if (!data || data.length === 0) { emptyHint.style.display = ''; return; }
