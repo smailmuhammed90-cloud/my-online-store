@@ -976,7 +976,7 @@
       }
       hint.textContent = results.length + ' ' + s.search_count;
       list.innerHTML = results.map(function(p) {
-        var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
+        var img = resolveImageUrl((p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '');
         var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
         var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
         return '<div class="search-result-item" role="button" tabindex="0"' +
@@ -1024,7 +1024,7 @@
         var idx  = cart.findIndex(function(x){ return x.id === id; });
         if (idx > -1) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; }
         else {
-          var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
+          var img = resolveImageUrl((p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '');
           cart.push({ id: id, name: p.name, price: p.price, image: img, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -1053,6 +1053,41 @@
         }
       }
       return Array.isArray(images) ? images.filter(Boolean) : [];
+    }
+
+    function extractUploadcareUuid(raw) {
+      if (!raw && raw !== 0) return '';
+      var s = String(raw).trim();
+
+      var match = s.match(/(?:app\.uploadcare\.com\/projects\/[^/]+\/files\/|ucarecdn\.com\/|ucarecd\.net\/)([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+      if (match) return match[1];
+
+      match = s.match(/\b([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\b/i);
+      return match ? match[1] : '';
+    }
+
+    function resolveImageUrl(raw) {
+      if (!raw && raw !== 0) return '';
+      var s = String(raw).trim();
+      if (!s) return '';
+
+      // If it is already a direct image or remote asset, keep it.
+      if (/^https?:\/\//i.test(s) && !/app\.uploadcare\.com\/projects\/[^/]+\/files\//i.test(s)) {
+        return s;
+      }
+
+      var uuid = extractUploadcareUuid(s);
+      if (uuid) {
+        // Prefer an explicit CDN domain if the site has one; otherwise fall back to the legacy CDN URL.
+        var cdnDomain = (window.UPLOADCARE_CDN_DOMAIN || localStorage.getItem('uploadcare_cdn_domain') || '').trim();
+        if (cdnDomain) {
+          cdnDomain = cdnDomain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+          return 'https://' + cdnDomain + '/' + uuid + '/';
+        }
+        return 'https://ucarecdn.com/' + uuid + '/';
+      }
+
+      return s;
     }
 
     function getTimestamp(p) {
@@ -1138,8 +1173,8 @@
       var placeholderSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
       grid.innerHTML = list.map(function(p) {
         var images = parseImages(p);
-        var img1 = images[0] || '';
-        var img2 = images[1] || '';
+        var img1 = resolveImageUrl(images[0] || '');
+        var img2 = resolveImageUrl(images[1] || '');
         var name = getName(p);
         var desc = getDescription(p);
         var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
