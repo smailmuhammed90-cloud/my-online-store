@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Soul Store — Женская одежда | Казахстан</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Скромная, стильная, качественная женская одежда. Доставка по всему Казахстану." />
+  <meta name="description" content="Скромная, стильная, качественная женская одежда." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%231C1C1A%22 stroke-width=%228%22/></svg>" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,7 +40,7 @@
       -webkit-font-smoothing: antialiased;
       padding-top: calc(var(--top-h) + var(--hdr-h));
     }
-    a { text-decoration: none; color: inherit; }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
     img { display: block; max-width: 100%; }
     button { font-family: var(--sans); cursor: pointer; border: none; background: none; }
 
@@ -191,28 +191,19 @@
     }
     .sr-name { font-size: 14px; font-weight: 500; color: var(--ink); }
     .sr-price { font-size: 13px; color: var(--ink-2); margin-top: 3px; }
-    .sr-empty { color: var(--ink-2); font-size: 14px; padding: 16px 0; }
 
     /* ── Hero ── */
     .hero {
       width: 100%; height: 88vh; min-height: 560px;
       background: var(--ink);
-      /*
-       * ─── ADD YOUR HERO IMAGE HERE ─────────────────────────────────────
-       * background-image: url('images/hero.jpg');
-       * background-size: cover; background-position: center top;
-       * ─────────────────────────────────────────────────────────────────
-       */
       position: relative; overflow: hidden;
       display: flex; align-items: flex-end; justify-content: center;
       padding: 80px 32px;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(28,28,26,0.72) 0%, rgba(28,28,26,0.1) 55%, transparent 100%);
     }
-    /* Placeholder watermark — remove once you add a hero photo */
     .hero-watermark {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -239,41 +230,37 @@
       display: inline-block; background: #fff; color: var(--ink);
       padding: 15px 44px; border-radius: 2px;
       font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      transition: background 0.25s, color 0.25s, transform 0.25s;
+      transition: background 0.25s, color 0.25s, transform 0.25s; cursor: pointer;
     }
     .hero-cta:hover { background: var(--taupe); color: #fff; transform: translateY(-2px); }
 
-    /* ── Category Chips ── */
-    .cat-chips {
-      display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none;
-      padding: 24px 32px; border-bottom: 1px solid var(--line);
-      background: var(--card);
+    /* ── Store Controls & Filters ── */
+    .products-section { padding: 80px 32px; max-width: 1400px; margin: 0 auto; scroll-margin-top: 120px; }
+    .store-controls {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      margin-bottom: 40px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+      gap: 16px;
     }
-    .cat-chips::-webkit-scrollbar { display: none; }
-    .cat-chip {
-      padding: 9px 22px; border-radius: 2px;
-      border: 1px solid var(--line); background: transparent;
-      font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em;
-      text-transform: uppercase; white-space: nowrap;
-      color: var(--ink-2); transition: all 0.2s;
+    .category-filters {
+      display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none;
     }
-    .cat-chip:hover,
-    .cat-chip.active { border-color: var(--ink); color: var(--ink); background: var(--hover); }
+    .category-filters::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-2); padding-bottom: 4px; border-bottom: 1px solid transparent;
+      transition: all 0.2s; white-space: nowrap; cursor: pointer;
+    }
+    .filter-btn.active, .filter-btn:hover { color: var(--ink); border-color: var(--ink); }
+    .sort-container {
+      display: flex; align-items: center; gap: 8px; color: var(--ink);
+    }
+    .sort-dropdown {
+      font-family: var(--sans); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
+      background: transparent; border: none; cursor: pointer; outline: none;
+    }
 
-    /* ── Products Section ── */
-    .products-section { padding: 80px 32px; max-width: 1400px; margin: 0 auto; }
-    .section-head {
-      display: flex; align-items: baseline; justify-content: space-between;
-      padding-top: 32px; margin-bottom: 48px;
-      border-top: 1px solid var(--line);
-    }
-    .section-title { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); }
-    .view-all-link {
-      font-size: 11.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink-2); border-bottom: 1px solid currentColor; padding-bottom: 2px;
-      transition: color 0.2s;
-    }
-    .view-all-link:hover { color: var(--ink); }
+    /* ── Product Grid ── */
     .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
     .grid-empty {
       grid-column: 1 / -1; text-align: center;
@@ -304,7 +291,7 @@
     .card-placeholder {
       position: absolute; inset: 0; z-index: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 56px; opacity: 0.12;
+      color: var(--ink-2); opacity: 0.2;
     }
     .card-tag {
       position: absolute; top: 12px; left: 12px; z-index: 3;
@@ -334,7 +321,7 @@
       padding: 80px 32px;
     }
     .cat-ed-head { max-width: 1400px; margin: 0 auto 48px; }
-    .cat-ed-head .section-head { margin-bottom: 0; }
+    .section-title { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); }
     .cat-editorial-grid {
       max-width: 1400px; margin: 0 auto;
       display: grid;
@@ -344,13 +331,8 @@
     }
     .cat-ed-item {
       background: var(--hover); position: relative; overflow: hidden;
-      display: flex; align-items: flex-end; padding: 24px;
+      display: flex; align-items: flex-end; padding: 24px; cursor: pointer;
       transition: opacity 0.3s;
-      /*
-       * ADD CATEGORY IMAGES:
-       * background-image: url('images/cat-dresses.jpg');
-       * background-size: cover; background-position: center;
-       */
     }
     .cat-ed-item:hover { opacity: 0.9; }
     .cat-ed-item.large { grid-row: span 2; }
@@ -361,7 +343,7 @@
     .cat-ed-ph {
       position: absolute; inset: 0; z-index: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 80px; opacity: 0.07;
+      color: var(--ink); opacity: 0.08;
     }
     .cat-ed-label { position: relative; z-index: 2; }
     .cat-ed-eyebrow {
@@ -394,7 +376,7 @@
     }
     .footer-nav { list-style: none; }
     .footer-nav li { margin-bottom: 10px; }
-    .footer-nav a { font-size: 13px; color: var(--ink-2); transition: color 0.2s; }
+    .footer-nav a { font-size: 13px; color: var(--ink-2); transition: color 0.2s; cursor: pointer; }
     .footer-nav a:hover { color: var(--ink); }
     .footer-bottom {
       max-width: 1400px; margin: 0 auto;
@@ -427,7 +409,6 @@
       .hdr-left .auth-link { display: none; }
       .hero { height: 76vh; padding: 40px 20px; }
       .hero-title { font-size: 38px; }
-      .cat-chips { padding: 16px; }
       .products-section { padding: 48px 16px; }
       .cat-editorial-section { padding: 48px 16px; }
       .cat-ed-head { margin-bottom: 32px; }
@@ -448,10 +429,9 @@
 </head>
 <body>
 
-  <!-- ── Announcement Bar ── -->
   <div class="topbar">
     <div></div>
-    <div class="topbar-msg" data-i18n="topbar_msg">Доставка по всему Казахстану</div>
+    <div class="topbar-msg" data-i18n="topbar_msg">Soul Store Online</div>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="ru">RU</button>
       <span class="lang-sep">&nbsp;/&nbsp;</span>
@@ -459,18 +439,17 @@
     </div>
   </div>
 
-  <!-- ── Header ── -->
   <header class="site-header" id="siteHeader">
     <div class="hdr-left">
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="Меню">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
       </button>
       <nav class="nav-links" aria-label="Навигация">
-        <a href="dresses.html" data-i18n="nav_dresses">Платья</a>
-        <a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a>
-        <a href="suits.html" data-i18n="nav_suits">Костюмы</a>
-        <a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a>
-        <a href="jeans.html" data-i18n="nav_jeans">Джинсы</a>
+        <a class="nav-filter" data-category="dresses" data-i18n="nav_dresses">Платья</a>
+        <a class="nav-filter" data-category="hijabs" data-i18n="nav_hijabs">Хиджабы</a>
+        <a class="nav-filter" data-category="suits" data-i18n="nav_suits">Костюмы</a>
+        <a class="nav-filter" data-category="sweaters" data-i18n="nav_sweaters">Кофты</a>
+        <a class="nav-filter" data-category="jeans" data-i18n="nav_jeans">Джинсы</a>
       </nav>
     </div>
 
@@ -481,11 +460,9 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
 
-      <!-- Logged out -->
       <button class="auth-link" id="loginBtn" data-i18n="btn_login">Войти</button>
       <button class="auth-link" id="signupBtn" data-i18n="btn_signup" style="display:none">Регистрация</button>
 
-      <!-- Logged in -->
       <a href="profile.html" class="icon-btn" id="profileBtn" style="display:none" aria-label="Профиль">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
@@ -499,7 +476,6 @@
     </div>
   </header>
 
-  <!-- ── Sidebar ── -->
   <div class="sb-overlay" id="sbOverlay"></div>
   <aside class="sidebar" id="sidebar" aria-hidden="true">
     <div class="sb-head">
@@ -509,22 +485,18 @@
       </button>
     </div>
     <nav aria-label="Категории">
-      <a href="index.html" data-i18n="nav_home">Главная</a>
-      <a href="dresses.html" data-i18n="nav_dresses">Платья</a>
-      <a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a>
-      <a href="underwear.html" data-i18n="nav_underwear">Нижнее бельё</a>
-      <a href="suits.html" data-i18n="nav_suits">Костюмы</a>
-      <a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a>
-      <a href="shirts.html" data-i18n="nav_shirts">Рубашки</a>
-      <a href="pants.html" data-i18n="nav_pants">Брюки</a>
-      <a href="jeans.html" data-i18n="nav_jeans">Джинсы</a>
-      <a href="jackets.html" data-i18n="nav_jackets">Пиджаки</a>
-      <a href="sundresses.html" data-i18n="nav_sundresses">Сарафаны</a>
-      <a href="skirts.html" data-i18n="nav_skirts">Юбки</a>
+      <a class="nav-filter" data-category="all" data-i18n="all_products">Все товары</a>
+      <a class="nav-filter" data-category="dresses" data-i18n="nav_dresses">Платья</a>
+      <a class="nav-filter" data-category="hijabs" data-i18n="nav_hijabs">Хиджабы</a>
+      <a class="nav-filter" data-category="suits" data-i18n="nav_suits">Костюмы</a>
+      <a class="nav-filter" data-category="sweaters" data-i18n="nav_sweaters">Кофты</a>
+      <a class="nav-filter" data-category="shirts" data-i18n="nav_shirts">Рубашки</a>
+      <a class="nav-filter" data-category="pants" data-i18n="nav_pants">Брюки</a>
+      <a class="nav-filter" data-category="jeans" data-i18n="nav_jeans">Джинсы</a>
+      <a class="nav-filter" data-category="skirts" data-i18n="nav_skirts">Юбки</a>
     </nav>
   </aside>
 
-  <!-- ── Search Overlay ── -->
   <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Поиск">
     <div class="search-top">
       <span class="search-brand">Soul Store</span>
@@ -542,35 +514,36 @@
     </div>
   </div>
 
-  <!-- ── Hero ── -->
   <section class="hero" aria-label="Главный баннер">
     <div class="hero-watermark" aria-hidden="true">Soul Store</div>
     <div class="hero-content">
       <p class="hero-eyebrow" data-i18n="hero_eyebrow">Новая коллекция · 2026</p>
       <h1 class="hero-title" data-i18n="hero_title">Скромно.<br><em>Красиво.</em></h1>
-      <a href="dresses.html" class="hero-cta" data-i18n="hero_cta">Смотреть коллекцию</a>
+      <button class="hero-cta nav-filter" data-category="all" data-i18n="hero_cta">Смотреть коллекцию</button>
     </div>
   </section>
 
-  <!-- ── Category Chips ── -->
-  <nav class="cat-chips" aria-label="Категории">
-    <a href="dresses.html" class="cat-chip" data-i18n="nav_dresses">Платья</a>
-    <a href="hijabs.html" class="cat-chip" data-i18n="nav_hijabs">Хиджабы</a>
-    <a href="suits.html" class="cat-chip" data-i18n="nav_suits">Костюмы</a>
-    <a href="sweaters.html" class="cat-chip" data-i18n="nav_sweaters">Кофты</a>
-    <a href="shirts.html" class="cat-chip" data-i18n="nav_shirts">Рубашки</a>
-    <a href="pants.html" class="cat-chip" data-i18n="nav_pants">Брюки</a>
-    <a href="jeans.html" class="cat-chip" data-i18n="nav_jeans">Джинсы</a>
-    <a href="jackets.html" class="cat-chip" data-i18n="nav_jackets">Пиджаки</a>
-    <a href="skirts.html" class="cat-chip" data-i18n="nav_skirts">Юбки</a>
-  </nav>
+  <section class="products-section" id="shop">
+    <div class="store-controls">
+      <div class="category-filters" id="categoryFilters">
+        <button class="filter-btn active" data-category="all" data-i18n="all_products">Все</button>
+        <button class="filter-btn" data-category="dresses" data-i18n="nav_dresses">Платья</button>
+        <button class="filter-btn" data-category="hijabs" data-i18n="nav_hijabs">Хиджабы</button>
+        <button class="filter-btn" data-category="suits" data-i18n="nav_suits">Костюмы</button>
+        <button class="filter-btn" data-category="sweaters" data-i18n="nav_sweaters">Кофты</button>
+        <button class="filter-btn" data-category="skirts" data-i18n="nav_skirts">Юбки</button>
+      </div>
 
-  <!-- ── Products ── -->
-  <section class="products-section">
-    <div class="section-head">
-      <h2 class="section-title" data-i18n="featured_title">Избранное</h2>
-      <a href="dresses.html" class="view-all-link" data-i18n="view_all">Все товары</a>
+      <div class="sort-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
+        <select id="sortOptions" class="sort-dropdown">
+          <option value="newest" data-i18n="sort_newest">Новинки</option>
+          <option value="price-desc" data-i18n="sort_price_desc">Цена: По убыванию</option>
+          <option value="price-asc" data-i18n="sort_price_asc">Цена: По возрастанию</option>
+        </select>
+      </div>
     </div>
+
     <div class="product-grid" id="productGrid">
       <div class="grid-loading">
         <div class="spinner"></div>
@@ -579,42 +552,47 @@
     </div>
   </section>
 
-  <!-- ── Editorial Category Grid ── -->
   <section class="cat-editorial-section">
     <div class="cat-ed-head">
-      <div class="section-head">
-        <h2 class="section-title" data-i18n="cat_title">Коллекции</h2>
-        <a href="dresses.html" class="view-all-link" data-i18n="view_all">Все товары</a>
-      </div>
+      <h2 class="section-title" data-i18n="cat_title">Коллекции</h2>
     </div>
     <div class="cat-editorial-grid">
-      <a href="dresses.html" class="cat-ed-item large">
-        <div class="cat-ed-ph" aria-hidden="true">👗</div>
+      <div class="cat-ed-item large nav-filter" data-category="dresses">
+        <div class="cat-ed-ph" aria-hidden="true">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><path d="M10 4c-1.5 0-2.5 1-2.5 2.5S8 8 8 8L6 19h12l-2-11s.5-1.5-.5-1.5S14 4 14 4h-4z"/></svg>
+        </div>
         <div class="cat-ed-label">
           <p class="cat-ed-eyebrow" data-i18n="cat_new">Новое</p>
           <p class="cat-ed-name" data-i18n="nav_dresses">Платья</p>
         </div>
-      </a>
-      <a href="hijabs.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true">🧕</div>
+      </div>
+      <div class="cat-ed-item nav-filter" data-category="hijabs">
+        <div class="cat-ed-ph" aria-hidden="true">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><path d="M4 8c0-3.3 2.7-6 6-6s6 2.7 6 6v3c0 2.2-1.8 4-4 4H7c-1.7 0-3-1.3-3-3V8z"/><path d="M16 11c2.2 0 4 1.8 4 4v2c0 2.8-2.2 5-5 5H9"/></svg>
+        </div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_hijabs">Хиджабы</p></div>
-      </a>
-      <a href="suits.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true">👔</div>
+      </div>
+      <div class="cat-ed-item nav-filter" data-category="suits">
+        <div class="cat-ed-ph" aria-hidden="true">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><path d="M6 7L12 3L18 7V21H6V7Z"/><path d="M12 3V21"/><path d="M6 7L12 12L18 7"/></svg>
+        </div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_suits">Костюмы</p></div>
-      </a>
-      <a href="sweaters.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true">🧥</div>
+      </div>
+      <div class="cat-ed-item nav-filter" data-category="sweaters">
+        <div class="cat-ed-ph" aria-hidden="true">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><path d="M5 8L12 4L19 8V20H5V8Z"/><path d="M5 8L12 12L19 8"/><path d="M12 4V12"/></svg>
+        </div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_sweaters">Кофты</p></div>
-      </a>
-      <a href="skirts.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true">👘</div>
+      </div>
+      <div class="cat-ed-item nav-filter" data-category="skirts">
+        <div class="cat-ed-ph" aria-hidden="true">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><path d="M8 4h8l4 16H4L8 4z"/><path d="M12 4v16"/></svg>
+        </div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_skirts">Юбки</p></div>
-      </a>
+      </div>
     </div>
   </section>
 
-  <!-- ── Footer ── -->
   <div class="site-footer">
     <div>
       <p class="footer-brand-name">Soul Store</p>
@@ -627,12 +605,10 @@
     <div>
       <p class="footer-col-title" data-i18n="footer_shop">Магазин</p>
       <ul class="footer-nav">
-        <li><a href="dresses.html" data-i18n="nav_dresses">Платья</a></li>
-        <li><a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a></li>
-        <li><a href="suits.html" data-i18n="nav_suits">Костюмы</a></li>
-        <li><a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a></li>
-        <li><a href="jeans.html" data-i18n="nav_jeans">Джинсы</a></li>
-        <li><a href="skirts.html" data-i18n="nav_skirts">Юбки</a></li>
+        <li><a class="nav-filter" data-category="dresses" data-i18n="nav_dresses">Платья</a></li>
+        <li><a class="nav-filter" data-category="hijabs" data-i18n="nav_hijabs">Хиджабы</a></li>
+        <li><a class="nav-filter" data-category="suits" data-i18n="nav_suits">Костюмы</a></li>
+        <li><a class="nav-filter" data-category="sweaters" data-i18n="nav_sweaters">Кофты</a></li>
       </ul>
     </div>
     <div>
@@ -641,13 +617,11 @@
         <li><a href="cart.html" data-i18n="footer_cart">Корзина</a></li>
         <li><a href="profile.html" data-i18n="footer_profile">Мой профиль</a></li>
         <li><a href="login.html" data-i18n="btn_login">Войти</a></li>
-        <li><a href="signup.html" data-i18n="btn_signup">Регистрация</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">&copy; 2026 Soul Store &mdash; <span data-i18n="footer_copy">Женская мода из Казахстана</span></div>
+  <div class="footer-bottom">&copy; 2026 Soul Store &mdash; <span data-i18n="footer_copy">Женская мода</span></div>
 
-  <!-- ── Scripts ── -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
@@ -657,83 +631,83 @@
   (function () {
     'use strict';
 
-    /* ── i18n strings ── */
+    /* ── Store State ── */
+    var currentCategory = 'all';
+    var currentSort = 'newest';
+
+    /* ── i18n strings (Added Sort Variables) ── */
     var T = {
       ru: {
-        topbar_msg:     'Доставка по всему Казахстану',
+        topbar_msg:     'Soul Store Online',
         btn_login:      'Войти',
         btn_signup:     'Регистрация',
         btn_logout:     'Выйти',
-        nav_home:       'Главная',
+        all_products:   'Все товары',
         nav_dresses:    'Платья',
         nav_hijabs:     'Хиджабы',
-        nav_underwear:  'Нижнее бельё',
         nav_suits:      'Костюмы',
         nav_sweaters:   'Кофты',
         nav_shirts:     'Рубашки',
         nav_pants:      'Брюки',
         nav_jeans:      'Джинсы',
-        nav_jackets:    'Пиджаки',
-        nav_sundresses: 'Сарафаны',
         nav_skirts:     'Юбки',
         hero_eyebrow:   'Новая коллекция · 2026',
         hero_title:     'Скромно.<br><em>Красиво.</em>',
         hero_cta:       'Смотреть коллекцию',
-        search_ph:      'Поиск товаров...',
+        search_ph:      'Поиск...',
         search_hint:    'Введите название товара',
         search_count:   'результатов',
-        featured_title: 'Избранное',
-        view_all:       'Все товары',
         cat_title:      'Коллекции',
         cat_new:        'Новое',
         loading:        'Загрузка...',
         no_products:    'Товары не найдены',
         add_to_cart:    'В корзину',
         new_badge:      'Новинка',
-        footer_tagline: 'Скромная мода для\u00a0современной женщины.\u00a0Казахстан.',
+        sort_newest:    'Новинки',
+        sort_price_desc:'Цена: По убыванию',
+        sort_price_asc: 'Цена: По возрастанию',
+        footer_tagline: 'Скромная мода для\u00a0современной женщины.',
         footer_shop:    'Магазин',
         footer_help:    'Помощь',
         footer_cart:    'Корзина',
         footer_profile: 'Мой профиль',
-        footer_copy:    'Женская мода из Казахстана',
+        footer_copy:    'Женская мода',
       },
       kk: {
-        topbar_msg:     'Қазақстан бойынша жеткізу',
+        topbar_msg:     'Soul Store Online',
         btn_login:      'Кіру',
         btn_signup:     'Тіркелу',
         btn_logout:     'Шығу',
-        nav_home:       'Басты бет',
+        all_products:   'Барлық тауарлар',
         nav_dresses:    'Көйлектер',
         nav_hijabs:     'Орамалдар',
-        nav_underwear:  'Іш киім',
         nav_suits:      'Костюмдер',
         nav_sweaters:   'Кофталар',
         nav_shirts:     'Рубашкалар',
         nav_pants:      'Шалбарлар',
         nav_jeans:      'Джинсылар',
-        nav_jackets:    'Пиджактар',
-        nav_sundresses: 'Сарафандар',
         nav_skirts:     'Юбкалар',
         hero_eyebrow:   'Жаңа коллекция · 2026',
         hero_title:     'Ұқыпты.<br><em>Сұлу.</em>',
         hero_cta:       'Коллекцияны қарау',
-        search_ph:      'Тауарларды іздеу...',
+        search_ph:      'Іздеу...',
         search_hint:    'Тауар атауын енгізіңіз',
         search_count:   'нәтиже',
-        featured_title: 'Таңдаулы',
-        view_all:       'Барлық тауарлар',
         cat_title:      'Коллекциялар',
         cat_new:        'Жаңа',
         loading:        'Жүктелуде...',
         no_products:    'Тауарлар табылмады',
         add_to_cart:    'Себетке',
         new_badge:      'Жаңа',
-        footer_tagline: 'Заманауи әйел үшін ұқыпты сән.\u00a0Қазақстан.',
+        sort_newest:    'Жаңа',
+        sort_price_desc:'Бағасы: Кему бойынша',
+        sort_price_asc: 'Бағасы: Өсу бойынша',
+        footer_tagline: 'Заманауи әйел үшін ұқыпты сән.',
         footer_shop:    'Дүкен',
         footer_help:    'Көмек',
         footer_cart:    'Себет',
         footer_profile: 'Менің профилім',
-        footer_copy:    'Қазақстандық әйелдер сән дүкені',
+        footer_copy:    'Әйелдер сән дүкені',
       }
     };
 
@@ -755,40 +729,14 @@
       document.querySelectorAll('.lang-btn').forEach(function(b) {
         b.classList.toggle('active', b.dataset.lang === l);
       });
-      // Re-render products in new language
-      if (window._productsLoaded) renderProducts(window._displayProducts || []);
+      if (window._productsLoaded) applyFilters();
     }
 
     document.querySelectorAll('.lang-btn').forEach(function(b) {
       b.addEventListener('click', function() { applyLang(b.dataset.lang); });
     });
 
-    /* ── Header scroll ── */
-    var hdr = document.getElementById('siteHeader');
-    window.addEventListener('scroll', function() {
-      hdr.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-
-    /* ── Sidebar ── */
-    var sbOverlay = document.getElementById('sbOverlay');
-    var sidebar   = document.getElementById('sidebar');
-    function openSb()  { sidebar.classList.add('open');  sbOverlay.classList.add('open');  sidebar.removeAttribute('aria-hidden'); }
-    function closeSb() { sidebar.classList.remove('open'); sbOverlay.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); }
-    document.getElementById('menuBtn').addEventListener('click', openSb);
-    document.getElementById('sbClose').addEventListener('click', closeSb);
-    sbOverlay.addEventListener('click', closeSb);
-
-    /* ── Search Overlay ── */
-    var searchOverlay = document.getElementById('searchOverlay');
-    var searchInput   = document.getElementById('searchInput');
-    function openSearch()  { searchOverlay.classList.add('open'); setTimeout(function(){ searchInput.focus(); }, 80); }
-    function closeSearch() { searchOverlay.classList.remove('open'); searchInput.value = ''; renderSearchList([]); }
-    document.getElementById('searchOpenBtn').addEventListener('click', openSearch);
-    document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { closeSearch(); closeSb(); }
-    });
-
+    /* ── Escaping ── */
     function esc(s) {
       if (!s && s !== 0) return '';
       return String(s).replace(/[&<>"']/g, function(c){
@@ -796,73 +744,59 @@
       });
     }
 
-    function renderSearchList(results) {
-      var hint = document.getElementById('searchHint');
-      var list = document.getElementById('searchResultList');
-      var s = T[lang];
-      if (!results || results.length === 0) {
-        hint.textContent = s.search_hint;
-        list.innerHTML = '';
-        return;
+    /* ── Core Filtering & Sorting Logic ── */
+    function applyFilters() {
+      var all = window.PRODUCTS || [];
+      var filtered = all;
+
+      // Filter
+      if (currentCategory !== 'all') {
+        filtered = all.filter(function(p) {
+          var cat = (p.category || '').toLowerCase().trim();
+          return cat === currentCategory;
+        });
       }
-      hint.textContent = results.length + ' ' + s.search_count;
-      list.innerHTML = results.map(function(p) {
-        var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
-        var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
-        var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
-        return '<div class="search-result-item" role="button" tabindex="0"' +
-               ' onclick="location.href=\'product.html?id=' + esc(p.id) + '\'"' +
-               ' onkeydown="if(event.key===\'Enter\')location.href=\'product.html?id=' + esc(p.id) + '\'">' +
-               (img ? '<img class="sr-img" src="' + esc(img) + '" alt="" loading="lazy"/>'
-                    : '<div class="sr-img"></div>') +
-               '<div><div class="sr-name">' + esc(name) + '</div>' +
-               '<div class="sr-price">' + price + '</div></div></div>';
-      }).join('');
+
+      // Sort
+      filtered.sort(function(a, b) {
+        var priceA = parseFloat(String(a.price).replace(/[^\d.]/g, '')) || 0;
+        var priceB = parseFloat(String(b.price).replace(/[^\d.]/g, '')) || 0;
+
+        if (currentSort === 'price-desc') return priceB - priceA;
+        if (currentSort === 'price-asc') return priceA - priceB;
+        // Default: newest/featured first
+        return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      });
+
+      renderProducts(filtered);
     }
 
-    searchInput.addEventListener('input', function() {
-      var q = searchInput.value.trim().toLowerCase();
-      if (!q) { renderSearchList([]); return; }
-      var all = window.PRODUCTS || [];
-      var res = all.filter(function(p) {
-        return [(p.name||''),(p.name_kk||''),(p.description||''),(p.description_kk||''),(p.category||'')]
-          .some(function(v){ return v.toLowerCase().includes(q); });
-      }).slice(0, 8);
-      renderSearchList(res);
+    /* ── Event Listeners for Filters & Nav ── */
+    document.querySelectorAll('.nav-filter').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var cat = this.getAttribute('data-category');
+        if(cat) {
+          currentCategory = cat;
+          
+          // Update active states on the filter bar
+          document.querySelectorAll('.filter-btn').forEach(function(btn) {
+            btn.classList.toggle('active', btn.getAttribute('data-category') === cat);
+          });
+          
+          applyFilters();
+          
+          // Smooth scroll to shop section
+          document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+          if(sidebar.classList.contains('open')) closeSb();
+        }
+      });
     });
 
-    /* ── Cart Count ── */
-    function syncCart() {
-      try {
-        var cart  = JSON.parse(localStorage.getItem('cart') || '[]');
-        var total = cart.reduce(function(n,i){ return n + (i.quantity || i.qty || 1); }, 0);
-        var badge = document.getElementById('cartBadge');
-        badge.textContent = total;
-        badge.style.display = total > 0 ? 'flex' : 'none';
-      } catch(e){}
-    }
-    syncCart();
-    window.addEventListener('storage', function(e){ if(e.key==='cart') syncCart(); });
-
-    /* ── Add to Cart ── */
-    function addToCart(id, evt) {
-      if (evt) evt.stopPropagation();
-      var all = window.PRODUCTS || [];
-      var p = all.find(function(x){ return x.id === id; });
-      if (!p) return;
-      try {
-        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        var idx  = cart.findIndex(function(x){ return x.id === id; });
-        if (idx > -1) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; }
-        else {
-          var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
-          cart.push({ id: id, name: p.name, price: p.price, image: img, quantity: 1 });
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        syncCart();
-      } catch(e){}
-    }
-    window.addToCart = addToCart;
+    document.getElementById('sortOptions').addEventListener('change', function(e) {
+      currentSort = e.target.value;
+      applyFilters();
+    });
 
     /* ── Render Product Cards ── */
     function renderProducts(list) {
@@ -877,23 +811,19 @@
         var img1 = images[0] || '';
         var img2 = images[1] || '';
         var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
-        var desc = lang === 'kk' ? (p.description_kk || p.description || '') : (p.description || '');
         var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
         var isNew = p.featured || p.isFeatured || p.isNew;
         return (
-          '<div class="product-card" role="link" tabindex="0"' +
-          ' onclick="location.href=\'product.html?id=' + esc(p.id) + '\'"' +
-          ' onkeydown="if(event.key===\'Enter\')location.href=\'product.html?id=' + esc(p.id) + '\'">' +
+          '<div class="product-card" onclick="location.href=\'product.html?id=' + esc(p.id) + '\'">' +
           '<div class="card-img-wrap">' +
           (isNew ? '<span class="card-tag">' + s.new_badge + '</span>' : '') +
           (img1
-            ? '<img class="img-primary" src="' + esc(img1) + '" alt="' + esc(name) + '" loading="lazy"/>'
-            : '<div class="card-placeholder" aria-hidden="true">👗</div>') +
-          (img2 ? '<img class="img-hover" src="' + esc(img2) + '" alt="" loading="lazy"/>' : '') +
+            ? '<img class="img-primary" src="' + esc(img1) + '" loading="lazy"/>'
+            : '<div class="card-placeholder" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.66 6.98a9.932 9.932 0 0 0-3.641-3.64C15.486 2.457 13.82 2 12 2s-3.486.457-5.02 1.34a9.932 9.932 0 0 0-3.64 3.64C2.457 8.514 2 10.18 2 12s.457 3.486 1.34 5.02a9.932 9.932 0 0 0 3.64 3.64C8.514 21.543 10.18 22 12 22s3.486-.457 5.02-1.34a9.932 9.932 0 0 0 3.64-3.64C21.543 15.486 22 13.82 22 12s-.457-3.486-1.34-5.02z"/></svg></div>') +
+          (img2 ? '<img class="img-hover" src="' + esc(img2) + '" loading="lazy"/>' : '') +
           '</div>' +
           '<div class="card-body">' +
           '<div class="card-name">' + esc(name) + '</div>' +
-          (desc ? '<div class="card-desc">' + esc(desc) + '</div>' : '') +
           '<div class="card-footer">' +
           '<span class="card-price">' + price + '</span>' +
           '<button class="card-add-btn" onclick="addToCart(\'' + esc(p.id) + '\', event)">' + s.add_to_cart + '</button>' +
@@ -902,67 +832,62 @@
       }).join('');
     }
 
-    /* ── Load Products from products.js ── */
+    /* ── Load Products Initialization ── */
     function loadProducts() {
-      var all = window.PRODUCTS || [];
-      // Featured first, then others, max 8 on homepage
-      var featured = all.filter(function(p){ return p.featured || p.isFeatured; });
-      var rest     = all.filter(function(p){ return !(p.featured || p.isFeatured); });
-      var display  = featured.concat(rest).slice(0, 8);
-      window._displayProducts = display;
-      window._productsLoaded  = true;
-      renderProducts(display);
+      // Assuming window.PRODUCTS is populated by products.js
+      window._productsLoaded = true;
+      applyFilters();
     }
 
-    /* ── Firebase Auth ── */
-    function setupAuth() {
-      if (typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
-        setTimeout(setupAuth, 250); return;
-      }
-      firebase.auth().onAuthStateChanged(function(user) {
-        var loggedOut = ['loginBtn','signupBtn'];
-        var loggedIn  = ['profileBtn','logoutBtn'];
-        loggedOut.forEach(function(id){
-          var el = document.getElementById(id);
-          if (el) el.style.display = user ? 'none' : 'inline-block';
-        });
-        if (document.getElementById('profileBtn'))
-          document.getElementById('profileBtn').style.display = user ? 'flex' : 'none';
-        if (document.getElementById('logoutBtn'))
-          document.getElementById('logoutBtn').style.display = user ? 'inline-block' : 'none';
+    /* ── Supporting UI Elements (Sidebar, Search, Cart Sync) ── */
+    var hdr = document.getElementById('siteHeader');
+    window.addEventListener('scroll', function() { hdr.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
 
-        var adminLink = document.getElementById('adminLink');
-        if (adminLink) {
-          if (user) {
-            var email  = (user.email || '').toLowerCase().trim();
-            var admins = (window.ADMIN_EMAILS || []).map(function(x){ return String(x).toLowerCase().trim(); });
-            adminLink.style.display = admins.includes(email) ? 'inline-block' : 'none';
-          } else {
-            adminLink.style.display = 'none';
-          }
+    var sbOverlay = document.getElementById('sbOverlay'), sidebar = document.getElementById('sidebar');
+    function openSb()  { sidebar.classList.add('open'); sbOverlay.classList.add('open'); }
+    function closeSb() { sidebar.classList.remove('open'); sbOverlay.classList.remove('open'); }
+    document.getElementById('menuBtn').addEventListener('click', openSb);
+    document.getElementById('sbClose').addEventListener('click', closeSb);
+    sbOverlay.addEventListener('click', closeSb);
+
+    var searchOverlay = document.getElementById('searchOverlay'), searchInput = document.getElementById('searchInput');
+    function openSearch()  { searchOverlay.classList.add('open'); setTimeout(function(){ searchInput.focus(); }, 80); }
+    function closeSearch() { searchOverlay.classList.remove('open'); searchInput.value = ''; document.getElementById('searchResultList').innerHTML = ''; }
+    document.getElementById('searchOpenBtn').addEventListener('click', openSearch);
+    document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
+
+    function syncCart() {
+      try {
+        var cart  = JSON.parse(localStorage.getItem('cart') || '[]');
+        var total = cart.reduce(function(n,i){ return n + (i.quantity || i.qty || 1); }, 0);
+        var badge = document.getElementById('cartBadge');
+        badge.textContent = total;
+        badge.style.display = total > 0 ? 'flex' : 'none';
+      } catch(e){}
+    }
+    syncCart();
+    window.addEventListener('storage', function(e){ if(e.key==='cart') syncCart(); });
+    
+    window.addToCart = function(id, evt) {
+      if (evt) evt.stopPropagation();
+      var p = (window.PRODUCTS || []).find(function(x){ return x.id === id; });
+      if (!p) return;
+      try {
+        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        var idx  = cart.findIndex(function(x){ return x.id === id; });
+        if (idx > -1) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; }
+        else {
+          var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
+          cart.push({ id: id, name: p.name, price: p.price, image: img, quantity: 1 });
         }
-      });
-    }
-
-    document.getElementById('loginBtn').addEventListener('click', function(){ location.href='login.html'; });
-    if (document.getElementById('signupBtn'))
-      document.getElementById('signupBtn').addEventListener('click', function(){ location.href='signup.html'; });
-    if (document.getElementById('logoutBtn'))
-      document.getElementById('logoutBtn').addEventListener('click', function(){
-        if (typeof firebase !== 'undefined') firebase.auth().signOut().then(function(){ location.reload(); });
-      });
-
-    /* ── Highlight active category chip ── */
-    var path = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.cat-chip').forEach(function(chip) {
-      var href = (chip.getAttribute('href') || '').split('/').pop();
-      if (href && href !== 'index.html' && path === href) chip.classList.add('active');
-    });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        syncCart();
+      } catch(e){}
+    };
 
     /* ── Init ── */
     applyLang(lang);
-    setupAuth();
-    loadProducts();
+    setTimeout(loadProducts, 200); // Simulate wait for products.js
 
   }());
   </script>
