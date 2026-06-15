@@ -1,412 +1,971 @@
 <!doctype html>
-<html lang="kk">
+<html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Soul Store — Әйелдер киімі дүкені</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Әйелдерге арналған сәнді көйлектер, орамалдар және басқа киімдердің онлайн дүкені." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>" />
+  <title>Soul Store — Женская одежда | Казахстан</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Скромная, стильная, качественная женская одежда. Доставка по всему Казахстану." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22%231C1C1A%22 stroke-width=%228%22/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ── */
     :root {
-      --accent: #111; 
-      --accent-dark: #000; 
-      --accent-light: #f0f0f0;
-      --text: #1a1a1a; 
-      --text-muted: #717171; 
-      --bg: #ffffff; 
-      --card: #fff;
-      --border: #eeeeee; 
-      --shadow: 0 12px 40px rgba(0,0,0,0.04);
-      --radius: 16px; 
-      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --bg:      #F8F7F4;
+      --card:    #FFFFFF;
+      --ink:     #1C1C1A;
+      --ink-2:   #8A8881;
+      --line:    #E5E3DE;
+      --hover:   #F0EFE9;
+      --taupe:   #C4B5A0;
+      --serif:   'Playfair Display', Georgia, serif;
+      --sans:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --top-h:   36px;
+      --hdr-h:   68px;
     }
-    body { 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-      margin: 0; 
-      background: var(--bg); 
-      color: var(--text); 
-      line-height: 1.5;
+
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
       -webkit-font-smoothing: antialiased;
+      padding-top: calc(var(--top-h) + var(--hdr-h));
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { font-family: var(--sans); cursor: pointer; border: none; background: none; }
+
+    /* ── Announcement Bar ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1100;
+      height: var(--top-h);
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.8);
+    }
+    .topbar-msg { flex: 1; text-align: center; }
+    .lang-toggle { display: flex; gap: 2px; align-items: center; flex-shrink: 0; }
+    .lang-btn {
+      background: none; border: none; color: rgba(255,255,255,0.45);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 4px 8px; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .lang-btn.active { color: #fff; }
+    .lang-btn:hover { color: rgba(255,255,255,0.85); }
+    .lang-sep { color: rgba(255,255,255,0.2); }
+
+    /* ── Header ── */
+    .site-header {
+      position: fixed; top: var(--top-h); left: 0; right: 0; z-index: 1000;
+      height: var(--hdr-h);
+      background: rgba(248,247,244,0.96);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center;
+      padding: 0 32px; gap: 24px;
+      transition: box-shadow 0.3s;
+    }
+    .site-header.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .hdr-left, .hdr-right { display: flex; align-items: center; gap: 16px; flex: 1; }
+    .hdr-right { justify-content: flex-end; }
+    .site-logo {
+      font-family: var(--serif); font-size: 22px; font-weight: 600;
+      letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex; gap: 28px;
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .nav-links a { color: var(--ink-2); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .icon-btn {
+      background: none; border: none; color: var(--ink);
+      padding: 6px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .icon-btn:hover { background: var(--hover); }
+    .cart-wrap { position: relative; }
+    .cart-badge {
+      position: absolute; top: -3px; right: -7px;
+      background: var(--ink); color: #fff;
+      font-size: 9px; font-weight: 700;
+      border-radius: 50%; width: 16px; height: 16px;
+      display: none; align-items: center; justify-content: center;
+      border: 2px solid var(--bg);
+    }
+    .auth-link {
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em;
+      color: var(--ink-2); padding: 6px 12px; border-radius: 6px;
+      text-transform: uppercase; transition: color 0.2s, background 0.2s;
+    }
+    .auth-link:hover { color: var(--ink); background: var(--hover); }
+    .menu-btn { display: none; }
+
+    /* ── Sidebar ── */
+    .sb-overlay {
+      position: fixed; inset: 0; background: rgba(28,28,26,0.4);
+      z-index: 1200; opacity: 0; pointer-events: none; transition: opacity 0.35s;
+    }
+    .sb-overlay.open { opacity: 1; pointer-events: auto; }
+    .sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 280px;
+      background: var(--card); z-index: 1300;
+      overflow-y: auto; padding-bottom: 40px;
+      transform: translateX(-100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 20px 0 60px rgba(0,0,0,0.08);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sb-head {
+      padding: 24px; border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sb-logo { font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+    .sb-close { color: var(--ink-2); padding: 4px; }
+    .sidebar nav { padding: 12px 0; }
+    .sidebar nav a {
+      display: block; padding: 12px 24px;
+      font-size: 12.5px; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--ink-2);
+      transition: color 0.2s, padding-left 0.25s;
+    }
+    .sidebar nav a:hover { color: var(--ink); padding-left: 30px; }
+
+    /* ── Search Overlay ── */
+    .search-overlay {
+      position: fixed; inset: 0; z-index: 1400;
+      background: rgba(248,247,244,0.97);
+      backdrop-filter: blur(16px);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .search-overlay.open { opacity: 1; pointer-events: auto; }
+    .search-top {
+      padding: 36px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .search-brand { font-family: var(--serif); font-size: 17px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-2); }
+    .search-close-btn { color: var(--ink-2); padding: 8px; }
+    .search-input-area { max-width: 720px; width: 100%; margin: 48px auto 0; padding: 0 48px; }
+    .search-input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1.5px solid var(--ink);
+      font-family: var(--serif); font-size: 36px; font-weight: 400;
+      color: var(--ink); padding: 12px 0; outline: none;
+    }
+    .search-input::placeholder { color: var(--line); }
+    .search-results-area {
+      flex: 1; overflow-y: auto;
+      max-width: 720px; width: 100%; margin: 0 auto;
+      padding: 32px 48px 48px;
+    }
+    .search-hint {
+      font-size: 11px; font-weight: 600; color: var(--ink-2);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .search-result-list { display: flex; flex-direction: column; gap: 4px; }
+    .search-result-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 14px; border-radius: 8px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-result-item:hover { background: var(--hover); }
+    .sr-img {
+      width: 48px; height: 64px; object-fit: cover;
+      background: var(--hover); border-radius: 4px; flex-shrink: 0;
+    }
+    .sr-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+    .sr-price { font-size: 13px; color: var(--ink-2); margin-top: 3px; }
+    .sr-empty { color: var(--ink-2); font-size: 14px; padding: 16px 0; }
+
+    /* ── Hero ── */
+    .hero {
+      width: 100%; height: 88vh; min-height: 560px;
+      background: var(--ink);
+      /*
+       * ─── ADD YOUR HERO IMAGE HERE ─────────────────────────────────────
+       * background-image: url('images/hero.jpg');
+       * background-size: cover; background-position: center top;
+       * ─────────────────────────────────────────────────────────────────
+       */
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 80px 32px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,28,26,0.72) 0%, rgba(28,28,26,0.1) 55%, transparent 100%);
+    }
+    /* Placeholder watermark — remove once you add a hero photo */
+    .hero-watermark {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: clamp(72px, 14vw, 160px);
+      font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase;
+      color: rgba(255,255,255,0.03); user-select: none; pointer-events: none;
+      white-space: nowrap;
+    }
+    .hero-content {
+      position: relative; z-index: 1; text-align: center; max-width: 640px;
+      animation: heroRise 0.9s var(--ease) 0.1s both;
+    }
+    @keyframes heroRise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: var(--serif); font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400; line-height: 1.08; color: #fff; margin-bottom: 36px;
+    }
+    .hero-title em { font-style: italic; }
+    .hero-cta {
+      display: inline-block; background: #fff; color: var(--ink);
+      padding: 15px 44px; border-radius: 2px;
+      font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background 0.25s, color 0.25s, transform 0.25s;
+    }
+    .hero-cta:hover { background: var(--taupe); color: #fff; transform: translateY(-2px); }
+
+    /* ── Category Chips ── */
+    .cat-chips {
+      display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none;
+      padding: 24px 32px; border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+    .cat-chips::-webkit-scrollbar { display: none; }
+    .cat-chip {
+      padding: 9px 22px; border-radius: 2px;
+      border: 1px solid var(--line); background: transparent;
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; white-space: nowrap;
+      color: var(--ink-2); transition: all 0.2s;
+    }
+    .cat-chip:hover,
+    .cat-chip.active { border-color: var(--ink); color: var(--ink); background: var(--hover); }
+
+    /* ── Products Section ── */
+    .products-section { padding: 80px 32px; max-width: 1400px; margin: 0 auto; }
+    .section-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding-top: 32px; margin-bottom: 48px;
+      border-top: 1px solid var(--line);
+    }
+    .section-title { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); }
+    .view-all-link {
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-2); border-bottom: 1px solid currentColor; padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .view-all-link:hover { color: var(--ink); }
+    .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .grid-empty {
+      grid-column: 1 / -1; text-align: center;
+      padding: 80px 0; color: var(--ink-2); font-size: 14px;
+    }
+    .grid-loading {
+      grid-column: 1 / -1; display: flex; flex-direction: column;
+      align-items: center; padding: 80px 0; color: var(--ink-2);
+    }
+    .spinner {
+      width: 24px; height: 24px; border: 2px solid var(--line);
+      border-top-color: var(--ink); border-radius: 50%;
+      animation: spin 0.75s linear infinite; margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Product Card ── */
+    .product-card { cursor: pointer; display: flex; flex-direction: column; }
+    .card-img-wrap { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--hover); }
+    .card-img-wrap img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.7s var(--ease), opacity 0.4s;
+    }
+    .card-img-wrap .img-primary { z-index: 1; }
+    .card-img-wrap .img-hover { z-index: 2; opacity: 0; }
+    .product-card:hover .img-primary { transform: scale(1.04); }
+    .product-card:hover .img-hover { opacity: 1; }
+    .card-placeholder {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px; opacity: 0.12;
+    }
+    .card-tag {
+      position: absolute; top: 12px; left: 12px; z-index: 3;
+      background: var(--ink); color: #fff;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 2px;
+    }
+    .card-body { padding: 14px 2px 0; display: flex; flex-direction: column; gap: 3px; }
+    .card-name { font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+    .card-desc {
+      font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .card-price { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .card-add-btn {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--ink-2); padding: 4px 0; opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .product-card:hover .card-add-btn { opacity: 1; }
+    .card-add-btn:hover { color: var(--ink); }
+
+    /* ── Editorial Category Grid ── */
+    .cat-editorial-section {
+      background: var(--card); border-top: 1px solid var(--line);
+      padding: 80px 32px;
+    }
+    .cat-ed-head { max-width: 1400px; margin: 0 auto 48px; }
+    .cat-ed-head .section-head { margin-bottom: 0; }
+    .cat-editorial-grid {
+      max-width: 1400px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 5fr 3fr 3fr;
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px; aspect-ratio: 16 / 7;
+    }
+    .cat-ed-item {
+      background: var(--hover); position: relative; overflow: hidden;
+      display: flex; align-items: flex-end; padding: 24px;
+      transition: opacity 0.3s;
+      /*
+       * ADD CATEGORY IMAGES:
+       * background-image: url('images/cat-dresses.jpg');
+       * background-size: cover; background-position: center;
+       */
+    }
+    .cat-ed-item:hover { opacity: 0.9; }
+    .cat-ed-item.large { grid-row: span 2; }
+    .cat-ed-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,28,26,0.6) 0%, transparent 55%);
+    }
+    .cat-ed-ph {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 80px; opacity: 0.07;
+    }
+    .cat-ed-label { position: relative; z-index: 2; }
+    .cat-ed-eyebrow {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-bottom: 6px;
+    }
+    .cat-ed-name {
+      font-family: var(--serif); font-size: 22px; font-weight: 500; color: #fff; line-height: 1.15;
+    }
+    .cat-ed-item.large .cat-ed-name { font-size: 32px; }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--line); padding: 64px 32px 0;
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 48px; max-width: 1400px; margin: 0 auto;
+    }
+    .footer-brand-name { font-family: var(--serif); font-size: 26px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+    .footer-tagline { font-size: 13px; color: var(--ink-2); line-height: 1.65; margin-bottom: 28px; }
+    .footer-ig {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--ink);
+      border-bottom: 1px solid var(--ink); padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .footer-ig:hover { color: var(--ink-2); border-color: var(--ink-2); }
+    .footer-col-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink); margin-bottom: 20px;
+    }
+    .footer-nav { list-style: none; }
+    .footer-nav li { margin-bottom: 10px; }
+    .footer-nav a { font-size: 13px; color: var(--ink-2); transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--ink); }
+    .footer-bottom {
+      max-width: 1400px; margin: 0 auto;
+      padding: 32px 32px 40px;
+      font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line);
+      margin-top: 48px;
     }
 
-    /* Header */
-    .site-top { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 12px 24px; 
-      background: rgba(255,255,255,0.8); 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border); 
-      position: sticky; 
-      top: 0; 
-      z-index: 1000; 
+    /* ── Responsive ── */
+    @media (max-width: 1200px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
     }
-    .left, .center, .right { display: flex; align-items: center; gap: 12px; }
-    .center { flex: 1; justify-content: center; }
-    .center h1 { 
-      margin: 0; 
-      font-size: 22px; 
-      font-weight: 800; 
-      letter-spacing: -0.5px;
-      text-transform: uppercase;
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .menu-btn { display: flex; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .cat-editorial-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 260px 180px 180px;
+        aspect-ratio: auto;
+      }
+      .cat-ed-item.large { grid-column: 1 / 3; grid-row: 1; }
+      .site-footer { grid-template-columns: 1fr 1fr; }
     }
-    .icon-btn { background: none; border: none; cursor: pointer; font-size: 20px; padding: 8px; border-radius: 12px; transition: var(--transition); color: var(--text); }
-    .icon-btn:hover { background: var(--accent-light); }
-    
-    .header-btn { 
-      padding: 10px 18px; 
-      border-radius: 10px; 
-      border: 1px solid var(--border); 
-      background: transparent; 
-      cursor: pointer; 
-      font-size: 13px; 
-      font-weight: 600; 
-      transition: var(--transition); 
-      color: var(--text); 
-      text-decoration: none; 
-    }
-    .header-btn:hover { background: var(--accent-light); border-color: var(--text); }
-    .header-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .header-btn.primary:hover { background: var(--accent-dark); opacity: 0.9; }
-    
-    #cart-icon { cursor: pointer; position: relative; font-size: 20px; padding: 8px; border-radius: 12px; transition: var(--transition); }
-    #cart-icon:hover { background: var(--accent-light); }
-    #cart-count { 
-      background: #ff3b30; 
-      color: white; 
-      font-size: 10px; 
-      font-weight: 800; 
-      border-radius: 50%; 
-      width: 18px; 
-      height: 18px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      position: absolute; 
-      top: 2px; 
-      right: 2px; 
-      border: 2px solid #fff;
-    }
-
-    /* Sidebar */
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1050; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
-    .overlay.active { opacity: 1; pointer-events: auto; }
-    #sidebar { position: fixed; left: -300px; top: 0; width: 300px; height: 100%; background: var(--card); padding: 40px 20px; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1100; box-shadow: 20px 0 50px rgba(0,0,0,0.1); overflow-y: auto; }
-    #sidebar.active { transform: translateX(300px); }
-    #sidebar h3 { margin: 0 0 30px 10px; font-size: 24px; font-weight: 800; }
-    #sidebar ul { list-style: none; padding: 0; margin: 0; }
-    #sidebar li { margin-bottom: 4px; }
-    #sidebar a { text-decoration: none; color: var(--text); font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; transition: var(--transition); }
-    #sidebar a:hover { background: var(--accent-light); padding-left: 20px; }
-
-    /* Hero */
-    .hero { 
-      text-align: center; 
-      padding: 100px 20px; 
-      position: relative; 
-      background: #000; 
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .hero h2 { font-size: clamp(32px, 8vw, 56px); margin: 0 0 16px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; }
-    .hero p { font-size: 18px; opacity: 0.7; margin: 0 0 40px; font-weight: 400; max-width: 600px; }
-    .hero-btn { 
-      display: inline-block; 
-      padding: 18px 40px; 
-      background: #fff; 
-      color: #000; 
-      border-radius: 100px; 
-      text-decoration: none; 
-      font-weight: 700; 
-      font-size: 15px; 
-      transition: var(--transition); 
-    }
-    .hero-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
-
-    /* Categories Quick Links */
-    .cat-nav { display: flex; gap: 12px; overflow-x: auto; padding: 30px 24px; scrollbar-width: none; background: #fff; }
-    .cat-nav::-webkit-scrollbar { display: none; }
-    .cat-chip { 
-      padding: 10px 24px; 
-      background: #fff; 
-      border: 1px solid var(--border); 
-      border-radius: 100px; 
-      white-space: nowrap; 
-      text-decoration: none; 
-      color: var(--text); 
-      font-size: 13px; 
-      font-weight: 600; 
-      transition: var(--transition); 
-    }
-    .cat-chip:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
-
-    /* Products */
-    .section-title { text-align: center; margin: 60px 0 10px; font-size: 32px; font-weight: 800; letter-spacing: -1px; }
-    .section-sub { text-align: center; color: var(--text-muted); margin: 0 0 40px; font-size: 16px; font-weight: 400; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1300px; margin: 0 auto; }
-    
-    .product-card { 
-      background: var(--card); 
-      border-radius: var(--radius); 
-      overflow: hidden; 
-      transition: var(--transition); 
-      cursor: pointer; 
-      border: 1px solid var(--border); 
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow); border-color: var(--text); }
-    .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; background: #f9f9f9; transition: var(--transition); }
-    .product-card:hover img { transform: scale(1.03); }
-    .product-card .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-    .product-card h4 { margin: 0 0 8px; font-size: 17px; font-weight: 700; color: var(--text); }
-    .product-card .desc { color: var(--text-muted); font-size: 14px; margin: 0 0 20px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
-    .price { font-weight: 800; color: var(--accent); font-size: 20px; }
-    
-    #loading { text-align: center; padding: 80px; color: var(--text-muted); font-weight: 500; font-size: 18px; }
-
-    /* Footer */
-    footer { padding: 60px 24px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: #fafafa; font-size: 14px; }
-    footer a.ig-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: var(--text); text-decoration: none; font-weight: 700; font-size: 16px; }
-    footer a.ig-link svg { transition: transform 0.3s; }
-    footer a.ig-link:hover svg { transform: rotate(15deg) scale(1.1); }
-
-    /* Search */
-    .search-input { 
-      padding: 10px 16px; 
-      border-radius: 12px; 
-      border: 1px solid var(--border); 
-      width: 180px; 
-      transition: var(--transition); 
-      font-size: 13px; 
-      background: var(--accent-light); 
-      font-weight: 500;
-    }
-    .search-input:focus { width: 240px; border-color: var(--accent); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.05); }
-
-    @media (max-width: 768px) {
-      .site-top { padding: 10px 16px; }
-      .center h1 { font-size: 18px; }
-      .search-input { display: none; } /* Hide search on mobile header to save space, or make it an icon */
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 0 16px 40px; }
-      .hero { padding: 60px 20px; }
-      .hero h2 { font-size: 36px; }
-      .product-card .card-body { padding: 12px; }
-      .product-card h4 { font-size: 15px; }
-      .price { font-size: 16px; }
+    @media (max-width: 600px) {
+      :root { --top-h: 32px; --hdr-h: 56px; }
+      .topbar { padding: 0 16px; font-size: 10px; }
+      .site-header { padding: 0 16px; gap: 16px; }
+      .site-logo { font-size: 18px; letter-spacing: 2px; }
+      .hdr-left .auth-link { display: none; }
+      .hero { height: 76vh; padding: 40px 20px; }
+      .hero-title { font-size: 38px; }
+      .cat-chips { padding: 16px; }
+      .products-section { padding: 48px 16px; }
+      .cat-editorial-section { padding: 48px 16px; }
+      .cat-ed-head { margin-bottom: 32px; }
+      .cat-editorial-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 200px);
+        aspect-ratio: auto;
+      }
+      .cat-ed-item.large { grid-column: 1; grid-row: 1; }
+      .site-footer { padding: 48px 16px 0; grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { padding: 24px 16px 32px; }
+      .search-input { font-size: 28px; }
+      .search-input-area { padding: 0 24px; }
+      .search-results-area { padding: 28px 24px 40px; }
+      .search-top { padding: 24px; }
     }
   </style>
 </head>
 <body>
-  <header class="site-top">
-    <div class="left"><button id="menuBtn" class="icon-btn" aria-label="Menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-    </button></div>
-    <div class="center"><h1>Soul Store</h1></div>
-    <div class="right">
-      <input id="search" class="search-input" placeholder="Іздеу / Поиск" aria-label="Search" />
-      <button id="loginBtn" class="header-btn primary">Кіру</button>
-      <button id="signupBtn" class="header-btn">Тіркелу</button>
-      <a href='profile.html' id='profileIcon' style='display:none; text-decoration:none;' class="icon-btn" title='Профиль'>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+  <!-- ── Announcement Bar ── -->
+  <div class="topbar">
+    <div></div>
+    <div class="topbar-msg" data-i18n="topbar_msg">Доставка по всему Казахстану</div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="ru">RU</button>
+      <span class="lang-sep">&nbsp;/&nbsp;</span>
+      <button class="lang-btn" data-lang="kk">KK</button>
+    </div>
+  </div>
+
+  <!-- ── Header ── -->
+  <header class="site-header" id="siteHeader">
+    <div class="hdr-left">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Меню">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+      <nav class="nav-links" aria-label="Навигация">
+        <a href="dresses.html" data-i18n="nav_dresses">Платья</a>
+        <a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a>
+        <a href="suits.html" data-i18n="nav_suits">Костюмы</a>
+        <a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a>
+        <a href="jeans.html" data-i18n="nav_jeans">Джинсы</a>
+      </nav>
+    </div>
+
+    <a href="index.html" class="site-logo">Soul Store</a>
+
+    <div class="hdr-right">
+      <button class="icon-btn" id="searchOpenBtn" aria-label="Поиск" title="Поиск">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <!-- Logged out -->
+      <button class="auth-link" id="loginBtn" data-i18n="btn_login">Войти</button>
+      <button class="auth-link" id="signupBtn" data-i18n="btn_signup" style="display:none">Регистрация</button>
+
+      <!-- Logged in -->
+      <a href="profile.html" class="icon-btn" id="profileBtn" style="display:none" aria-label="Профиль">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
-      <button id="logoutBtn" class="header-btn" style="display:none">Шығу</button>
-      <a class='header-btn' href='admin.html' id='adminLink' style='display:none'>Админ</a>
-      <div id="cart-icon" aria-label="Cart">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-        <span id="cart-count">0</span>
-      </div>
+      <button class="auth-link" id="logoutBtn" style="display:none" data-i18n="btn_logout">Выйти</button>
+      <a href="admin.html" class="auth-link" id="adminLink" style="display:none">Admin</a>
+
+      <a href="cart.html" class="icon-btn cart-wrap" aria-label="Корзина">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
     </div>
   </header>
 
-  <div class="overlay" id="overlay"></div>
-  <nav id="sidebar" aria-hidden="true">
-    <h3>Soul Store</h3>
-    <ul>
-      <li><a href='index.html'>Басты бет</a></li>
-      <li><a href='dresses.html'>Көйлектер (Dresses)</a></li>
-      <li><a href='hijabs.html'>Орамалдар (Hijabs)</a></li>
-      <li><a href='underwear.html'>Іш киім (Underwear)</a></li>
-      <li><a href='suits.html'>Костюмдер (Suits)</a></li>
-      <li><a href='sweaters.html'>Кофталар (Sweaters)</a></li>
-      <li><a href='shirts.html'>Рубашкалар (Shirts)</a></li>
-      <li><a href='pants.html'>Штандар (Pants)</a></li>
-      <li><a href='jeans.html'>Джинсылар (Jeans)</a></li>
-      <li><a href='jackets.html'>Пиджактар (Jackets)</a></li>
-      <li><a href='sundresses.html'>Сарафандар (Sundresses)</a></li>
-      <li><a href='skirts.html'>Юбкалар (Skirts)</a></li>
-    </ul>
-  </nav>
+  <!-- ── Sidebar ── -->
+  <div class="sb-overlay" id="sbOverlay"></div>
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="sb-head">
+      <span class="sb-logo">Soul Store</span>
+      <button class="icon-btn sb-close" id="sbClose" aria-label="Закрыть">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Категории">
+      <a href="index.html" data-i18n="nav_home">Главная</a>
+      <a href="dresses.html" data-i18n="nav_dresses">Платья</a>
+      <a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a>
+      <a href="underwear.html" data-i18n="nav_underwear">Нижнее бельё</a>
+      <a href="suits.html" data-i18n="nav_suits">Костюмы</a>
+      <a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a>
+      <a href="shirts.html" data-i18n="nav_shirts">Рубашки</a>
+      <a href="pants.html" data-i18n="nav_pants">Брюки</a>
+      <a href="jeans.html" data-i18n="nav_jeans">Джинсы</a>
+      <a href="jackets.html" data-i18n="nav_jackets">Пиджаки</a>
+      <a href="sundresses.html" data-i18n="nav_sundresses">Сарафаны</a>
+      <a href="skirts.html" data-i18n="nav_skirts">Юбки</a>
+    </nav>
+  </aside>
 
-  <section class="hero">
-    <h2>2026 Жаңа Коллекция</h2>
-    <p>Әйелдерге арналған сәнді киімдер мен аксессуарлар</p>
-    <a class='hero-btn' href='dresses.html'>Барлық тауарлар</a>
+  <!-- ── Search Overlay ── -->
+  <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Поиск">
+    <div class="search-top">
+      <span class="search-brand">Soul Store</span>
+      <button class="icon-btn search-close-btn" id="searchCloseBtn" aria-label="Закрыть">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="search-input-area">
+      <input class="search-input" id="searchInput" type="text" autocomplete="off"
+        placeholder="Поиск товаров..." data-i18n-placeholder="search_ph" />
+    </div>
+    <div class="search-results-area">
+      <p class="search-hint" id="searchHint" data-i18n="search_hint">Введите название товара</p>
+      <div class="search-result-list" id="searchResultList"></div>
+    </div>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="hero" aria-label="Главный баннер">
+    <div class="hero-watermark" aria-hidden="true">Soul Store</div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-i18n="hero_eyebrow">Новая коллекция · 2026</p>
+      <h1 class="hero-title" data-i18n="hero_title">Скромно.<br><em>Красиво.</em></h1>
+      <a href="dresses.html" class="hero-cta" data-i18n="hero_cta">Смотреть коллекцию</a>
+    </div>
   </section>
 
-  <nav class="cat-nav">
-    <a href="dresses.html" class="cat-chip">Көйлектер</a>
-    <a href="hijabs.html" class="cat-chip">Орамалдар</a>
-    <a href="underwear.html" class="cat-chip">Іш киім</a>
-    <a href="suits.html" class="cat-chip">Костюмдер</a>
-    <a href="sweaters.html" class="cat-chip">Кофталар</a>
-    <a href="shirts.html" class="cat-chip">Рубашкалар</a>
-    <a href="pants.html" class="cat-chip">Штандар</a>
-    <a href="jeans.html" class="cat-chip">Джинсылар</a>
-    <a href="jackets.html" class="cat-chip">Пиджактар</a>
-    <a href="sundresses.html" class="cat-chip">Сарафандар</a>
-    <a href="skirts.html" class="cat-chip">Юбкалар</a>
+  <!-- ── Category Chips ── -->
+  <nav class="cat-chips" aria-label="Категории">
+    <a href="dresses.html" class="cat-chip" data-i18n="nav_dresses">Платья</a>
+    <a href="hijabs.html" class="cat-chip" data-i18n="nav_hijabs">Хиджабы</a>
+    <a href="suits.html" class="cat-chip" data-i18n="nav_suits">Костюмы</a>
+    <a href="sweaters.html" class="cat-chip" data-i18n="nav_sweaters">Кофты</a>
+    <a href="shirts.html" class="cat-chip" data-i18n="nav_shirts">Рубашки</a>
+    <a href="pants.html" class="cat-chip" data-i18n="nav_pants">Брюки</a>
+    <a href="jeans.html" class="cat-chip" data-i18n="nav_jeans">Джинсы</a>
+    <a href="jackets.html" class="cat-chip" data-i18n="nav_jackets">Пиджаки</a>
+    <a href="skirts.html" class="cat-chip" data-i18n="nav_skirts">Юбки</a>
   </nav>
 
-  <section>
-    <h3 class="section-title">Таңдаулы тауарлар</h3>
-    <p class="section-sub">Ең жақсы ұсыныстар / Лучшие предложения</p>
-    <div id="productList" class="products-grid"></div>
-    <div id="loading">Жүктелуде...</div>
+  <!-- ── Products ── -->
+  <section class="products-section">
+    <div class="section-head">
+      <h2 class="section-title" data-i18n="featured_title">Избранное</h2>
+      <a href="dresses.html" class="view-all-link" data-i18n="view_all">Все товары</a>
+    </div>
+    <div class="product-grid" id="productGrid">
+      <div class="grid-loading">
+        <div class="spinner"></div>
+        <span data-i18n="loading">Загрузка...</span>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <div style="margin-bottom:24px;">
-      <a href="https://www.instagram.com/soul_store.kz" target="_blank" rel="noopener" class="ig-link">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+  <!-- ── Editorial Category Grid ── -->
+  <section class="cat-editorial-section">
+    <div class="cat-ed-head">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="cat_title">Коллекции</h2>
+        <a href="dresses.html" class="view-all-link" data-i18n="view_all">Все товары</a>
+      </div>
+    </div>
+    <div class="cat-editorial-grid">
+      <a href="dresses.html" class="cat-ed-item large">
+        <div class="cat-ed-ph" aria-hidden="true">👗</div>
+        <div class="cat-ed-label">
+          <p class="cat-ed-eyebrow" data-i18n="cat_new">Новое</p>
+          <p class="cat-ed-name" data-i18n="nav_dresses">Платья</p>
+        </div>
+      </a>
+      <a href="hijabs.html" class="cat-ed-item">
+        <div class="cat-ed-ph" aria-hidden="true">🧕</div>
+        <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_hijabs">Хиджабы</p></div>
+      </a>
+      <a href="suits.html" class="cat-ed-item">
+        <div class="cat-ed-ph" aria-hidden="true">👔</div>
+        <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_suits">Костюмы</p></div>
+      </a>
+      <a href="sweaters.html" class="cat-ed-item">
+        <div class="cat-ed-ph" aria-hidden="true">🧥</div>
+        <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_sweaters">Кофты</p></div>
+      </a>
+      <a href="skirts.html" class="cat-ed-item">
+        <div class="cat-ed-ph" aria-hidden="true">👘</div>
+        <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_skirts">Юбки</p></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <div class="site-footer">
+    <div>
+      <p class="footer-brand-name">Soul Store</p>
+      <p class="footer-tagline" data-i18n="footer_tagline">Скромная мода для&nbsp;современной женщины.&nbsp;Казахстан.</p>
+      <a href="https://www.instagram.com/soul_store.kz" target="_blank" rel="noopener" class="footer-ig">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         @soul_store.kz
       </a>
     </div>
-    &copy; 2026 Soul Store &mdash; Әйелдер киімі дүкені
-  </footer>
+    <div>
+      <p class="footer-col-title" data-i18n="footer_shop">Магазин</p>
+      <ul class="footer-nav">
+        <li><a href="dresses.html" data-i18n="nav_dresses">Платья</a></li>
+        <li><a href="hijabs.html" data-i18n="nav_hijabs">Хиджабы</a></li>
+        <li><a href="suits.html" data-i18n="nav_suits">Костюмы</a></li>
+        <li><a href="sweaters.html" data-i18n="nav_sweaters">Кофты</a></li>
+        <li><a href="jeans.html" data-i18n="nav_jeans">Джинсы</a></li>
+        <li><a href="skirts.html" data-i18n="nav_skirts">Юбки</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title" data-i18n="footer_help">Помощь</p>
+      <ul class="footer-nav">
+        <li><a href="cart.html" data-i18n="footer_cart">Корзина</a></li>
+        <li><a href="profile.html" data-i18n="footer_profile">Мой профиль</a></li>
+        <li><a href="login.html" data-i18n="btn_login">Войти</a></li>
+        <li><a href="signup.html" data-i18n="btn_signup">Регистрация</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Soul Store &mdash; <span data-i18n="footer_copy">Женская мода из Казахстана</span></div>
 
+  <!-- ── Scripts ── -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
   <script src="firebase.js"></script>
+  <script src="products.js"></script>
 
   <script>
-    (function(){
-      var $ = function(id){ return document.getElementById(id); };
-      var allProducts = [];
+  (function () {
+    'use strict';
 
-      function escapeHtml(s){ if(!s && s !== 0) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-      function renderProducts(list){
-        var container = $('productList');
-        container.innerHTML = '';
-        if(!list || list.length === 0){
-          container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:80px;grid-column:1/-1">Тауарлар жоқ / Товары не найдены</p>';
-          return;
-        }
-        list.forEach(function(p) {
-          var name = p.name || '—';
-          var price = p.price;
-
-          var img = '';
-          if (Array.isArray(p.images) && p.images.length > 0) {
-            img = p.images[0];
-          } else if (Array.isArray(p.imageUrls) && p.imageUrls.length > 0) {
-            img = p.imageUrls[0];
-          } else if (p.image_url) {
-            try {
-              var parsed = JSON.parse(p.image_url);
-              img = Array.isArray(parsed) && parsed.length > 0 ? parsed[0] : p.image_url;
-            } catch(e) {
-              img = p.image_url;
-            }
-          }
-
-          var card = document.createElement('div');
-          card.className = 'product-card';
-          card.onclick = function(){ location.href = 'product.html?id=' + p.id; };
-          card.innerHTML =
-            '<img src="' + escapeHtml(img) + '" alt="' + escapeHtml(name) + '" onerror="this.style.background=\'#f9f9f9\';this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect fill=%22%23f9f9f9%22 width=%22200%22 height=%22200%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23ddd%22 font-size=%2240%22>👗</text></svg>\'" loading="lazy"/>' +
-            '<div class="card-body">' +
-              '<h4>' + escapeHtml(name) + '</h4>' +
-              '<p class="desc">' + escapeHtml(p.description_kk || p.description || '') + '</p>' +
-              '<div class="price">' + (price ? Number(price).toLocaleString() + ' ₸' : '') + '</div>' +
-            '</div>';
-          container.appendChild(card);
-        });
+    /* ── i18n strings ── */
+    var T = {
+      ru: {
+        topbar_msg:     'Доставка по всему Казахстану',
+        btn_login:      'Войти',
+        btn_signup:     'Регистрация',
+        btn_logout:     'Выйти',
+        nav_home:       'Главная',
+        nav_dresses:    'Платья',
+        nav_hijabs:     'Хиджабы',
+        nav_underwear:  'Нижнее бельё',
+        nav_suits:      'Костюмы',
+        nav_sweaters:   'Кофты',
+        nav_shirts:     'Рубашки',
+        nav_pants:      'Брюки',
+        nav_jeans:      'Джинсы',
+        nav_jackets:    'Пиджаки',
+        nav_sundresses: 'Сарафаны',
+        nav_skirts:     'Юбки',
+        hero_eyebrow:   'Новая коллекция · 2026',
+        hero_title:     'Скромно.<br><em>Красиво.</em>',
+        hero_cta:       'Смотреть коллекцию',
+        search_ph:      'Поиск товаров...',
+        search_hint:    'Введите название товара',
+        search_count:   'результатов',
+        featured_title: 'Избранное',
+        view_all:       'Все товары',
+        cat_title:      'Коллекции',
+        cat_new:        'Новое',
+        loading:        'Загрузка...',
+        no_products:    'Товары не найдены',
+        add_to_cart:    'В корзину',
+        new_badge:      'Новинка',
+        footer_tagline: 'Скромная мода для\u00a0современной женщины.\u00a0Казахстан.',
+        footer_shop:    'Магазин',
+        footer_help:    'Помощь',
+        footer_cart:    'Корзина',
+        footer_profile: 'Мой профиль',
+        footer_copy:    'Женская мода из Казахстана',
+      },
+      kk: {
+        topbar_msg:     'Қазақстан бойынша жеткізу',
+        btn_login:      'Кіру',
+        btn_signup:     'Тіркелу',
+        btn_logout:     'Шығу',
+        nav_home:       'Басты бет',
+        nav_dresses:    'Көйлектер',
+        nav_hijabs:     'Орамалдар',
+        nav_underwear:  'Іш киім',
+        nav_suits:      'Костюмдер',
+        nav_sweaters:   'Кофталар',
+        nav_shirts:     'Рубашкалар',
+        nav_pants:      'Шалбарлар',
+        nav_jeans:      'Джинсылар',
+        nav_jackets:    'Пиджактар',
+        nav_sundresses: 'Сарафандар',
+        nav_skirts:     'Юбкалар',
+        hero_eyebrow:   'Жаңа коллекция · 2026',
+        hero_title:     'Ұқыпты.<br><em>Сұлу.</em>',
+        hero_cta:       'Коллекцияны қарау',
+        search_ph:      'Тауарларды іздеу...',
+        search_hint:    'Тауар атауын енгізіңіз',
+        search_count:   'нәтиже',
+        featured_title: 'Таңдаулы',
+        view_all:       'Барлық тауарлар',
+        cat_title:      'Коллекциялар',
+        cat_new:        'Жаңа',
+        loading:        'Жүктелуде...',
+        no_products:    'Тауарлар табылмады',
+        add_to_cart:    'Себетке',
+        new_badge:      'Жаңа',
+        footer_tagline: 'Заманауи әйел үшін ұқыпты сән.\u00a0Қазақстан.',
+        footer_shop:    'Дүкен',
+        footer_help:    'Көмек',
+        footer_cart:    'Себет',
+        footer_profile: 'Менің профилім',
+        footer_copy:    'Қазақстандық әйелдер сән дүкені',
       }
+    };
 
-      async function loadProducts(){
-        $('loading').style.display = 'block';
-        try {
-          var res = await fetch('/api/products');
-          var data = await res.json();
-          if(!res.ok) throw new Error(data.error || 'Failed to load products');
-          allProducts = Array.isArray(data) ? data : [];
-          renderProducts(allProducts);
-        } catch(e){
-          console.error('Error loading products', e);
-          $('productList').innerHTML = '<p style="text-align:center;color:#ff3b30;padding:80px;grid-column:1/-1">Қате орын алды. Қайта жүктеп көріңіз.</p>';
-        } finally {
-          $('loading').style.display = 'none';
-        }
-      }
+    var lang = localStorage.getItem('ss_lang') || 'ru';
 
-      loadProducts();
-
-      $('search').addEventListener('input', function(ev) {
-        var q = ev.target.value.trim().toLowerCase();
-        if(!q) return renderProducts(allProducts);
-        renderProducts(allProducts.filter(function(p) {
-          var name = (p.name || '').toLowerCase();
-          var desc = (p.description_kk || p.description_ru || '').toLowerCase();
-          var cat = (p.category || '').toLowerCase();
-          return name.includes(q) || desc.includes(q) || cat.includes(q);
-        }));
+    function applyLang(l) {
+      lang = l;
+      localStorage.setItem('ss_lang', l);
+      document.documentElement.lang = l;
+      var s = T[l];
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var k = el.dataset.i18n;
+        if (s[k] !== undefined) el.innerHTML = s[k];
       });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        var k = el.dataset.i18nPlaceholder;
+        if (s[k] !== undefined) el.placeholder = s[k];
+      });
+      document.querySelectorAll('.lang-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.lang === l);
+      });
+      // Re-render products in new language
+      if (window._productsLoaded) renderProducts(window._displayProducts || []);
+    }
 
-      function updateCartCount(){
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.addEventListener('click', function() { applyLang(b.dataset.lang); });
+    });
+
+    /* ── Header scroll ── */
+    var hdr = document.getElementById('siteHeader');
+    window.addEventListener('scroll', function() {
+      hdr.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    /* ── Sidebar ── */
+    var sbOverlay = document.getElementById('sbOverlay');
+    var sidebar   = document.getElementById('sidebar');
+    function openSb()  { sidebar.classList.add('open');  sbOverlay.classList.add('open');  sidebar.removeAttribute('aria-hidden'); }
+    function closeSb() { sidebar.classList.remove('open'); sbOverlay.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); }
+    document.getElementById('menuBtn').addEventListener('click', openSb);
+    document.getElementById('sbClose').addEventListener('click', closeSb);
+    sbOverlay.addEventListener('click', closeSb);
+
+    /* ── Search Overlay ── */
+    var searchOverlay = document.getElementById('searchOverlay');
+    var searchInput   = document.getElementById('searchInput');
+    function openSearch()  { searchOverlay.classList.add('open'); setTimeout(function(){ searchInput.focus(); }, 80); }
+    function closeSearch() { searchOverlay.classList.remove('open'); searchInput.value = ''; renderSearchList([]); }
+    document.getElementById('searchOpenBtn').addEventListener('click', openSearch);
+    document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closeSearch(); closeSb(); }
+    });
+
+    function esc(s) {
+      if (!s && s !== 0) return '';
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    function renderSearchList(results) {
+      var hint = document.getElementById('searchHint');
+      var list = document.getElementById('searchResultList');
+      var s = T[lang];
+      if (!results || results.length === 0) {
+        hint.textContent = s.search_hint;
+        list.innerHTML = '';
+        return;
+      }
+      hint.textContent = results.length + ' ' + s.search_count;
+      list.innerHTML = results.map(function(p) {
+        var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
+        var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
+        var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
+        return '<div class="search-result-item" role="button" tabindex="0"' +
+               ' onclick="location.href=\'product.html?id=' + esc(p.id) + '\'"' +
+               ' onkeydown="if(event.key===\'Enter\')location.href=\'product.html?id=' + esc(p.id) + '\'">' +
+               (img ? '<img class="sr-img" src="' + esc(img) + '" alt="" loading="lazy"/>'
+                    : '<div class="sr-img"></div>') +
+               '<div><div class="sr-name">' + esc(name) + '</div>' +
+               '<div class="sr-price">' + price + '</div></div></div>';
+      }).join('');
+    }
+
+    searchInput.addEventListener('input', function() {
+      var q = searchInput.value.trim().toLowerCase();
+      if (!q) { renderSearchList([]); return; }
+      var all = window.PRODUCTS || [];
+      var res = all.filter(function(p) {
+        return [(p.name||''),(p.name_kk||''),(p.description||''),(p.description_kk||''),(p.category||'')]
+          .some(function(v){ return v.toLowerCase().includes(q); });
+      }).slice(0, 8);
+      renderSearchList(res);
+    });
+
+    /* ── Cart Count ── */
+    function syncCart() {
+      try {
+        var cart  = JSON.parse(localStorage.getItem('cart') || '[]');
+        var total = cart.reduce(function(n,i){ return n + (i.quantity || i.qty || 1); }, 0);
+        var badge = document.getElementById('cartBadge');
+        badge.textContent = total;
+        badge.style.display = total > 0 ? 'flex' : 'none';
+      } catch(e){}
+    }
+    syncCart();
+    window.addEventListener('storage', function(e){ if(e.key==='cart') syncCart(); });
+
+    /* ── Add to Cart ── */
+    function addToCart(id, evt) {
+      if (evt) evt.stopPropagation();
+      var all = window.PRODUCTS || [];
+      var p = all.find(function(x){ return x.id === id; });
+      if (!p) return;
+      try {
         var cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        var total = 0;
-        cart.forEach(function(item){ total += (item.quantity || 1); });
-        $('cart-count').textContent = total;
-        $('cart-count').style.display = total > 0 ? 'flex' : 'none';
+        var idx  = cart.findIndex(function(x){ return x.id === id; });
+        if (idx > -1) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; }
+        else {
+          var img = (p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '';
+          cart.push({ id: id, name: p.name, price: p.price, image: img, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        syncCart();
+      } catch(e){}
+    }
+    window.addToCart = addToCart;
+
+    /* ── Render Product Cards ── */
+    function renderProducts(list) {
+      var grid = document.getElementById('productGrid');
+      var s = T[lang];
+      if (!list || list.length === 0) {
+        grid.innerHTML = '<div class="grid-empty">' + s.no_products + '</div>';
+        return;
       }
-      updateCartCount();
-      window.addEventListener('storage', function(e){ if(e.key === 'cart') updateCartCount(); });
+      grid.innerHTML = list.map(function(p) {
+        var images = p.images || p.imageUrls || (p.image_url ? [p.image_url] : []);
+        var img1 = images[0] || '';
+        var img2 = images[1] || '';
+        var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
+        var desc = lang === 'kk' ? (p.description_kk || p.description || '') : (p.description || '');
+        var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
+        var isNew = p.featured || p.isFeatured || p.isNew;
+        return (
+          '<div class="product-card" role="link" tabindex="0"' +
+          ' onclick="location.href=\'product.html?id=' + esc(p.id) + '\'"' +
+          ' onkeydown="if(event.key===\'Enter\')location.href=\'product.html?id=' + esc(p.id) + '\'">' +
+          '<div class="card-img-wrap">' +
+          (isNew ? '<span class="card-tag">' + s.new_badge + '</span>' : '') +
+          (img1
+            ? '<img class="img-primary" src="' + esc(img1) + '" alt="' + esc(name) + '" loading="lazy"/>'
+            : '<div class="card-placeholder" aria-hidden="true">👗</div>') +
+          (img2 ? '<img class="img-hover" src="' + esc(img2) + '" alt="" loading="lazy"/>' : '') +
+          '</div>' +
+          '<div class="card-body">' +
+          '<div class="card-name">' + esc(name) + '</div>' +
+          (desc ? '<div class="card-desc">' + esc(desc) + '</div>' : '') +
+          '<div class="card-footer">' +
+          '<span class="card-price">' + price + '</span>' +
+          '<button class="card-add-btn" onclick="addToCart(\'' + esc(p.id) + '\', event)">' + s.add_to_cart + '</button>' +
+          '</div></div></div>'
+        );
+      }).join('');
+    }
 
-      var menuBtn = $('menuBtn'), sidebar = $('sidebar'), overlay = $('overlay');
-      menuBtn.addEventListener('click', function(){ sidebar.classList.toggle('active'); overlay.classList.toggle('active'); });
-      overlay.addEventListener('click', function(){ sidebar.classList.remove('active'); overlay.classList.remove('active'); });
+    /* ── Load Products from products.js ── */
+    function loadProducts() {
+      var all = window.PRODUCTS || [];
+      // Featured first, then others, max 8 on homepage
+      var featured = all.filter(function(p){ return p.featured || p.isFeatured; });
+      var rest     = all.filter(function(p){ return !(p.featured || p.isFeatured); });
+      var display  = featured.concat(rest).slice(0, 8);
+      window._displayProducts = display;
+      window._productsLoaded  = true;
+      renderProducts(display);
+    }
 
-      $('cart-icon').addEventListener('click', function(){ location.href = 'cart.html'; });
+    /* ── Firebase Auth ── */
+    function setupAuth() {
+      if (typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
+        setTimeout(setupAuth, 250); return;
+      }
+      firebase.auth().onAuthStateChanged(function(user) {
+        var loggedOut = ['loginBtn','signupBtn'];
+        var loggedIn  = ['profileBtn','logoutBtn'];
+        loggedOut.forEach(function(id){
+          var el = document.getElementById(id);
+          if (el) el.style.display = user ? 'none' : 'inline-block';
+        });
+        if (document.getElementById('profileBtn'))
+          document.getElementById('profileBtn').style.display = user ? 'flex' : 'none';
+        if (document.getElementById('logoutBtn'))
+          document.getElementById('logoutBtn').style.display = user ? 'inline-block' : 'none';
 
-      $('loginBtn').addEventListener('click', function(){ location.href = 'login.html'; });
-      $('signupBtn').addEventListener('click', function(){ location.href = 'signup.html'; });
-      $('logoutBtn').addEventListener('click', function(){
-        firebase.auth().signOut().then(function(){ location.reload(); });
+        var adminLink = document.getElementById('adminLink');
+        if (adminLink) {
+          if (user) {
+            var email  = (user.email || '').toLowerCase().trim();
+            var admins = (window.ADMIN_EMAILS || []).map(function(x){ return String(x).toLowerCase().trim(); });
+            adminLink.style.display = admins.includes(email) ? 'inline-block' : 'none';
+          } else {
+            adminLink.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', function(){ location.href='login.html'; });
+    if (document.getElementById('signupBtn'))
+      document.getElementById('signupBtn').addEventListener('click', function(){ location.href='signup.html'; });
+    if (document.getElementById('logoutBtn'))
+      document.getElementById('logoutBtn').addEventListener('click', function(){
+        if (typeof firebase !== 'undefined') firebase.auth().signOut().then(function(){ location.reload(); });
       });
 
-      function setupAuth(){
-        if(typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
-          setTimeout(setupAuth, 200);
-          return;
-        }
-        firebase.auth().onAuthStateChanged(function(user) {
-          if(user){
-            $('loginBtn').style.display = 'none';
-            $('signupBtn').style.display = 'none';
-            $('profileIcon').style.display = 'flex';
-            $('logoutBtn').style.display = 'inline-block';
-            var email = (user.email || '').toLowerCase().trim();
-            var admins = (window.ADMIN_EMAILS || []).map(function(x){ return String(x).toLowerCase().trim(); });
-            $('adminLink').style.display = admins.includes(email) ? 'inline-block' : 'none';
-          } else {
-            $('loginBtn').style.display = 'inline-block';
-            $('signupBtn').style.display = 'inline-block';
-            $('profileIcon').style.display = 'none';
-            $('logoutBtn').style.display = 'none';
-            $('adminLink').style.display = 'none';
-          }
-        });
-      }
-      setupAuth();
-    })();
+    /* ── Highlight active category chip ── */
+    var path = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.cat-chip').forEach(function(chip) {
+      var href = (chip.getAttribute('href') || '').split('/').pop();
+      if (href && href !== 'index.html' && path === href) chip.classList.add('active');
+    });
+
+    /* ── Init ── */
+    applyLang(lang);
+    setupAuth();
+    loadProducts();
+
+  }());
   </script>
+
 </body>
 </html>
