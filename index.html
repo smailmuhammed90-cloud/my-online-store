@@ -264,32 +264,10 @@
     .products-section { padding: 80px 32px; max-width: 1400px; margin: 0 auto; }
     .section-head {
       display: flex; align-items: baseline; justify-content: space-between;
-      padding-top: 32px; margin-bottom: 24px;
+      padding-top: 32px; margin-bottom: 48px;
       border-top: 1px solid var(--line);
-      gap: 16px;
     }
     .section-title { font-family: var(--serif); font-size: 30px; font-weight: 400; color: var(--ink); }
-
-    .products-toolbar {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-bottom: 26px; flex-wrap: wrap;
-    }
-    .products-toolbar .toolbar-note {
-      font-size: 12px; color: var(--ink-2); line-height: 1.5;
-    }
-    .sort-select {
-      appearance: none;
-      border: 1px solid var(--line);
-      background: var(--card);
-      color: var(--ink);
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 500;
-      outline: none;
-      min-width: 210px;
-    }
-    .sort-select:focus { border-color: var(--ink); }
     .view-all-link {
       font-size: 11.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--ink-2); border-bottom: 1px solid currentColor; padding-bottom: 2px;
@@ -311,6 +289,97 @@
       animation: spin 0.75s linear infinite; margin-bottom: 14px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+
+    /* ── Catalog Toolbar & Pagination ── */
+    .products-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 24px 0 28px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      border-radius: 10px;
+    }
+    .toolbar-note {
+      font-size: 12px;
+      color: var(--ink-2);
+      letter-spacing: 0.04em;
+    }
+    .sort-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding: 11px 38px 11px 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fbfbfb);
+      color: var(--ink);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 220px;
+      cursor: pointer;
+      outline: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--ink-2) 50%),
+        linear-gradient(135deg, var(--ink-2) 50%, transparent 50%),
+        linear-gradient(to right, transparent, transparent);
+      background-position:
+        calc(100% - 18px) calc(50% - 3px),
+        calc(100% - 12px) calc(50% - 3px),
+        100% 0;
+      background-size: 6px 6px, 6px 6px, 2.5em 2.5em;
+      background-repeat: no-repeat;
+    }
+    .sort-select:hover { border-color: var(--ink-2); }
+    .sort-select:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(17,17,17,0.06); }
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      min-width: 42px;
+      height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .page-btn:hover { border-color: var(--ink); transform: translateY(-1px); }
+    .page-btn.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .page-btn[disabled] {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .card-placeholder {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.18;
+    }
+    .card-placeholder svg { width: 72px; height: 72px; }
+    .cat-ed-ph {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.08;
+      color: #fff;
+    }
+    .cat-ed-ph svg { width: 84px; height: 84px; }
 
     /* ── Product Card ── */
     .product-card { cursor: pointer; display: flex; flex-direction: column; }
@@ -383,10 +452,8 @@
     .cat-ed-ph {
       position: absolute; inset: 0; z-index: 0;
       display: flex; align-items: center; justify-content: center;
-      color: rgba(255,255,255,0.18);
-      opacity: 1;
+      font-size: 80px; opacity: 0.07;
     }
-    .cat-ed-ph svg { width: 74px; height: 74px; }
     .cat-ed-label { position: relative; z-index: 2; }
     .cat-ed-eyebrow {
       font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
@@ -453,8 +520,6 @@
       .hero-title { font-size: 38px; }
       .cat-chips { padding: 16px; }
       .products-section { padding: 48px 16px; }
-      .products-toolbar { margin-bottom: 20px; }
-      .sort-select { width: 100%; min-width: 0; }
       .cat-editorial-section { padding: 48px 16px; }
       .cat-ed-head { margin-bottom: 32px; }
       .cat-editorial-grid {
@@ -594,18 +659,18 @@
   <!-- ── Products ── -->
   <section class="products-section">
     <div class="section-head">
-      <h2 class="section-title" data-i18n="featured_title">Избранное</h2>
+      <h2 class="section-title" data-i18n="featured_title">Все товары</h2>
       <a href="dresses.html" class="view-all-link" data-i18n="view_all">Все товары</a>
     </div>
 
     <div class="products-toolbar">
       <p class="toolbar-note" data-i18n="toolbar_note">Сортировка и фильтр без лишнего шума.</p>
       <select id="sortSelect" class="sort-select" aria-label="Сортировка товаров">
-        <option value="featured">Сначала избранные</option>
-        <option value="price-desc">Цена: высокая → низкая</option>
-        <option value="price-asc">Цена: низкая → высокая</option>
-        <option value="newest">Сначала новые</option>
-        <option value="name-asc">Название: А → Я</option>
+        <option value="featured" data-i18n="sort_featured">Сначала новые / избранные</option>
+        <option value="price-desc" data-i18n="sort_price_desc">Цена: высокая → низкая</option>
+        <option value="price-asc" data-i18n="sort_price_asc">Цена: низкая → высокая</option>
+        <option value="newest" data-i18n="sort_newest">Сначала новые</option>
+        <option value="name-asc" data-i18n="sort_name_asc">Название: А → Я</option>
       </select>
     </div>
 
@@ -615,6 +680,8 @@
         <span data-i18n="loading">Загрузка...</span>
       </div>
     </div>
+
+    <div class="pagination" id="pagination"></div>
   </section>
 
   <!-- ── Editorial Category Grid ── -->
@@ -627,26 +694,46 @@
     </div>
     <div class="cat-editorial-grid">
       <a href="dresses.html" class="cat-ed-item large">
-        <div class="cat-ed-ph" aria-hidden="true"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3c1 2 2 3 5 3s4-1 5-3"/><path d="M8 6l-2 4 2 11h8l2-11-2-4"/><path d="M12 9v12"/></svg></div>
+        <div class="cat-ed-ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
         <div class="cat-ed-label">
           <p class="cat-ed-eyebrow" data-i18n="cat_new">Новое</p>
           <p class="cat-ed-name" data-i18n="nav_dresses">Платья</p>
         </div>
       </a>
       <a href="hijabs.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7c1-2 3-3 4-3s3 1 4 3"/><path d="M6 18c1-4 4-7 6-7s5 3 6 7"/><path d="M8 7c0 4 1 7 4 7s4-3 4-7"/></svg></div>
+        <div class="cat-ed-ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_hijabs">Хиджабы</p></div>
       </a>
       <a href="suits.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3l3 3 3-3"/><path d="M10 6l-2 3 2 12h4l2-12-2-3"/><path d="M12 6v15"/></svg></div>
+        <div class="cat-ed-ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_suits">Костюмы</p></div>
       </a>
       <a href="sweaters.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l3 2 3-2"/><path d="M7 7l-2 5 3 2v8h8v-8l3-2-2-5"/><path d="M12 6v14"/></svg></div>
+        <div class="cat-ed-ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_sweaters">Кофты</p></div>
       </a>
       <a href="skirts.html" class="cat-ed-item">
-        <div class="cat-ed-ph" aria-hidden="true"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l4 3 4-3"/><path d="M7 7l-2 4 3 2v8h8v-8l3-2-2-4"/><path d="M12 7v14"/></svg></div>
+        <div class="cat-ed-ph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg></div>
         <div class="cat-ed-label"><p class="cat-ed-name" data-i18n="nav_skirts">Юбки</p></div>
       </a>
     </div>
@@ -720,9 +807,14 @@
         search_ph:      'Поиск товаров...',
         search_hint:    'Введите название товара',
         search_count:   'результатов',
-        featured_title: 'Избранное',
-        view_all:       'Все товары',
         toolbar_note:   'Сортировка и фильтр без лишнего шума.',
+        sort_featured:  'Сначала новые / избранные',
+        sort_price_desc:'Цена: высокая → низкая',
+        sort_price_asc: 'Цена: низкая → высокая',
+        sort_newest:    'Сначала новые',
+        sort_name_asc:  'Название: А → Я',
+        featured_title: 'Все товары',
+        view_all:       'Все товары',
         cat_title:      'Коллекции',
         cat_new:        'Новое',
         loading:        'Загрузка...',
@@ -759,9 +851,14 @@
         search_ph:      'Тауарларды іздеу...',
         search_hint:    'Тауар атауын енгізіңіз',
         search_count:   'нәтиже',
-        featured_title: 'Таңдаулы',
+        toolbar_note:   'Артық шу жоқ сұрыптау мен сүзгі.',
+        sort_featured:  'Алдымен таңдаулы',
+        sort_price_desc:'Баға: жоғары → төмен',
+        sort_price_asc: 'Баға: төмен → жоғары',
+        sort_newest:    'Алдымен жаңалар',
+        sort_name_asc:  'Атауы: А → Я',
+        featured_title: 'Барлық тауарлар',
         view_all:       'Барлық тауарлар',
-        toolbar_note:   'Артық шуылсыз сұрыптау мен сүзгі.',
         cat_title:      'Коллекциялар',
         cat_new:        'Жаңа',
         loading:        'Жүктелуде...',
@@ -778,6 +875,11 @@
     };
 
     var lang = localStorage.getItem('ss_lang') || 'ru';
+    var PRODUCTS_PER_PAGE = 9;
+    var currentPage = 1;
+    var currentSort = 'featured';
+    var allProducts = [];
+    window.PRODUCTS = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
 
     function applyLang(l) {
       lang = l;
@@ -796,12 +898,39 @@
         b.classList.toggle('active', b.dataset.lang === l);
       });
       // Re-render products in new language
-      if (window._productsLoaded) refreshProducts();
+      if (window._productsLoaded) updateProductView();
+      syncSortSelect();
     }
 
     document.querySelectorAll('.lang-btn').forEach(function(b) {
       b.addEventListener('click', function() { applyLang(b.dataset.lang); });
     });
+
+    /* ── Toolbar / sorting / pagination ── */
+    var sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        currentSort = sortSelect.value;
+        currentPage = 1;
+        updateProductView();
+      });
+    }
+
+    var paginationEl = document.getElementById('pagination');
+    if (paginationEl) {
+      paginationEl.addEventListener('click', function(e) {
+        var btn = e.target.closest('.page-btn');
+        if (!btn || btn.disabled) return;
+        var action = btn.getAttribute('data-action');
+        var page = parseInt(btn.getAttribute('data-page'), 10);
+        var totalPages = Math.max(1, Math.ceil(sortProducts(allProducts.slice(), currentSort).length / PRODUCTS_PER_PAGE));
+
+        if (action === 'prev' && currentPage > 1) currentPage -= 1;
+        else if (action === 'next' && currentPage < totalPages) currentPage += 1;
+        else if (!isNaN(page)) currentPage = page;
+        updateProductView();
+      });
+    }
 
     /* ── Header scroll ── */
     var hdr = document.getElementById('siteHeader');
@@ -904,54 +1033,115 @@
     }
     window.addToCart = addToCart;
 
-    function getSortedProducts(list) {
-      var mode = (document.getElementById('sortSelect') || {}).value || 'featured';
-      var items = (list || []).slice();
-      function priceOf(p) {
-        var n = Number(p && p.price);
-        return isFinite(n) ? n : Number.POSITIVE_INFINITY;
-      }
-      function nameOf(p) {
-        return String((lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || ''))).toLowerCase();
-      }
-      if (mode === 'price-desc') {
-        items.sort(function(a, b) { return priceOf(b) - priceOf(a); });
-      } else if (mode === 'price-asc') {
-        items.sort(function(a, b) { return priceOf(a) - priceOf(b); });
-      } else if (mode === 'newest') {
-        items.sort(function(a, b) { return Number(b.createdAt || b.created_at || 0) - Number(a.createdAt || a.created_at || 0); });
-      } else if (mode === 'name-asc') {
-        items.sort(function(a, b) { return nameOf(a).localeCompare(nameOf(b), 'ru'); });
-      } else {
-        items.sort(function(a, b) {
-          var af = (a.featured || a.isFeatured || a.isNew) ? 1 : 0;
-          var bf = (b.featured || b.isFeatured || b.isNew) ? 1 : 0;
-          if (bf !== af) return bf - af;
-          return priceOf(a) - priceOf(b);
-        });
-      }
-      return items;
-    }
-
-    function refreshProducts() {
-      var all = window._allProducts || window.PRODUCTS || [];
-      renderProducts(getSortedProducts(all).slice(0, 8));
-    }
-
     /* ── Render Product Cards ── */
+    function getName(p) {
+      return lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
+    }
+
+    function getDescription(p) {
+      return lang === 'kk' ? (p.description_kk || p.description || '') : (p.description || '');
+    }
+
+    function parseImages(p) {
+      var images = p.images || p.imageUrls || (p.image_url ? [p.image_url] : []);
+      if (typeof images === 'string') {
+        try {
+          var parsed = JSON.parse(images);
+          images = Array.isArray(parsed) ? parsed : [images];
+        } catch (e) {
+          images = [images];
+        }
+      }
+      return Array.isArray(images) ? images.filter(Boolean) : [];
+    }
+
+    function getTimestamp(p) {
+      var raw = p.created_at || p.createdAt || p.updated_at || p.updatedAt || p.date_created || p.dateCreated || p.timestamp || p.published_at;
+      var t = raw ? Date.parse(raw) : NaN;
+      return isNaN(t) ? 0 : t;
+    }
+
+    function sortProducts(list, sortKey) {
+      var out = (list || []).slice();
+      out.sort(function(a, b) {
+        var aFeatured = !!(a.featured || a.isFeatured || a.isNew);
+        var bFeatured = !!(b.featured || b.isFeatured || b.isNew);
+
+        if (sortKey === 'price-desc') return (Number(b.price) || 0) - (Number(a.price) || 0);
+        if (sortKey === 'price-asc') return (Number(a.price) || 0) - (Number(b.price) || 0);
+        if (sortKey === 'name-asc') {
+          return String(getName(a)).localeCompare(String(getName(b)), lang === 'kk' ? 'kk' : 'ru', { sensitivity: 'base' });
+        }
+        if (sortKey === 'newest') return getTimestamp(b) - getTimestamp(a);
+
+        if (aFeatured !== bFeatured) return aFeatured ? -1 : 1;
+        var timeDelta = getTimestamp(b) - getTimestamp(a);
+        if (timeDelta !== 0) return timeDelta;
+        return String(getName(a)).localeCompare(String(getName(b)), lang === 'kk' ? 'kk' : 'ru', { sensitivity: 'base' });
+      });
+      return out;
+    }
+
+    function getPageItems(list) {
+      var total = (list || []).length;
+      var pages = Math.max(1, Math.ceil(total / PRODUCTS_PER_PAGE));
+      if (currentPage > pages) currentPage = pages;
+      if (currentPage < 1) currentPage = 1;
+      var start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+      return {
+        items: (list || []).slice(start, start + PRODUCTS_PER_PAGE),
+        pages: pages,
+        total: total
+      };
+    }
+
+    function renderPagination(totalPages) {
+      var wrap = document.getElementById('pagination');
+      if (!wrap) return;
+      if (totalPages <= 1) {
+        wrap.innerHTML = '';
+        return;
+      }
+      var html = [];
+      html.push('<button class="page-btn" data-action="prev"' + (currentPage === 1 ? ' disabled' : '') + '>‹</button>');
+
+      var start = Math.max(1, currentPage - 2);
+      var end = Math.min(totalPages, start + 4);
+      start = Math.max(1, end - 4);
+
+      if (start > 1) {
+        html.push('<button class="page-btn" data-page="1">1</button>');
+        if (start > 2) html.push('<span style="color:var(--ink-2);padding:0 6px">…</span>');
+      }
+
+      for (var i = start; i <= end; i++) {
+        html.push('<button class="page-btn' + (i === currentPage ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>');
+      }
+
+      if (end < totalPages) {
+        if (end < totalPages - 1) html.push('<span style="color:var(--ink-2);padding:0 6px">…</span>');
+        html.push('<button class="page-btn" data-page="' + totalPages + '">' + totalPages + '</button>');
+      }
+
+      html.push('<button class="page-btn" data-action="next"' + (currentPage === totalPages ? ' disabled' : '') + '>›</button>');
+      wrap.innerHTML = html.join('');
+    }
+
     function renderProducts(list) {
       var grid = document.getElementById('productGrid');
       var s = T[lang];
       if (!list || list.length === 0) {
         grid.innerHTML = '<div class="grid-empty">' + s.no_products + '</div>';
+        renderPagination(0);
         return;
       }
+      var placeholderSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
       grid.innerHTML = list.map(function(p) {
-        var images = p.images || p.imageUrls || (p.image_url ? [p.image_url] : []);
+        var images = parseImages(p);
         var img1 = images[0] || '';
         var img2 = images[1] || '';
-        var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
-        var desc = lang === 'kk' ? (p.description_kk || p.description || '') : (p.description || '');
+        var name = getName(p);
+        var desc = getDescription(p);
         var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
         var isNew = p.featured || p.isFeatured || p.isNew;
         return (
@@ -962,7 +1152,7 @@
           (isNew ? '<span class="card-tag">' + s.new_badge + '</span>' : '') +
           (img1
             ? '<img class="img-primary" src="' + esc(img1) + '" alt="' + esc(name) + '" loading="lazy"/>'
-            : '<div class="card-placeholder" aria-hidden="true">👗</div>') +
+            : '<div class="card-placeholder" aria-hidden="true">' + placeholderSvg + '</div>') +
           (img2 ? '<img class="img-hover" src="' + esc(img2) + '" alt="" loading="lazy"/>' : '') +
           '</div>' +
           '<div class="card-body">' +
@@ -976,11 +1166,48 @@
       }).join('');
     }
 
-    /* ── Load Products from products.js ── */
-    function loadProducts() {
-      window._allProducts = window.PRODUCTS || [];
+    function syncSortSelect() {
+      var sel = document.getElementById('sortSelect');
+      if (sel) sel.value = currentSort;
+    }
+
+    function updateProductView() {
+      var sorted = sortProducts(allProducts.slice(), currentSort);
+      var pageData = getPageItems(sorted);
+      window._displayProducts = sorted;
       window._productsLoaded = true;
-      refreshProducts();
+      renderProducts(pageData.items);
+      renderPagination(pageData.pages);
+    }
+
+    function extractProducts(payload) {
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.data)) return payload.data;
+      if (payload && Array.isArray(payload.products)) return payload.products;
+      if (payload && Array.isArray(payload.items)) return payload.items;
+      return [];
+    }
+
+    async function loadProducts() {
+      var fallback = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+      try {
+        var res = await fetch('/api/products', { cache: 'no-store' });
+        if (!res.ok) throw new Error('API request failed');
+        var data = await res.json();
+        allProducts = extractProducts(data);
+        if (!allProducts.length) allProducts = fallback;
+      } catch (e) {
+        allProducts = fallback;
+      }
+
+      window.PRODUCTS = allProducts;
+      currentPage = 1;
+      updateProductView();
+
+      if (!allProducts.length) {
+        document.getElementById('productGrid').innerHTML = '<div class="grid-empty">' + T[lang].no_products + '</div>';
+        renderPagination(0);
+      }
     }
 
     /* ── Firebase Auth ── */
@@ -1020,14 +1247,6 @@
       document.getElementById('logoutBtn').addEventListener('click', function(){
         if (typeof firebase !== 'undefined') firebase.auth().signOut().then(function(){ location.reload(); });
       });
-
-    /* ── Sorting ── */
-    var sortSelect = document.getElementById('sortSelect');
-    if (sortSelect) {
-      sortSelect.addEventListener('change', function() {
-        refreshProducts();
-      });
-    }
 
     /* ── Highlight active category chip ── */
     var path = window.location.pathname.split('/').pop() || 'index.html';
