@@ -197,12 +197,6 @@
     .hero {
       width: 100%; height: 88vh; min-height: 560px;
       background: var(--ink);
-      /*
-       * ─── ADD YOUR HERO IMAGE HERE ─────────────────────────────────────
-       * background-image: url('images/hero.jpg');
-       * background-size: cover; background-position: center top;
-       * ─────────────────────────────────────────────────────────────────
-       */
       position: relative; overflow: hidden;
       display: flex; align-items: flex-end; justify-content: center;
       padding: 80px 32px;
@@ -212,7 +206,6 @@
       position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(28,28,26,0.72) 0%, rgba(28,28,26,0.1) 55%, transparent 100%);
     }
-    /* Placeholder watermark — remove once you add a hero photo */
     .hero-watermark {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -289,7 +282,6 @@
       animation: spin 0.75s linear infinite; margin-bottom: 14px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
 
     /* ── Catalog Toolbar & Pagination ── */
     .products-toolbar {
@@ -437,11 +429,6 @@
       background: var(--hover); position: relative; overflow: hidden;
       display: flex; align-items: flex-end; padding: 24px;
       transition: opacity 0.3s;
-      /*
-       * ADD CATEGORY IMAGES:
-       * background-image: url('images/cat-dresses.jpg');
-       * background-size: cover; background-position: center;
-       */
     }
     .cat-ed-item:hover { opacity: 0.9; }
     .cat-ed-item.large { grid-row: span 2; }
@@ -897,7 +884,6 @@
       document.querySelectorAll('.lang-btn').forEach(function(b) {
         b.classList.toggle('active', b.dataset.lang === l);
       });
-      // Re-render products in new language
       if (window._productsLoaded) updateProductView();
       syncSortSelect();
     }
@@ -976,7 +962,9 @@
       }
       hint.textContent = results.length + ' ' + s.search_count;
       list.innerHTML = results.map(function(p) {
-        var img = resolveImageUrl((p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '');
+        /* ── FIX: use parseImages so image_url JSON strings are handled correctly ── */
+        var imgs = parseImages(p);
+        var img = imgs.length ? resolveImageUrl(imgs[0]) : '';
         var name = lang === 'kk' ? (p.name_kk || p.name || '') : (p.name || '');
         var price = p.price ? Number(p.price).toLocaleString('ru-RU') + ' ₸' : '';
         return '<div class="search-result-item" role="button" tabindex="0"' +
@@ -1024,7 +1012,9 @@
         var idx  = cart.findIndex(function(x){ return x.id === id; });
         if (idx > -1) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; }
         else {
-          var img = resolveImageUrl((p.images && p.images[0]) || (p.imageUrls && p.imageUrls[0]) || p.image_url || '');
+          /* ── FIX: use parseImages so image_url JSON strings are handled correctly ── */
+          var imgs = parseImages(p);
+          var img = imgs.length ? resolveImageUrl(imgs[0]) : '';
           cart.push({ id: id, name: p.name, price: p.price, image: img, quantity: 1 });
         }
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -1042,16 +1032,61 @@
       return lang === 'kk' ? (p.description_kk || p.description || '') : (p.description || '');
     }
 
+    /*
+     * ── FIX: parseImages ──────────────────────────────────────────────────────
+     *
+     * TWO BUGS were in the original version:
+     *
+     * 1. EMPTY ARRAY BUG:
+     *    `p.images || p.imageUrls || ...`
+     *    In JavaScript, [] (empty array) is TRUTHY, so if the API returns
+     *    `images: []`, the `||` short-circuits and never reaches `image_url`.
+     *    Fix: check `.length > 0` explicitly.
+     *
+     * 2. JSON STRING BUG:
+     *    `(p.image_url ? [p.image_url] : [])`
+     *    When image_url is stored as a JSON array string like
+     *    '["https://cdn.com/photo.jpg"]', this wraps it in another array,
+     *    producing ['["https://cdn.com/photo.jpg"]']. The src then becomes
+     *    the raw JSON string — which browsers cannot load as an image.
+     *    product.html correctly calls JSON.parse() on image_url first;
+     *    this fix brings index.html in line with that behaviour.
+     */
     function parseImages(p) {
-      var images = p.images || p.imageUrls || (p.image_url ? [p.image_url] : []);
+      var images = [];
+
+      if (Array.isArray(p.images) && p.images.length > 0) {
+        // Already a proper populated array — use it directly
+        images = p.images;
+      } else if (Array.isArray(p.imageUrls) && p.imageUrls.length > 0) {
+        // Alternate field name
+        images = p.imageUrls;
+      } else if (p.image_url) {
+        // May be a plain URL string OR a JSON-encoded array string
+        var raw = p.image_url;
+        if (typeof raw === 'string') {
+          try {
+            var parsed = JSON.parse(raw);
+            images = Array.isArray(parsed) ? parsed : [raw];
+          } catch (e) {
+            // Not JSON — treat as a plain URL
+            images = [raw];
+          }
+        } else {
+          images = [String(raw)];
+        }
+      }
+
+      // Edge-case: images itself ended up as a string somehow
       if (typeof images === 'string') {
         try {
-          var parsed = JSON.parse(images);
-          images = Array.isArray(parsed) ? parsed : [images];
+          var parsed2 = JSON.parse(images);
+          images = Array.isArray(parsed2) ? parsed2 : [images];
         } catch (e) {
           images = [images];
         }
       }
+
       return Array.isArray(images) ? images.filter(Boolean) : [];
     }
 
@@ -1071,14 +1106,13 @@
       var s = String(raw).trim();
       if (!s) return '';
 
-      // If it is already a direct image or remote asset, keep it.
+      // Already a direct CDN URL — return as-is
       if (/^https?:\/\//i.test(s) && !/app\.uploadcare\.com\/projects\/[^/]+\/files\//i.test(s)) {
         return s;
       }
 
       var uuid = extractUploadcareUuid(s);
       if (uuid) {
-        // Prefer an explicit CDN domain if the site has one; otherwise fall back to the legacy CDN URL.
         var cdnDomain = (window.UPLOADCARE_CDN_DOMAIN || localStorage.getItem('uploadcare_cdn_domain') || '').trim();
         if (cdnDomain) {
           cdnDomain = cdnDomain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
@@ -1172,6 +1206,7 @@
       }
       var placeholderSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 7.2c0-1.5 1.2-2.7 2.7-2.7S15.4 5.7 15.4 7.2c0 .8-.3 1.5-.9 2L12.7 11l-1.8-1.8c-.6-.5-.9-1.2-.9-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 21l2.1-9h6.8l2.1 9H6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 11.2 7 13.2M15 11.2l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
       grid.innerHTML = list.map(function(p) {
+        /* ── FIX: parseImages now correctly handles JSON-string image_url and empty arrays ── */
         var images = parseImages(p);
         var img1 = resolveImageUrl(images[0] || '');
         var img2 = resolveImageUrl(images[1] || '');
@@ -1252,7 +1287,6 @@
       }
       firebase.auth().onAuthStateChanged(function(user) {
         var loggedOut = ['loginBtn','signupBtn'];
-        var loggedIn  = ['profileBtn','logoutBtn'];
         loggedOut.forEach(function(id){
           var el = document.getElementById(id);
           if (el) el.style.display = user ? 'none' : 'inline-block';
